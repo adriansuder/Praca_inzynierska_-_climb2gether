@@ -29,7 +29,6 @@ export class NavbarComponent implements OnInit {
   }
 
   openRegisterDialog() {
-
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
 
@@ -37,8 +36,10 @@ export class NavbarComponent implements OnInit {
   }
 
   checkIfUserIsLoggedIn():boolean{
-    
-    if(this.router.url == '/dashboard' || this.router.url == '/climbingPartners' ){
+    if(this.router.url === '/dashboard'
+      || this.router.url === '/climbingPartners'
+      || this.router.url === '/instructors'
+      || this.router.url === '/userClimbings' ){
       return true;
     }
     else{

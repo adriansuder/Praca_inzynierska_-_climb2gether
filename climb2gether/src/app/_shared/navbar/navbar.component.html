@@ -9,24 +9,25 @@
     <div class="collapse navbar-collapse" id="navbarNav" *ngIf="checkIfUserIsLoggedIn() == false">
         <ul class="navbar-nav">
             <li class="nav-item active d-flex justify-content-center">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="#" data-toggle="collapse" data-target="#navbarNav">Home <span
+                        class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item d-flex justify-content-center">
-                <a class="nav-link" href="#">Features </a>
+                <a class="nav-link" href="#" data-toggle="collapse" data-target="#navbarNav">Features </a>
             </li>
             <li class="nav-item d-flex justify-content-center">
-                <a class="nav-link" href="#">Pricing</a>
+                <a class="nav-link" href="#" data-toggle="collapse" data-target="#navbarNav">Pricing</a>
             </li>
 
             <div class=".d-none d-xs-block d-lg-none">
                 <li class="nav-item d-flex justify-content-center">
-                    <a class="nav-link">
+                    <a class="nav-link" data-toggle="collapse" data-target="#navbarNav">
                         <mat-icon class="matMenuIcon">login</mat-icon>
                         <span (click)="openLoginDialog()"> Zaloguj!</span>
                     </a>
                 </li>
                 <li class="nav-item d-flex justify-content-center" (click)="openRegisterDialog()">
-                    <a class="nav-link">
+                    <a class="nav-link" data-toggle="collapse" data-target="#navbarNav">
                         <mat-icon class="matMenuIcon">person_add</mat-icon>
                         <span> Zarejestruj się!</span>
                     </a>
@@ -63,24 +64,33 @@
     <div class="collapse navbar-collapse" id="navbarNav" *ngIf="checkIfUserIsLoggedIn() == true">
         <ul class="navbar-nav">
             <li class="nav-item d-flex justify-content-center">
-                <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">News </a>
+                <a class="nav-link" routerLink="/dashboard" routerLinkActive="active" data-toggle="collapse"
+                    data-target="#navbarNav">News </a>
             </li>
             <li class="nav-item d-flex justify-content-center">
-                <a class="nav-link" routerLink="/climbingPartners" routerLinkActive="active">Partnerzy wspinaczkowi </a>
+                <a class="nav-link" routerLink="/climbingPartners" routerLinkActive="active" data-toggle="collapse"
+                    data-target="#navbarNav">Partnerzy wspinaczkowi </a>
             </li>
             <li class="nav-item d-flex justify-content-center">
-                <a class="nav-link" href="#">Instruktorzy</a>
+                <a class="nav-link" routerLink="/instructors" routerLinkActive="active" data-toggle="collapse"
+                    data-target="#navbarNav">Instruktorzy</a>
             </li>
             <li class="nav-item d-flex justify-content-center">
-                <a class="nav-link" href="#">Moje przejścia</a>
+                <a class="nav-link" routerLink="/userClimbings" routerLinkActive="active" data-toggle="collapse"
+                    data-target="#navbarNav">Moje przejścia</a>
             </li>
 
             <div class=".d-none d-xs-block d-lg-none">
-
+                <li class="nav-item d-flex justify-content-center">
+                    <a class="nav-link">
+                        <mat-icon class="matMenuIcon">notifications</mat-icon>
+                        <span>Powiadomienia</span>
+                    </a>
+                </li>
                 <li class="nav-item d-flex justify-content-center">
                     <a class="nav-link">
                         <mat-icon class="matMenuIcon">chat</mat-icon>
-                        <span> Wiadomości</span>
+                        <span>Wiadomości</span>
                     </a>
                 </li>
             </div>
@@ -94,12 +104,13 @@
                 <mat-icon>search</mat-icon>
             </button>
         </form>
-        <button mat-icon-button class="btn-link matLoginButton d-none d-md-none d-lg-block"
-        aria-label="Messages button">
-        <mat-icon>chat</mat-icon>
-    </button>
-        <button mat-icon-button class="btn-link matLoginButton d-none d-md-none d-lg-block" [matMenuTriggerFor]="menu"
-            aria-label="Account button">
+        <button mat-icon-button class="btn-link matLoginButton d-none d-md-none d-lg-block" aria-label="notifications button">
+            <mat-icon>notifications</mat-icon>
+        </button>
+        <button mat-icon-button class="btn-link matLoginButton d-none d-md-none d-lg-block" aria-label="Messages button">
+            <mat-icon>chat</mat-icon>
+        </button>
+        <button mat-icon-button class="btn-link matLoginButton d-none d-md-none d-lg-block" [matMenuTriggerFor]="menu" aria-label="Account button">
             <mat-icon>account_circle</mat-icon>
         </button>
         <mat-menu #menu="matMenu">

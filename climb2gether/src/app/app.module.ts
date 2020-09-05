@@ -25,6 +25,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MatCardModule } from '@angular/material/card';
 import { ClimbingPartnersComponent } from './climbing-partners/climbing-partners.component';
 import { InstructorsComponent } from './instructors/instructors.component';
+import { UserClimbingsComponent } from './user-climbings/user-climbings.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { InstructorsComponent } from './instructors/instructors.component';
     RegisterDialogComponent,
     DashboardComponent,
     ClimbingPartnersComponent,
-    InstructorsComponent
+    InstructorsComponent,
+    UserClimbingsComponent
   ],
   imports: [
     BrowserModule,
