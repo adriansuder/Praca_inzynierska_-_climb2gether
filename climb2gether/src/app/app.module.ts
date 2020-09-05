@@ -21,6 +21,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { MatCardModule } from '@angular/material/card';
+import { ClimbingPartnersComponent } from './climbing-partners/climbing-partners.component';
+import { InstructorsComponent } from './instructors/instructors.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +32,10 @@ import { MatSelectModule } from '@angular/material/select';
     NavbarComponent,
     HomeComponent,
     LoginDialogComponent,
-    RegisterDialogComponent
+    RegisterDialogComponent,
+    DashboardComponent,
+    ClimbingPartnersComponent,
+    InstructorsComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +52,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatPaginatorModule,
     MatSortModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
