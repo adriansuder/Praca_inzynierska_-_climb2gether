@@ -1,0 +1,97 @@
+
+
+<div class="d-flex justify-content-center">
+    <div class="col-lg-11 col-md-12 col-sm-12  mt-5">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>Edytuj profil</mat-card-title>
+                <mat-card-subtitle>Jan Kowalski</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label class="hoverable d-flex justify-content-center" for="fileInput">
+                                <img class="img-fluid"
+                                    [src]="url ? url : 'https://www.w3schools.com/howto/img_avatar.png'">
+                                <!-- <div class="hover-text">Choose file</div> -->
+                                <div class="background"></div>
+                            </label>
+
+                            <input id="fileInput" type='file'>
+                            <button *ngIf="url" (click)="delete()">delete</button>
+                        </div>
+                        <div class="col-lg-9">
+                            <mat-form-field appearance="outline" class="col-lg-4 col-sm-12">
+                                <mat-label>Nazwa użytkownika</mat-label>
+                                <input matInput type="text" class="">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="col-lg-4 col-sm-12">
+                                <mat-label>Email</mat-label>
+                                <input matInput type="email" class="">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="col-lg-4 col-sm-12">
+                                <mat-label>Imię</mat-label>
+                                <input matInput type="text" class="">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="col-lg-4 col-sm-12">
+                                <mat-label>Nazwisko</mat-label>
+                                <input matInput type="text" class="">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="col-lg-4 col-sm-12">
+                                <mat-label>Data urodzenia</mat-label>
+                                <input matInput type="date" class="">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="col-lg-4 col-sm-12">
+                                <mat-label>Mężczyzna</mat-label> <!-- nie mozna zmienic-->
+                                <input disabled="true" matInput type="text" class="">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="col-lg-4 col-sm-12">
+                                <mat-label>Numer telefonu</mat-label>
+                                <input matInput type="text" class="">
+                            </mat-form-field>
+
+
+                            <mat-form-field appearance="outline" class="col-lg-4 col-sm-12" disabled="true">
+                                <mat-label>Rodzaj konta</mat-label>
+                                <!-- dodać pobieranie z usera rodzaju konta, nie wolno zmienic-->
+                                <input disabled="true" matInput type="text" class="">
+                            </mat-form-field>
+
+
+                            <mat-form-field appearance="outline" class="col-lg-4 col-sm-12">
+                                <mat-label>Podaj nowe hasło</mat-label>
+                                <input matInput [type]="hide ? 'password' : 'text'">
+                                <button mat-icon-button matSuffix (click)="hide = !hide"
+                                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="col-lg-4 col-sm-12">
+                                <mat-label>Powtórz nowe hasło</mat-label>
+                                <input matInput [type]="hide ? 'password' : 'text'">
+                                <button mat-icon-button matSuffix (click)="hide = !hide"
+                                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                </button>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+            <mat-card-actions class="ml-2 mb-2">
+                <button mat-raised-button color="primary" >ZAPISZ</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>
+
+
+<router-outlet></router-outlet>

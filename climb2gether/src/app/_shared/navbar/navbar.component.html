@@ -1,11 +1,21 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light shadow">
-    <a class="navbar-brand" href="#">
-        <img src="../../../assets/img/LogoSmall.png" height="45" alt="" loading="lazy">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow"> <!--sticky-top -->
+ 
+        <a class="navbar-brand" href="#">
+            <img src="../../../assets/img/LogoSmall.png" height="45"  alt="" loading="lazy">
+        </a>
+        <div class="mr-5" *ngIf="checkIfUserIsLoggedIn() == true">
+            <button mat-icon-button color="primary" class=" navbar-toggler mobileNavBarButton">
+                <mat-icon inline="true" matBadge="8"  >notifications</mat-icon>
+            </button>
+            <button mat-icon-button color="accent" class="navbar-toggler mobileNavBarButton" routerLink="/chat" routerLinkActive="active">
+                <mat-icon inline="true" matBadge="8">chat</mat-icon>
+            </button>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+   
     <div class="collapse navbar-collapse" id="navbarNav" *ngIf="checkIfUserIsLoggedIn() == false">
         <ul class="navbar-nav">
             <li class="nav-item active d-flex justify-content-center">
@@ -79,7 +89,7 @@
                 <a class="nav-link" routerLink="/userClimbings" routerLinkActive="active" data-toggle="collapse"
                     data-target="#navbarNav">Moje przejścia</a>
             </li>
-
+            <!--  Widoczne tylko na mobilce -->
             <div class=".d-none d-xs-block d-lg-none">
                 <li class="nav-item d-flex justify-content-center">
                     <a class="nav-link">
@@ -88,12 +98,19 @@
                     </a>
                 </li>
                 <li class="nav-item d-flex justify-content-center">
-                    <a class="nav-link">
+                    <a class="nav-link" routerLink="/chat" routerLinkActive="active">
                         <mat-icon class="matMenuIcon">chat</mat-icon>
                         <span>Wiadomości</span>
                     </a>
                 </li>
+                <li class="nav-item d-flex justify-content-center">
+                    <a class="nav-link" routerLink="/userSettings" routerLinkActive="active">
+                        <mat-icon class="matMenuIcon">settings</mat-icon>
+                        <span>Moje konto</span>
+                    </a>
+                </li>
             </div>
+            <!-- /Widoczne tylko na mobile -->
         </ul>
 
         <form class="form-inline ml-auto d-flex justify-content-center ">
@@ -104,21 +121,31 @@
                 <mat-icon>search</mat-icon>
             </button>
         </form>
-        <button mat-icon-button class="btn-link matLoginButton d-none d-md-none d-lg-block" aria-label="notifications button">
-            <mat-icon>notifications</mat-icon>
+        <button mat-icon-button class="btn-link matLoginButton d-none d-md-none d-lg-block"
+            [matMenuTriggerFor]="notifications" aria-label="Notifications button">
+            <mat-icon matBadge="8">notifications</mat-icon>
         </button>
-        <button mat-icon-button class="btn-link matLoginButton d-none d-md-none d-lg-block" aria-label="Messages button">
-            <mat-icon>chat</mat-icon>
+        <mat-menu #notifications="matMenu">
+            <li mat-menu-item *ngFor="let elem of notificationsMock">{{elem}}</li>
+        </mat-menu>
+
+        <button mat-icon-button class="btn-link matLoginButton d-none d-md-none d-lg-block"
+            aria-label="Messages button" routerLink="/chat" routerLinkActive="active">
+            <mat-icon matBadge="2" matBadgeColor="primary">chat</mat-icon>
         </button>
-        <button mat-icon-button class="btn-link matLoginButton d-none d-md-none d-lg-block" [matMenuTriggerFor]="menu" aria-label="Account button">
+        <button mat-icon-button class="btn-link matLoginButton d-none d-md-none d-lg-block" [matMenuTriggerFor]="menu"
+            aria-label="Account button">
             <mat-icon>account_circle</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="openLoginDialog()">
+            <button mat-menu-item routerLink="/userSettings" routerLinkActive="active">
+                <mat-icon>settings</mat-icon>
+                <span>Moje konto</span>
+            </button>
+            <button mat-menu-item>
                 <mat-icon>login</mat-icon>
                 <span>Wyloguj się!</span>
             </button>
-
         </mat-menu>
 
 

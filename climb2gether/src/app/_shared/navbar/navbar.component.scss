@@ -2,7 +2,7 @@
     flex: 1 1 auto;
 }
 
-button.mat-menu-item, .matLoginButton{
+button.mat-menu-item, .matLoginButton, .mobileNavBarButton{
      outline:none!important;
      border: none!important;
      background: none!important;
@@ -10,4 +10,9 @@ button.mat-menu-item, .matLoginButton{
 
 .matMenuIcon{
     vertical-align: middle!important;
+}
+ .mobileNavBarButton {
+    font-size:4vh;
+    margin-right: 5vw;
+
 }

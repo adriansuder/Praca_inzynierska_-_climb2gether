@@ -1,0 +1,37 @@
+<div class="row my-4 mx-3">
+
+    <div class="col-lg-3 ">
+        <cdk-virtual-scroll-viewport class="viewportList leftList" itemSize="100">
+            <mat-selection-list #messages [multiple]="false">
+                <mat-list-option *ngFor="let message of MESSAGES" [value]="1" class="liOnList">
+                    <ul class=" d-flex justify-content-center">
+                        <li class=" col-lg-12"><span style="font-weight: bold;">{{message.userName}}:
+                            </span>{{message.message.substr(1,30) || 'Loading...'}}...</li>
+                    </ul>
+                </mat-list-option>
+            </mat-selection-list>
+        </cdk-virtual-scroll-viewport>
+    </div>
+    <div class="col-lg-9">
+        <cdk-virtual-scroll-viewport class="viewportMessages" itemSize="100">
+            <div class="messageList" *ngFor="let message of MESSAGES">
+                <dt class="col-lg-12 py-1 px-1">{{message.userName || 'Loading...'}}</dt>
+                <dd class="col-lg-12 px-1 py-1">{{message.message || 'Loading...'}}</dd>
+                <mat-divider class="col-lg-12"></mat-divider>
+            </div>
+
+        </cdk-virtual-scroll-viewport>
+        <div class="col-lg-12 d-flex justify-content-center mt-2">
+            <mat-form-field appearance="outline" class="col-lg-11">
+                <mat-label>Treść wiadomości</mat-label>
+                <input autocomplete="off" matInput>
+                <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
+            </mat-form-field>
+            <button mat-icon-button color="primary" class="navbar-toggler sendIcon col-lg-1">
+                <mat-icon inline="true">send</mat-icon>
+            </button>
+        </div>
+
+
+    </div>
+</div>

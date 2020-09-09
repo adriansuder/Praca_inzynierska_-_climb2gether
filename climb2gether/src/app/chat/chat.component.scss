@@ -1,0 +1,68 @@
+.viewportMessages{
+    height: 80vh;
+}
+.viewportList{
+    height: 86vh;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    border-radius: px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  .d1 {
+     //min-width:500px;
+     //background-color: gray;
+  }
+
+  .mat-list-item-content .mat-list-item-content-reverse {
+    padding: 0px !important;
+    background-color: black;
+
+}
+
+
+  .sendIcon {
+    font-size:4vh;
+
+}
+
+.messageList {
+    list-style: none;
+    //background-color: #27293D;
+    //border-radius: 7px;
+}
+
+.viewportMessages, .leftList {
+    border-radius: 7px;
+    //background-color: #3F51B5;
+}
+
+::ng-deep .mat-list-text, .mat-list-item-content-reverse, .mat-list-item-content{
+    
+    padding: 0!important;
+    margin: 0 auto!important;
+}
+.liOnList{
+    background: #419EF9;
+    border-radius: 5px;
+    margin:0px 0 5px 0!important;
+}
+
+

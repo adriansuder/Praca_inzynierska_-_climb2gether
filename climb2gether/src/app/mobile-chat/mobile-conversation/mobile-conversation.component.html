@@ -1,0 +1,10 @@
+<cdk-virtual-scroll-viewport class="viewportList leftList" itemSize="100">
+    <mat-selection-list #messages [multiple]="false">
+        <mat-list-option *ngFor="let message of MESSAGES" [value]="1" class="liOnList">
+            <ul class=" d-flex justify-content-center">
+                <li class=" col-lg-12"><span style="font-weight: bold;">{{message.userName}}:
+                    </span>{{message.message.substr(1,30) || 'Loading...'}}...</li>
+            </ul>
+        </mat-list-option>
+    </mat-selection-list>
+</cdk-virtual-scroll-viewport>

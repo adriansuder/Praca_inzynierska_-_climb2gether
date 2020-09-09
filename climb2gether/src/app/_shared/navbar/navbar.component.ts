@@ -14,7 +14,8 @@ import { Router } from '@angular/router';
 
 export class NavbarComponent implements OnInit {
 
-  title;
+  notificationsMock: string[] = ['Użytkownik XYZ obserwuje Cie', 'Użytkownik XYZ zareagował na Twój wpis' , 'Użytkownik XYZ zareagował na Twój wpis',  'Użytkownik XYZ zareagował na Twój wpis',  'Użytkownik XYZ zareagował na Twój wpis'];
+  
   constructor(private dialog: MatDialog, private router: Router) {}
 
   ngOnInit(): void {
@@ -39,7 +40,9 @@ export class NavbarComponent implements OnInit {
     if(this.router.url === '/dashboard'
       || this.router.url === '/climbingPartners'
       || this.router.url === '/instructors'
-      || this.router.url === '/userClimbings' ){
+      || this.router.url === '/userClimbings' 
+      || this.router.url === '/userSettings'
+      || this.router.url === '/chat' ){
       return true;
     }
     else{
