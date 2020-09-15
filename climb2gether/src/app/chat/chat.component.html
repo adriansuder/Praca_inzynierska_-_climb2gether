@@ -1,6 +1,15 @@
 <div class="row my-4 mx-3">
 
     <div class="col-lg-3 ">
+        <div class="row">
+            <mat-form-field appearance="outline" class="col-lg-10">
+                <mat-label>Dodaj nową konwersację</mat-label>
+                <input autocomplete="off" matInput>
+            </mat-form-field>
+            <button mat-icon-button color="primary" class="navbar-toggler sendIcon col-lg-2">
+                <mat-icon inline="true">add</mat-icon>
+            </button>
+        </div>
         <cdk-virtual-scroll-viewport class="viewportList leftList" itemSize="100">
             <mat-selection-list #messages [multiple]="false">
                 <mat-list-option *ngFor="let message of MESSAGES" [value]="1" class="liOnList">
