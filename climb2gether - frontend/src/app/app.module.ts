@@ -36,6 +36,7 @@ import { MobileChatComponent } from './mobile-chat/mobile-chat.component';
 import { MobileMessagesListComponent } from './mobile-chat/mobile-messages-list/mobile-messages-list.component';
 import { MobileConversationComponent } from './mobile-chat/mobile-conversation/mobile-conversation.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
