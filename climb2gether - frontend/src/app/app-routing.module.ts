@@ -8,10 +8,11 @@ import { InstructorsComponent } from '../app/instructors/instructors.component';
 import { UserClimbingsComponent } from '../app/user-climbings/user-climbings.component';
 import { UserSettingsComponent } from '../app/user-settings/user-settings.component';
 import { ChatComponent } from '../app/chat/chat.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginDialogComponent },
-  { path: 'dashboard', component: DashboardComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: '', component: HomeComponent },
   { path: 'climbingPartners', component: ClimbingPartnersComponent },
   { path: 'instructors', component: InstructorsComponent },

@@ -7,11 +7,12 @@
         
 
         {
-            "type": "pwa-msedge",
+            "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
             "url": "http://localhost:4200",
-            "webRoot": "${workspaceFolder}"
+            "webRoot": "${workspaceFolder}/climb2gether - frontend/src",
         }
     ]
 }
+

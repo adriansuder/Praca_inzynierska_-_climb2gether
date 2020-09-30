@@ -15,5 +15,6 @@ namespace climb2gether___backend.Data
         }
 
         public DbSet<Post> Posts { get; set; } 
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
     }
 }

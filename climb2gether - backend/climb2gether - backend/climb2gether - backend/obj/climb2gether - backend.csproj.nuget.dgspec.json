@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\adria\\source\\repos\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend.csproj": {}
+    "D:\\Repositories\\climb2gether_INZYNIERKA\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\adria\\source\\repos\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend.csproj": {
+    "D:\\Repositories\\climb2gether_INZYNIERKA\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\adria\\source\\repos\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend.csproj",
+        "projectUniqueName": "D:\\Repositories\\climb2gether_INZYNIERKA\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend.csproj",
         "projectName": "climb2gether - backend",
-        "projectPath": "C:\\Users\\adria\\source\\repos\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend.csproj",
+        "projectPath": "D:\\Repositories\\climb2gether_INZYNIERKA\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend.csproj",
         "packagesPath": "C:\\Users\\adria\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\adria\\source\\repos\\climb2gether - backend\\climb2gether - backend\\obj\\",
+        "outputPath": "D:\\Repositories\\climb2gether_INZYNIERKA\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\adria\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -41,6 +41,10 @@
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[3.1.8, )"
+            },
+            "Microsoft.AspNetCore.Cors": {
+              "target": "Package",
+              "version": "[2.2.0, )"
             },
             "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
               "target": "Package",

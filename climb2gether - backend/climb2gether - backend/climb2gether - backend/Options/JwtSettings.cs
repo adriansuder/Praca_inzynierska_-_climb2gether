@@ -8,5 +8,6 @@ namespace climb2gether___backend.Options
     public class JwtSettings
     {
         public string Secret { get; set; }
+        public TimeSpan TokenLifeTime { get; set; }
     }
 }

@@ -16,5 +16,6 @@ namespace climb2gether___backend.Services
 
         Task<bool> DeletePostAsync(Guid postId);
         Task<bool> CreatePostAsync(Post post);
+        Task<bool> UserOwnsPost(Guid postId, string userId);
     }
 }

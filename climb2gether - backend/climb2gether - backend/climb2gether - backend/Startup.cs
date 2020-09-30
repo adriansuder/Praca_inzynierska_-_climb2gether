@@ -16,6 +16,7 @@ using climb2gether___backend.Options;
 using System.Reflection;
 using Swashbuckle.Swagger;
 using climb2gether___backend.Installers;
+using Microsoft.IdentityModel.Logging;
 
 namespace climb2gether___backend
 {
@@ -47,6 +48,8 @@ namespace climb2gether___backend
                 app.UseHsts();
             }
 
+            IdentityModelEventSource.ShowPII = true;
+
             var swaggerOptions = new SwaggerOptions();
             Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);
 
@@ -54,6 +57,8 @@ namespace climb2gether___backend
             {
                 options.RouteTemplate = swaggerOptions.JsonRoute;
             });
+
+            app.UseCors("ApiCorsPolicy");
 
             app.UseSwaggerUI(options => { options.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description); });
 

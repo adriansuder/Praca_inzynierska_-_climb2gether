@@ -14,7 +14,7 @@ import { LoginDialogComponent } from './_shared/login-dialog/login-dialog.compon
 import { RegisterDialogComponent } from './_shared/register-dialog/register-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -35,6 +35,10 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 import { MobileChatComponent } from './mobile-chat/mobile-chat.component';
 import { MobileMessagesListComponent } from './mobile-chat/mobile-messages-list/mobile-messages-list.component';
 import { MobileConversationComponent } from './mobile-chat/mobile-conversation/mobile-conversation.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthGuard } from './guards/auth.guard';
+import { AuthService } from './_services/auth.service';
+import { TokenInterceptor } from './_services/token.interceptor';
 
 
 @NgModule({
@@ -74,9 +78,19 @@ import { MobileConversationComponent } from './mobile-chat/mobile-conversation/m
     MatBadgeModule,
     MatExpansionModule,
     MatListModule,
-    ScrollingModule
+    ScrollingModule,
+    HttpClientModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    AuthGuard,
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

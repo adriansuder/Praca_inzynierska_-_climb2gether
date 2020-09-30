@@ -19,5 +19,12 @@ namespace climb2gether___backend.Contracts
             public const string Update = Base + "/posts/{postId}";
             public const string Delete = Base + "/posts/{postId}";
         }
+
+        public static class Identity
+        {
+            public const string Login = Base + "/login";
+            public const string Register = Base + "/register";
+            public const string RefreshToken = Base + "/refreshToken";
+        }
     }
 }
