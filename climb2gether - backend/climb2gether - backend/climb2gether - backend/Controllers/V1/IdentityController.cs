@@ -29,7 +29,7 @@ namespace climb2gether___backend.Controllers.V1
                 });
             }
 
-            var authResponse = await _identitySerivce.RegisterAsync(request.Email, request.Password);
+            var authResponse = await _identitySerivce.RegisterAsync(request.Email, request.Password, request.Username, request.Name, request.Surname, request.DateOfBirth, request.Sex, request.RoleId, request.PhoneNumber);
 
             if (!authResponse.Success)
             {
@@ -47,7 +47,6 @@ namespace climb2gether___backend.Controllers.V1
 
         [HttpPost(template: ApiRoutes.Identity.Login)]
         public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
-        
         {
             var authResponse = await _identitySerivce.LoginAsync(request.Username, request.Password);
 

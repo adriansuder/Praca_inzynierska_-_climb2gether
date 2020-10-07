@@ -93,7 +93,7 @@ namespace climb2gether___backend.Services
             return await GenerateAuthResultForUserAsync(user);
         }
 
-        public async Task<AuthenticationResult> RegisterAsync(string email, string password)
+        public async Task<AuthenticationResult> RegisterAsync(string email, string password, string username, string name, string surname, DateTime dateOfBirth, string sex, int roleId, string phoneNumber)
         {
             var existingUser = await _userManager.FindByEmailAsync(email);
 
@@ -108,10 +108,11 @@ namespace climb2gether___backend.Services
             var newUser = new IdentityUser
             {
                 Email = email,
-                UserName = email
+                UserName = username,
             };
 
             var createdUser = await _userManager.CreateAsync(newUser, password);
+           
 
             if (!createdUser.Succeeded)
             {
@@ -120,6 +121,20 @@ namespace climb2gether___backend.Services
                     Errors = createdUser.Errors.Select(x => x.Description)
                 };
             }
+
+            var identityUser = await _userManager.FindByEmailAsync(email);
+
+            User newAppUser = new User();
+            newAppUser.IdentityUserId = identityUser.Id;
+            newAppUser.Name = name;
+            newAppUser.Surname = surname;
+            newAppUser.Username = username;
+            newAppUser.Sex = sex;
+            newAppUser.RoleId = roleId;
+            newAppUser.DateOfBirth = dateOfBirth;
+            newAppUser.PhoneNumber = phoneNumber;
+            _dataContext.Add(newAppUser);
+            await _dataContext.SaveChangesAsync();
 
             return await GenerateAuthResultForUserAsync(newUser);
         }

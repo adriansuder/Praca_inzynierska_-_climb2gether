@@ -3,6 +3,7 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import { RegisterDialogComponent } from '../register-dialog/register-dialog.component';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/_services/auth.service';
 
 
 
@@ -16,7 +17,11 @@ export class NavbarComponent implements OnInit {
 
   notificationsMock: string[] = ['Użytkownik XYZ obserwuje Cie', 'Użytkownik XYZ zareagował na Twój wpis' , 'Użytkownik XYZ zareagował na Twój wpis',  'Użytkownik XYZ zareagował na Twój wpis',  'Użytkownik XYZ zareagował na Twój wpis'];
   
-  constructor(private dialog: MatDialog, private router: Router) {}
+  constructor(
+    private dialog: MatDialog, 
+    private router: Router,
+    private auth: AuthService
+    ) {}
 
   ngOnInit(): void {
   }
@@ -48,6 +53,12 @@ export class NavbarComponent implements OnInit {
     else{
       return false;
     }
+  }
+
+  logout (){
+
+  this.auth.logout();
+   
   }
 
 }

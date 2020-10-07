@@ -28,6 +28,18 @@ export class AuthService {
     );
   }
 
+  register(newUser: {email: string, password: string, name: string, username: string, sex: string, surname: string, roleId: number, dateOfBirth: Date, phoneNumber: string  }): Observable<boolean>{
+    return this.http.post<any>(`${environment.apiUrl}/register`, newUser)
+    .pipe(
+      tap(tokens => this.doLoginUser(newUser.username, tokens)),
+      mapTo(true),
+      catchError(error => {
+        alert(error.error);
+        return of(false);
+      })
+    );
+  }
+
   logout(){
     return this.http.post<any>(`${environment.apiUrl}/logout`, {
       'refreshToken': this.getRefreshToken()
