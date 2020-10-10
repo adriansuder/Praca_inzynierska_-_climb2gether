@@ -1,4 +1,5 @@
-﻿using climb2gether___backend.Contracts;
+﻿using AutoMapper;
+using climb2gether___backend.Contracts;
 using climb2gether___backend.Contracts.V1.Requests;
 using climb2gether___backend.Contracts.V1.Responses;
 using climb2gether___backend.Services;
@@ -13,9 +14,11 @@ namespace climb2gether___backend.Controllers.V1
     public class IdentityController : Controller
     {   
         private readonly IIdentityService _identitySerivce;
-        public IdentityController(IIdentityService identityService)
+        private readonly IMapper _mapper;
+        public IdentityController(IIdentityService identityService, IMapper mapper)
         {
             _identitySerivce = identityService;
+            _mapper = mapper;
         }
 
         [HttpPost(template: ApiRoutes.Identity.Register)]
@@ -81,6 +84,20 @@ namespace climb2gether___backend.Controllers.V1
             return Ok(new AuthSuccessResponse
             {
                 Token = authResponse.Token,
+                RefreshToken = null
+            });
+        }
+
+        [HttpPost(template: ApiRoutes.Identity.Logout)]
+        public async Task<IActionResult> Logout([FromBody] LogoutRequest request)
+        {
+            var authResponse = await _identitySerivce.LogoutAsync(request.RefreshToken);
+
+
+
+            return Ok(new AuthSuccessResponse
+            {
+                Token = null,
                 RefreshToken = null
             });
         }

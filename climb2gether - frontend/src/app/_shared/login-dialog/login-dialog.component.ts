@@ -19,11 +19,11 @@ export class LoginDialogComponent implements OnInit {
   hide = false;
 
   constructor(
-    private auth: AuthService, 
-    private formBuilder: FormBuilder, 
+    private auth: AuthService,
+    private formBuilder: FormBuilder,
     private router: Router,
     private dialogRef: MatDialogRef<LoginDialogComponent>
-    ) { }
+  ) { }
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
       username: [''],
@@ -31,24 +31,40 @@ export class LoginDialogComponent implements OnInit {
     });
   }
 
-  get f() { return this.loginForm.controls;  }
+  get f() { return this.loginForm.controls; }
 
-  login() {
-    this.auth.login(
+  // login() {
+  //   this.auth.login(
+  //     {
+  //       username: this.f.username.value,
+  //       password: this.f.password.value
+  //     }
+  //   )
+  //   .subscribe(success => {
+  //     if (success) {
+  //       this.router.navigate(['/dashboard']);
+  //       this.dialogRef.close();
+  //     }
+  //   });
+  // }
+
+  async login() {
+    const login = await this.auth.login(
       {
         username: this.f.username.value,
         password: this.f.password.value
       }
     )
-    .subscribe(success => {
-      if (success) {
-        this.router.navigate(['/dashboard']);
-        this.dialogRef.close();
-      }
-    });
+      .toPromise();
+
+    if (login) {
+      this.router.navigate(['/dashboard']);
+      this.dialogRef.close();
+    }
   }
 
 }
+
 
 
 

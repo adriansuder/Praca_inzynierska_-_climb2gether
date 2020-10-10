@@ -31,41 +31,15 @@ namespace climb2gether___backend.Services
             _dataContext = dataContext;
         }
 
-        private async Task<AuthenticationResult> GenerateAuthResultForUserAsync(IdentityUser user)
+        public async Task<bool> LogoutAsync(string refreshToken)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims: new[] {
-                    new Claim(type: JwtRegisteredClaimNames.Sub, user.Email),
-                    new Claim(type: JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(type: JwtRegisteredClaimNames.Email, user.Email),
-                    new Claim(type: "id", value: user.Id)
-                }),
-                Expires = DateTime.UtcNow.Add(_jwtSettings.TokenLifeTime),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            var refreshToken = new RefreshToken
-            {
-                JwtId = token.Id,
-                UserId = user.Id,
-                CreationDate = DateTime.UtcNow,
-                ExpiryDate = DateTime.UtcNow.AddMonths(6)
-            };
-
-            await _dataContext.RefreshTokens.AddAsync(refreshToken);
+            var tokenToDelete = _dataContext.RefreshTokens
+                                                .Where(x => x.Token == refreshToken)
+                                                .FirstOrDefault();
+            _dataContext.Remove(tokenToDelete);
             await _dataContext.SaveChangesAsync();
 
-            return new AuthenticationResult
-            {
-                Success = true,
-                Token = tokenHandler.WriteToken(token),
-                RefreshToken = refreshToken.Token
-            };
+            return true;
         }
 
         public async Task<AuthenticationResult> LoginAsync(string email, string password)
@@ -104,9 +78,10 @@ namespace climb2gether___backend.Services
                     Errors = new[] { "User with this email already exists" }
                 };
             }
-
+            var newUserId = Guid.NewGuid();
             var newUser = new IdentityUser
-            {
+            {  
+                Id = newUserId.ToString(),
                 Email = email,
                 UserName = username,
             };
@@ -122,10 +97,11 @@ namespace climb2gether___backend.Services
                 };
             }
 
-            var identityUser = await _userManager.FindByEmailAsync(email);
+            await _userManager.AddClaimAsync(newUser, new Claim("UserViewer", "true"));
+            await _userManager.AddToRoleAsync(newUser, "User");
 
             User newAppUser = new User();
-            newAppUser.IdentityUserId = identityUser.Id;
+            newAppUser.IdentityUserId = newUserId.ToString();
             newAppUser.Name = name;
             newAppUser.Surname = surname;
             newAppUser.Username = username;
@@ -207,5 +183,50 @@ namespace climb2gether___backend.Services
             var user = await _userManager.FindByIdAsync(validatedToken.Claims.Single(x => x.Type == "id").Value);
             return await GenerateAuthResultForUserAsync(user);
         }
+
+        private async Task<AuthenticationResult> GenerateAuthResultForUserAsync(IdentityUser user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+            var claims = new List<Claim>
+            {
+                    new Claim(type: JwtRegisteredClaimNames.Sub, user.Email),
+                    new Claim(type: JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(type: JwtRegisteredClaimNames.Email, user.Email),
+                    new Claim(type: "id", value: user.Id)
+            };
+
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            claims.AddRange(userClaims);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.Add(_jwtSettings.TokenLifeTime),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            var refreshToken = new RefreshToken
+            {
+                JwtId = token.Id,
+                UserId = user.Id,
+                CreationDate = DateTime.UtcNow,
+                ExpiryDate = DateTime.UtcNow.AddMonths(6)
+            };
+
+            await _dataContext.RefreshTokens.AddAsync(refreshToken);
+            await _dataContext.SaveChangesAsync();
+
+            return new AuthenticationResult
+            {
+                Success = true,
+                Token = tokenHandler.WriteToken(token),
+                RefreshToken = refreshToken.Token
+            };
+        }
+
+
     }
 }

@@ -40,16 +40,16 @@ export class AuthService {
     );
   }
 
-  logout(){
+  logout() {
     return this.http.post<any>(`${environment.apiUrl}/logout`, {
       'refreshToken': this.getRefreshToken()
     }).pipe(
-      tap(() => this.doLogoutUser)),
+      tap(() => this.doLogoutUser()),
       mapTo(true),
       catchError(error => {
         alert(error.error);
         return of(false);
-      });
+      }));
   }
 
   getJwtToken() {
@@ -68,6 +68,10 @@ export class AuthService {
     }));
   }
 
+  getUserRoles(){
+    return this.http.get<any>(`${environment.apiUrl}/userRoles`).toPromise();
+  }
+
   private doLoginUser(username: string, tokens: Tokens){
     this.loggedUser = username;
     this.storeTokens(tokens);
@@ -84,6 +88,7 @@ export class AuthService {
 
   private doLogoutUser(){
     this.loggedUser = null;
+    console.log('zalogowamy: ' + this.loggedUser)
     this.removeTokens();
   }
 
@@ -93,11 +98,8 @@ export class AuthService {
   }
 
   private getRefreshToken(){
-    return this.http.post<any>(`${environment.apiUrl}/refreshToken`,{
-      'refreshToken': this.getRefreshToken()
-    }).pipe(tap((tokens: Tokens) => {
-      this.storeJwtToken(tokens.token);
-    }));
+    console.log('logging out1 '+ localStorage.getItem(this.REFRESH_TOKEN));
+    return localStorage.getItem(this.REFRESH_TOKEN);
   }
 
 

@@ -10,7 +10,6 @@ namespace climb2gether___backend.Domain
     public class Post
     {
         public Guid Id { get; set; }
-
         public string Name { get; set; }
         public string UserId { get; set; }
         [ForeignKey(nameof(UserId))]

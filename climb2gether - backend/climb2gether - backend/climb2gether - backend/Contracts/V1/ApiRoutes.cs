@@ -25,6 +25,13 @@ namespace climb2gether___backend.Contracts
             public const string Login = Base + "/login";
             public const string Register = Base + "/register";
             public const string RefreshToken = Base + "/refreshToken";
+            public const string Logout = Base + "/logout";
+        }
+
+        public static class Users
+        {
+            public const string GetAll = Base + "/users";
+            public const string UserRoles = Base + "/userRoles";
         }
     }
 }

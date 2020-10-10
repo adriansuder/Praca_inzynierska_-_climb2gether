@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using climb2gether___backend.Data;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +22,23 @@ namespace climb2gether___backend
             using(var serviceScope = host.Services.CreateScope())
             {
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<DataContext>();
-                dbContext.Database.MigrateAsync();
+                await dbContext.Database.MigrateAsync();
+                var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                if(!await roleManager.RoleExistsAsync("SuperAdmin"))
+                {
+                    var newRole = new IdentityRole("SuperAdmin");
+                    await roleManager.CreateAsync(newRole);
+                }
+                else if (!await roleManager.RoleExistsAsync("Admin"))
+                {
+                    var newRole = new IdentityRole("Admin");
+                    await roleManager.CreateAsync(newRole);
+                }
+                else if (!await roleManager.RoleExistsAsync("User"))
+                {
+                    var newRole = new IdentityRole("User");
+                    await roleManager.CreateAsync(newRole);
+                }
             }
 
             await host.RunAsync();

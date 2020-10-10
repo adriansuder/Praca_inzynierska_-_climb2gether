@@ -9,5 +9,6 @@ namespace climb2gether___backend.Contracts.V1.Responses
     {
         public string Token { get; set; }
         public string RefreshToken { get; set; }
+        public bool Success { get; set; }
     }
 }

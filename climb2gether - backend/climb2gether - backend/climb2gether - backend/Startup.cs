@@ -17,6 +17,7 @@ using System.Reflection;
 using Swashbuckle.Swagger;
 using climb2gether___backend.Installers;
 using Microsoft.IdentityModel.Logging;
+using AutoMapper;
 
 namespace climb2gether___backend
 {
@@ -33,6 +34,7 @@ namespace climb2gether___backend
         public void ConfigureServices(IServiceCollection services)
         {
             services.InstallServicesInAssembly(Configuration);
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

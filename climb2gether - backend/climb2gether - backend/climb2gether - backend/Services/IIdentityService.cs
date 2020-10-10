@@ -12,5 +12,7 @@ namespace climb2gether___backend.Services
         Task<AuthenticationResult> RegisterAsync(string email, string password, string username, string name, string surname, DateTime dateOfBirth, string sex, int roleId, string phoneNumber);
         Task<AuthenticationResult> LoginAsync(string username, string password);
         Task<AuthenticationResult> RefreshTokenAsync(string token, string refreshToken);
+        Task<bool> LogoutAsync(string refreshToken);
+
     }   
 }

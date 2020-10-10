@@ -14,7 +14,7 @@ export class RegisterDialogComponent implements OnInit {
   registerForm: FormGroup;
   hide = true;
 
-  accountTypes: string[] = ['wspinacz', 'instruktor', 'przewodnik'];
+  UserRoles = [];
 
   constructor(
     private auth: AuthService, 
@@ -35,12 +35,15 @@ export class RegisterDialogComponent implements OnInit {
       phoneNumber: ['']
     });
 
+    this.getRoles();
+
   }
 
   get f() { return this.registerForm.controls;  }
 
 
   register() {
+    console.log(this.UserRoles);
     this.auth.register(
       { 
         email: this.f.email.value,
@@ -62,5 +65,8 @@ export class RegisterDialogComponent implements OnInit {
     });
   }
 
+   async getRoles(){
+    this.UserRoles = await this.auth.getUserRoles();
+  }
 
 }

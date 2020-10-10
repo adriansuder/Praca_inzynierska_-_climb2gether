@@ -43,7 +43,7 @@
       <mat-form-field appearance="outline" class="col-lg-12">
         <mat-label>Rodzaj konta</mat-label>
         <mat-select formControlName="roleId" >
-          <mat-option *ngFor="let role of accountTypes" value=1>{{role}}</mat-option>
+          <mat-option *ngFor="let role of UserRoles" value=role.id>{{role.roleName}}</mat-option>
         </mat-select>
       </mat-form-field>
       <br>

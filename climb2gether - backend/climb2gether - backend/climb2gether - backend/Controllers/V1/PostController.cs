@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using climb2gether___backend.Contracts;
 using climb2gether___backend.Contracts.V1.Requests;
 using climb2gether___backend.Contracts.V1.Responses;
@@ -18,21 +19,24 @@ namespace climb2gether___backend.Controllers.V1
     public class PostController : Controller
     {
         private readonly IPostService _postService;
+        private readonly IMapper _mapper;
 
-        public PostController(IPostService postService)
+        public PostController(IPostService postService, IMapper mapper)
         {
             _postService = postService;
+            _mapper = mapper;
         }
         [HttpGet(ApiRoutes.Posts.GetAll)]
         public async Task<IActionResult> GetAll()
         {
-             return Ok(await _postService.GetPostsAsync());
+            var posts = await _postService.GetPostsAsync();
+             return Ok(_mapper.Map<List<PostResponse>>(posts));
         }
 
         [HttpPut(ApiRoutes.Posts.Update)]
         public async Task<IActionResult> Update([FromRoute] Guid postId, [FromBody] UpdatePostRequest request)
         {
-            var userOwnsPost = await _postService.UserOwnsPost(postId, GetUserId());
+            var userOwnsPost = await _postService.UserOwnsPost(postId, HttpContext.GetUserId());
 
             if (!userOwnsPost)
             {
@@ -46,32 +50,27 @@ namespace climb2gether___backend.Controllers.V1
             var updated = await _postService.UpdatePostAsync(post);
             
             if(updated)
-                return Ok(post);
+                return Ok(_mapper.Map<PostResponse>(post));
 
             return NotFound();
-        }
-
-        private string GetUserId()
-        {
-            throw new NotImplementedException();
         }
 
         [HttpGet(ApiRoutes.Posts.Get)]
         public async Task<IActionResult> Get([FromRoute] Guid postId)
         {
-            var post = _postService.GetPostByIdAsync(postId);
+            var post = await _postService.GetPostByIdAsync(postId);
 
             if (post == null)
             {
                 return NotFound();
             }
-            return Ok(post);
+            return Ok(_mapper.Map<PostResponse>(post));
         }
 
         [HttpDelete(ApiRoutes.Posts.Delete)]
         public async Task<IActionResult> Delete([FromRoute] Guid postId)
         {
-            var userOwnsPost = await _postService.UserOwnsPost(postId, GetUserId());
+            var userOwnsPost = await _postService.UserOwnsPost(postId, HttpContext.GetUserId());
 
             if (!userOwnsPost)
             {
@@ -98,7 +97,7 @@ namespace climb2gether___backend.Controllers.V1
 
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
             var locationUri = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.Id.ToString());
-            var response = new PostResponse { Id = post.Id };
+            var response = _mapper.Map<PostResponse>(post);
 
             return Created(locationUri, response);
         }

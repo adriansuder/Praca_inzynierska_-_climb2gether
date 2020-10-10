@@ -10,7 +10,6 @@
   "profiles": {
     "climb2gether___backend": {
       "commandName": "Project",
-      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

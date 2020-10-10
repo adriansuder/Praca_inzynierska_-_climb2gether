@@ -38,6 +38,11 @@ namespace climb2gether___backend.Installers
 
             services.AddSingleton(tokenValidationParameters);
 
+            services.AddAuthorization( options =>
+            {
+                options.AddPolicy("UserViewer", builder => builder.RequireClaim("Users.view", "true"));
+            });
+
             services.AddAuthentication(configureOptions: x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
