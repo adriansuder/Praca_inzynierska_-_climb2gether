@@ -91,15 +91,9 @@ namespace climb2gether___backend.Controllers.V1
         [HttpPost(template: ApiRoutes.Identity.Logout)]
         public async Task<IActionResult> Logout([FromBody] LogoutRequest request)
         {
-            var authResponse = await _identitySerivce.LogoutAsync(request.RefreshToken);
+             await _identitySerivce.LogoutAsync(request.RefreshToken);
 
-
-
-            return Ok(new AuthSuccessResponse
-            {
-                Token = null,
-                RefreshToken = null
-            });
+            return Ok();
         }
     }
 }

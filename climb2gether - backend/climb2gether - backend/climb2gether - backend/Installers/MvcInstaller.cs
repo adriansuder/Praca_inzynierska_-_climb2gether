@@ -1,5 +1,7 @@
-﻿using climb2gether___backend.Options;
+﻿using climb2gether___backend.Filters;
+using climb2gether___backend.Options;
 using climb2gether___backend.Services;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -55,7 +57,13 @@ namespace climb2gether___backend.Installers
                x.TokenValidationParameters = tokenValidationParameters;
            });
 
-            services.AddMvc();
+            services.AddMvc(options => 
+            { 
+                options.EnableEndpointRouting = false;
+                options.Filters.Add<ValidationFilter>();
+            })
+                .AddFluentValidation(mvcConfig => mvcConfig.RegisterValidatorsFromAssemblyContaining<Startup>())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
             {

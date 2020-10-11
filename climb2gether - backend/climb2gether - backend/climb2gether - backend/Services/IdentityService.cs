@@ -36,7 +36,7 @@ namespace climb2gether___backend.Services
             var tokenToDelete = _dataContext.RefreshTokens
                                                 .Where(x => x.Token == refreshToken)
                                                 .FirstOrDefault();
-            _dataContext.Remove(tokenToDelete);
+            _dataContext.Update(tokenToDelete.Invalidated = true);
             await _dataContext.SaveChangesAsync();
 
             return true;

@@ -22,7 +22,7 @@ export class AuthService {
       tap(tokens => this.doLoginUser(user.username, tokens)),
       mapTo(true),
       catchError(error => {
-        alert(error.error);
+        alert(error.FriendlyMessage);
         return of(false);
       })
     );
@@ -40,11 +40,11 @@ export class AuthService {
     );
   }
 
-  logout() {
-    return this.http.post<any>(`${environment.apiUrl}/logout`, {
-      'refreshToken': this.getRefreshToken()
+    logout() {
+     return this.http.post<any>(`${environment.apiUrl}/logout`, {
+      'refreshToken': this.doLogoutUser()
     }).pipe(
-      tap(() => this.doLogoutUser()),
+      tap(() => this.doLogoutUser(), () =>  window.location.reload()),
       mapTo(true),
       catchError(error => {
         alert(error.error);
@@ -88,7 +88,6 @@ export class AuthService {
 
   private doLogoutUser(){
     this.loggedUser = null;
-    console.log('zalogowamy: ' + this.loggedUser)
     this.removeTokens();
   }
 
@@ -98,7 +97,6 @@ export class AuthService {
   }
 
   private getRefreshToken(){
-    console.log('logging out1 '+ localStorage.getItem(this.REFRESH_TOKEN));
     return localStorage.getItem(this.REFRESH_TOKEN);
   }
 

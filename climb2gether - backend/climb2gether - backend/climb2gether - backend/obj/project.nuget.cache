@@ -1,11 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "ebB9Egz/hEJtmQ1/Ztwq+erlFTL0kJmG4T7ru8MFEQudcbtcvIT2HLColV0p093dxNieLOVNou9J+t0Hqy4LHg==",
+  "dgSpecHash": "ZSMlTYq/P8regeeKz39ZyX9jd+T2Bm+EkvsiXgB6oF+wQrYQuqGQd7h5k/Sz71dhLJYwShnTxWMZlCEcY4N51w==",
   "success": true,
   "projectFilePath": "D:\\Repositories\\climb2gether_INZYNIERKA\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\adria\\.nuget\\packages\\automapper\\10.0.0\\automapper.10.0.0.nupkg.sha512",
     "C:\\Users\\adria\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.0.1\\automapper.extensions.microsoft.dependencyinjection.8.0.1.nupkg.sha512",
+    "C:\\Users\\adria\\.nuget\\packages\\fluentvalidation\\9.2.0\\fluentvalidation.9.2.0.nupkg.sha512",
+    "C:\\Users\\adria\\.nuget\\packages\\fluentvalidation.aspnetcore\\9.2.0\\fluentvalidation.aspnetcore.9.2.0.nupkg.sha512",
+    "C:\\Users\\adria\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\9.2.0\\fluentvalidation.dependencyinjectionextensions.9.2.0.nupkg.sha512",
     "C:\\Users\\adria\\.nuget\\packages\\microsoft.aspnet.webapi.client\\4.0.20710\\microsoft.aspnet.webapi.client.4.0.20710.nupkg.sha512",
     "C:\\Users\\adria\\.nuget\\packages\\microsoft.aspnet.webapi.core\\4.0.20710\\microsoft.aspnet.webapi.core.4.0.20710.nupkg.sha512",
     "C:\\Users\\adria\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\3.1.8\\microsoft.aspnetcore.authentication.jwtbearer.3.1.8.nupkg.sha512",
