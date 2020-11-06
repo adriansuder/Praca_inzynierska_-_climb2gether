@@ -39,6 +39,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuard } from './guards/auth.guard';
 import { AuthService } from './_services/auth.service';
 import { TokenInterceptor } from './_services/token.interceptor';
+import { PostsListComponent } from './dashboard/posts-list/posts-list.component';
+import { PostItemComponent } from './dashboard/posts-list/post-item/post-item.component';
+import { PostsDetailsComponent } from './dashboard/posts-details/posts-details.component';
 
 
 @NgModule({
@@ -56,7 +59,10 @@ import { TokenInterceptor } from './_services/token.interceptor';
     ChatComponent,
     MobileChatComponent,
     MobileMessagesListComponent,
-    MobileConversationComponent
+    MobileConversationComponent,
+    PostsListComponent,
+    PostItemComponent,
+    PostsDetailsComponent
   ],
   imports: [
     BrowserModule,

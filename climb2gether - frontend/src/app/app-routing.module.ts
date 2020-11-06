@@ -12,12 +12,12 @@ import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginDialogComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard', component: DashboardComponent},
   { path: '', component: HomeComponent },
-  { path: 'climbingPartners', component: ClimbingPartnersComponent, canActivate: [AuthGuard] },
-  { path: 'instructors', component: InstructorsComponent, canActivate: [AuthGuard] },
-  { path: 'userClimbings', component: UserClimbingsComponent, canActivate: [AuthGuard] },
-  { path: 'userSettings', component: UserSettingsComponent, canActivate: [AuthGuard] },
+  { path: 'climbingPartners', component: ClimbingPartnersComponent },
+  { path: 'instructors', component: InstructorsComponent},
+  { path: 'userClimbings', component: UserClimbingsComponent},
+  { path: 'userSettings', component: UserSettingsComponent },
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] }
 ];
 
