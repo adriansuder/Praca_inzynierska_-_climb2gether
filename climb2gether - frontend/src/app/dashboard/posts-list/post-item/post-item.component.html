@@ -1,11 +1,11 @@
-<mat-card>
+<mat-card class="mt-5 mb-5">
     <mat-card-header>
         <mat-card-title>{{ postItem.title }}</mat-card-title>
         <mat-card-subtitle>{{ postItem.subtitle }}</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image [src]="postItem.imgURL" alt="Photo of a Shiba Inu">
+    <img mat-card-image [src]="postItem.imgURL" alt="Photo of a Shiba Inu" *ngIf=" postItem.imgURL.length > 0">
     <mat-card-content>
-        <p>{{ postItem.content }}</p>
+        <p>{{ postItem.content | cutString:355 }}</p>
     </mat-card-content>
     <mat-card-actions>
         <button mat-button>LIKE</button>

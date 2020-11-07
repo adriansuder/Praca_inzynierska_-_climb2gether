@@ -42,6 +42,8 @@ import { TokenInterceptor } from './_services/token.interceptor';
 import { PostsListComponent } from './dashboard/posts-list/posts-list.component';
 import { PostItemComponent } from './dashboard/posts-list/post-item/post-item.component';
 import { PostsDetailsComponent } from './dashboard/posts-details/posts-details.component';
+import { PostEditComponent } from './dashboard/post-edit/post-edit.component';
+import { CutStringPipe } from './_shared/pipes/cut-string.pipe';
 
 
 @NgModule({
@@ -62,7 +64,9 @@ import { PostsDetailsComponent } from './dashboard/posts-details/posts-details.c
     MobileConversationComponent,
     PostsListComponent,
     PostItemComponent,
-    PostsDetailsComponent
+    PostsDetailsComponent,
+    PostEditComponent,
+    CutStringPipe
   ],
   imports: [
     BrowserModule,
