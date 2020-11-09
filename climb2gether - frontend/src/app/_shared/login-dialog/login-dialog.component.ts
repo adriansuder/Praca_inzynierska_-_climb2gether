@@ -33,21 +33,6 @@ export class LoginDialogComponent implements OnInit {
 
   get f() { return this.loginForm.controls; }
 
-  // login() {
-  //   this.auth.login(
-  //     {
-  //       username: this.f.username.value,
-  //       password: this.f.password.value
-  //     }
-  //   )
-  //   .subscribe(success => {
-  //     if (success) {
-  //       this.router.navigate(['/dashboard']);
-  //       this.dialogRef.close();
-  //     }
-  //   });
-  // }
-
   async login() {
     const login = await this.auth.login(
       {

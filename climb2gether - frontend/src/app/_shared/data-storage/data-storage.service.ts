@@ -4,6 +4,8 @@ import { PostsService } from 'src/app/dashboard/posts.service';
 import { Post } from 'src/app/_models/Post';
 import { map, tap } from 'rxjs/operators'
 import { NgForm } from '@angular/forms';
+import { OfferListItem } from 'src/app/_models/OfferListItem';
+import { Offer } from 'src/app/_models/Offer';
 
 @Injectable({
   providedIn: 'root'
@@ -37,5 +39,37 @@ export class DataStorageService {
     ).subscribe(response => {
       console.log(response);
     })
+  }
+
+  fetchOffers(){
+    return this.http
+      .get<OfferListItem[]>(
+        'https://angular-course-d48e0.firebaseio.com/Offers.json'
+      ).pipe(map(resData => {
+        const offerArray: OfferListItem[] = [];
+        for (const key in resData) {
+          if (resData.hasOwnProperty(key)) {
+            offerArray.push({ ...resData[key] });
+          }
+        }
+        return offerArray;
+      })
+        , tap(offers => {
+          console.log(offers);
+        }));
+  }
+
+  fetchInstructorOffers(userId: number){
+    return this.http.get<Offer[]>(
+      'https://angular-course-d48e0.firebaseio.com/Offers/0/offers.json'
+    ).pipe(map(resData => {
+      let userOffersArray: Offer[] = [];
+      userOffersArray = JSON.parse(JSON.stringify(resData));
+      console.log('xxxxx');
+      console.log(userOffersArray)
+      return userOffersArray;
+    }), tap( offers =>
+      console.log(offers)
+    ))
   }
 }

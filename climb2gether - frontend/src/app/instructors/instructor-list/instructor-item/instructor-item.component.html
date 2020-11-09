@@ -1,0 +1,153 @@
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            {{ offerItem.userName }}
+        </mat-panel-title>
+
+        <mat-panel-description>
+            {{ offerItem.userRole }}
+        </mat-panel-description>
+
+        <mat-panel-description>
+            Ocena: 4,95 / 5,00
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <mat-form-field>
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Szukaj.." #input>
+    </mat-form-field>
+
+    <!-- <div class="wrapper "> -->
+    <mat-table [dataSource]="dataSource" class="mat-table mat-elevation-z8 col-lg-12 col-12 " > 
+
+        <ng-container matColumnDef="data">
+            <mat-header-cell *matHeaderCellDef class="mat-header-cell"> data </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.offerDate}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="typ">
+            <mat-header-cell *matHeaderCellDef class="mat-header-cell"> typ oferty </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.offerLocation}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="trasa">
+            <mat-header-cell *matHeaderCellDef class="mat-header-cell"> lokalizacja </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.offerLocation}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="iloscMiejsc">
+            <mat-header-cell *matHeaderCellDef class="mat-header-cell"> iloscMiejsc </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.offerAvailablePlaces}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="cena">
+            <mat-header-cell *matHeaderCellDef class="mat-header-cell"> cena </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.offerPrice}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="info">
+            <mat-header-cell *matHeaderCellDef class="mat-header-cell"> Info </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="iconWrapper">
+                <!-- <div class="iconWrapper"> -->
+                    <button mat-button>
+                        <mat-icon class="icon">info</mat-icon>
+                      </button>  
+                      <button mat-button>
+                        <mat-icon class="icon">how_to_reg</mat-icon>
+                      </button>  
+                <!-- </div>  -->
+            </mat-cell>
+        </ng-container>
+        
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>    
+
+        <!-- Wynik kiedy brak pasujących wyników. -->
+        <mat-row class="mat-row" *matNoDataRow>
+            <mat-cell class="mat-cell" colspan="4">Brak wyników dla: "{{input.value}}"</mat-cell>
+        </mat-row>
+    </mat-table>
+<!-- </div> -->
+    <mat-paginator [pageSizeOptions]="[1, 5, 10, 100]"></mat-paginator>
+
+
+</mat-expansion-panel>
+
+
+
+
+
+
+<!-- <mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            {{ offerItem.userName }}
+        </mat-panel-title>
+        <mat-panel-description>
+            {{ offerItem.userRole }}
+        </mat-panel-description>
+        <mat-panel-description>
+            Ocena: 4,95 / 5,00
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <mat-form-field>
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Szukaj.." #input>
+    </mat-form-field>
+
+    <div class="wrapper mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" class="mat-table  col-lg-12 col-8" > 
+
+        <ng-container matColumnDef="data">
+            <th mat-header-cell *matHeaderCellDef class="mat-header-cell"> data </th>
+            <td mat-cell *matCellDef="let element"> {{element.offerDate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="trasa">
+            <th mat-header-cell *matHeaderCellDef class="mat-header-cell"> trasa </th>
+            <td mat-cell *matCellDef="let element"> {{element.offerLocation}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="iloscMiejsc">
+            <th mat-header-cell *matHeaderCellDef class="mat-header-cell"> iloscMiejsc </th>
+            <td mat-cell *matCellDef="let element"> {{element.offerAvailablePlaces}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cena">
+            <th mat-header-cell *matHeaderCellDef class="mat-header-cell"> cena </th>
+            <td mat-cell *matCellDef="let element"> {{element.offerPrice}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="info">
+            <th mat-header-cell *matHeaderCellDef class="mat-header-cell"> Info </th>
+            <td mat-cell *matCellDef="let element"> 
+                <button mat-button>
+                    <mat-icon>info</mat-icon>
+                  </button>    
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="zarezerwuj">
+            <th mat-header-cell *matHeaderCellDef class="mat-header-cell"> Rezerwuj </th>
+            <td mat-cell *matCellDef="let element"> 
+                <button mat-button>
+                    <mat-icon>how_to_reg</mat-icon>
+                  </button>    
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
+
+        <!-- Wynik kiedy brak pasujących wyników. -->
+        <!--<tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">Brak wyników dla: "{{input.value}}"</td>
+        </tr>
+    </table>
+</div>
+    <mat-paginator [pageSizeOptions]="[1, 5, 10, 100]"></mat-paginator>
+
+
+</mat-expansion-panel> -->

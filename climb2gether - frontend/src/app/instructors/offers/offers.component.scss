@@ -1,0 +1,24 @@
+.myOfferWrapper {
+   margin: 5vh 0;
+    background: whitesmoke;
+    border-radius: 5px;
+}
+
+.mat-row, .mat-header-row {  
+    min-width: 500px;  
+    width: 100%;  
+    overflow: auto;
+  } 
+  
+  .mat-table {
+    overflow: auto;
+    max-height: 500px;
+  }
+  
+  mat-header-cell, mat-cell, mat-panel-description,mat-panel-title{
+  display: flex;
+  justify-content: center;;
+  }
+  .mat-paginator{
+      background: transparent;
+  }

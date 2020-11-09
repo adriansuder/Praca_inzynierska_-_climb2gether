@@ -22,7 +22,7 @@
                       class="form-control"
                       ngModel
                       name="subtitle"
-                      required>
+                      >
                 </div>
                 <div class="form-group ">
                     <label for="imgURL">URL zdjęcia</label>
@@ -32,7 +32,7 @@
                       class="form-control"
                       ngModel
                       name="imgURL"
-                      required
+                      
                       #imgURL>
                 </div>
                 <div class="col-xs-12 d-flex justify-content-center">
@@ -51,7 +51,7 @@
                       rows="10"></textarea>  
                 </div>
                 <div class="col-xs-12">
-                    <button class="btn btn-primary" type="submit">Dodaj post</button>
+                    <button class="btn btn-primary" type="submit" [disabled]="!form.valid">Dodaj post</button>
                 </div>
             </form>
         </div>

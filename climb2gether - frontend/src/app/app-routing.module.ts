@@ -12,6 +12,8 @@ import { AuthGuard } from './guards/auth.guard';
 import { PostsListComponent } from './dashboard/posts-list/posts-list.component';
 import { PostsDetailsComponent } from './dashboard/posts-details/posts-details.component';
 import { PostEditComponent } from './dashboard/post-edit/post-edit.component';
+import { OffersComponent } from './instructors/offers/offers.component';
+import { AddOfferComponent } from './instructors/offers/add-offer/add-offer.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginDialogComponent },
@@ -36,6 +38,9 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'climbingPartners', component: ClimbingPartnersComponent },
   { path: 'instructors', component: InstructorsComponent },
+  { path: 'myOffers', component: OffersComponent, children: [
+    { path: 'addOffer', component: AddOfferComponent },
+  ] },
   { path: 'userClimbings', component: UserClimbingsComponent },
   { path: 'userSettings', component: UserSettingsComponent },
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] }

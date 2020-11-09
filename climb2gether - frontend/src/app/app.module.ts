@@ -12,7 +12,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import { LoginDialogComponent } from './_shared/login-dialog/login-dialog.component';
 import { RegisterDialogComponent } from './_shared/register-dialog/register-dialog.component';
-import {MatDialogModule} from '@angular/material/dialog';
+import {MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -44,6 +44,10 @@ import { PostItemComponent } from './dashboard/posts-list/post-item/post-item.co
 import { PostsDetailsComponent } from './dashboard/posts-details/posts-details.component';
 import { PostEditComponent } from './dashboard/post-edit/post-edit.component';
 import { CutStringPipe } from './_shared/pipes/cut-string.pipe';
+import { InstructorListComponent } from './instructors/instructor-list/instructor-list.component';
+import { InstructorItemComponent } from './instructors/instructor-list/instructor-item/instructor-item.component';
+import { OffersComponent } from './instructors/offers/offers.component';
+import { AddOfferComponent } from './instructors/offers/add-offer/add-offer.component';
 
 
 @NgModule({
@@ -66,7 +70,11 @@ import { CutStringPipe } from './_shared/pipes/cut-string.pipe';
     PostItemComponent,
     PostsDetailsComponent,
     PostEditComponent,
-    CutStringPipe
+    CutStringPipe,
+    InstructorListComponent,
+    InstructorItemComponent,
+    OffersComponent,
+    AddOfferComponent
   ],
   imports: [
     BrowserModule,
@@ -94,6 +102,7 @@ import { CutStringPipe } from './_shared/pipes/cut-string.pipe';
   ],
   providers: [
     AuthGuard,
+    //MatDialogRef,
     AuthService,
     {
       provide: HTTP_INTERCEPTORS,

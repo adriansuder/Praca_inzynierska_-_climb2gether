@@ -1,0 +1,35 @@
+.mat-row, .mat-header-row {  
+  min-width: 500px;  
+  width: 100%;  
+  overflow: auto;
+} 
+
+.mat-table {
+  overflow: auto;
+  max-height: 500px;
+}
+.icon {
+
+}
+.iconWrapper{
+  display: block;
+  margin: auto;
+}
+
+mat-header-cell, mat-cell, mat-panel-description,mat-panel-title{
+display: flex;
+justify-content: center;;
+}
+
+@media (max-width: 500px) {
+  * {
+   font-size: 0.95em;
+  }
+  .icon {
+    text-align: center;
+
+  }
+  .iconWrapper{
+    font-size:1.5em;
+  }
+}

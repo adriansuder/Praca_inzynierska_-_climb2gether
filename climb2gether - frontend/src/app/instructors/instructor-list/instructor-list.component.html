@@ -1,0 +1,6 @@
+<mat-accordion>
+    <div class="mt-1" *ngFor="let offer of loadedOffers; let i = index">
+        <app-instructor-item [offerItem]="offer"></app-instructor-item>
+    </div>
+</mat-accordion>
+<!-- (opened)="panelOpenState = true" (closed)="panelOpenState = false" -->

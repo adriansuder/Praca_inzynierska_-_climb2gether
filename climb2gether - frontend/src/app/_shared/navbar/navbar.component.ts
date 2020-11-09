@@ -42,17 +42,7 @@ export class NavbarComponent implements OnInit {
   }
 
   checkIfUserIsLoggedIn():boolean{
-    if(this.router.url === '/dashboard'
-      || this.router.url === '/climbingPartners'
-      || this.router.url === '/instructors'
-      || this.router.url === '/userClimbings' 
-      || this.router.url === '/userSettings'
-      || this.router.url === '/chat' ){
-      return true;
-    }
-    else{
-      return false;
-    }
+    return true;
   }
 
    logout() {

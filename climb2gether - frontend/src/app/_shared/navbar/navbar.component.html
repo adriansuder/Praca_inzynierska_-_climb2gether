@@ -77,7 +77,7 @@
     <div class="collapse navbar-collapse" id="navbarNav" *ngIf="checkIfUserIsLoggedIn() == true">
         <ul class="navbar-nav">
             <li class="nav-item d-flex justify-content-center">
-                <a class="nav-link" routerLink="/dashboard" routerLinkActive="active" data-toggle="collapse"
+                <a class="nav-link" routerLink="/dashboard/posts" routerLinkActive="active" data-toggle="collapse"
                     data-target="#navbarNav">News </a>
             </li>
             <li class="nav-item d-flex justify-content-center">
@@ -95,12 +95,6 @@
             <!--  Widoczne tylko na mobilce -->
             <div class=".d-none d-xs-block d-lg-none">
                 <li class="nav-item d-flex justify-content-center">
-                    <a class="nav-link">
-                        <mat-icon class="matMenuIcon">notifications</mat-icon>
-                        <span>Powiadomienia</span>
-                    </a>
-                </li>
-                <li class="nav-item d-flex justify-content-center">
                     <a class="nav-link" routerLink="/chat" routerLinkActive="active">
                         <mat-icon class="matMenuIcon">chat</mat-icon>
                         <span>Wiadomości</span>
@@ -110,6 +104,18 @@
                     <a class="nav-link" routerLink="/userSettings" routerLinkActive="active">
                         <mat-icon class="matMenuIcon">settings</mat-icon>
                         <span>Moje konto</span>
+                    </a>
+                </li>
+                <li class="nav-item d-flex justify-content-center">
+                    <a class="nav-link" routerLink="/myOffers" routerLinkActive="active">
+                        <mat-icon class="matMenuIcon">fact_check</mat-icon>
+                        <span>Moje oferty</span>
+                    </a>
+                </li>
+                <li class="nav-item d-flex justify-content-center">
+                    <a class="nav-link" routerLink="/userSettings" routerLinkActive="active">
+                        <mat-icon class="matMenuIcon">login</mat-icon>
+                        <span>Wyloguj</span>
                     </a>
                 </li>
             </div>
@@ -144,6 +150,10 @@
             <button mat-menu-item routerLink="/userSettings" routerLinkActive="active">
                 <mat-icon>settings</mat-icon>
                 <span>Moje konto</span>
+            </button>
+            <button mat-menu-item routerLink="/myOffers" routerLinkActive="active">
+                <mat-icon>fact_check</mat-icon>
+                <span>Moje oferty</span>
             </button>
             <button mat-menu-item (click)="logout()">
                 <mat-icon>login</mat-icon>
