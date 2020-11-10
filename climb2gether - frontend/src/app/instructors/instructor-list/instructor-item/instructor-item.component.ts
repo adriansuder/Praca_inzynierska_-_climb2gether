@@ -5,11 +5,11 @@ import {MatPaginator} from '@angular/material/paginator';
 import { Offer } from 'src/app/_models/Offer';
 import { OfferListItem } from 'src/app/_models/OfferListItem';
 
-const ELEMENT_DATA: Offer[] = [
-  {data: '2020-09-20', trasa: 'Hydrogen', iloscMiejsc: 1.0079, cena: 500},
-  {data: '2020-09-20', trasa: 'Hydrogen', iloscMiejsc: 1.0079, cena: 500},
-  {data: '2020-09-20', trasa: 'Hydrogen', iloscMiejsc: 1.0079, cena: 500}
-];
+// const ELEMENT_DATA: Offer[] = [
+//   {data: '2020-09-20', trasa: 'Hydrogen', iloscMiejsc: 1.0079, cena: 500},
+//   {data: '2020-09-20', trasa: 'Hydrogen', iloscMiejsc: 1.0079, cena: 500},
+//   {data: '2020-09-20', trasa: 'Hydrogen', iloscMiejsc: 1.0079, cena: 500}
+// ];
 
 @Component({
   selector: 'app-instructor-item',

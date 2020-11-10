@@ -48,6 +48,9 @@ import { InstructorListComponent } from './instructors/instructor-list/instructo
 import { InstructorItemComponent } from './instructors/instructor-list/instructor-item/instructor-item.component';
 import { OffersComponent } from './instructors/offers/offers.component';
 import { AddOfferComponent } from './instructors/offers/add-offer/add-offer.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { NgxMatFileInputModule } from '@angular-material-components/file-input';
 
 
 @NgModule({
@@ -98,17 +101,20 @@ import { AddOfferComponent } from './instructors/offers/add-offer/add-offer.comp
     MatListModule,
     ScrollingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    NgxMatFileInputModule
   ],
   providers: [
     AuthGuard,
-    //MatDialogRef,
     AuthService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }
+    },
+    MatDatepickerModule
   ],
   bootstrap: [AppComponent]
 })

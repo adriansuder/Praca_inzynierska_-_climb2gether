@@ -2,6 +2,7 @@
    margin: 5vh 0;
     background: whitesmoke;
     border-radius: 5px;
+    //max-width: 98vw;
 }
 
 .mat-row, .mat-header-row {  
@@ -22,3 +23,10 @@
   .mat-paginator{
       background: transparent;
   }
+
+  #addOfferButton{
+    position: fixed;
+    top: 12vh;
+    right: 5vw;
+    z-index:10;
+}

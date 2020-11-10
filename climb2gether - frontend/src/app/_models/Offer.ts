@@ -1,6 +1,9 @@
 export class Offer {
-    data: string;
-    trasa: string;
-    iloscMiejsc: number;
-    cena: number;
+    date: string;
+    location: string;
+    maxQty: number;
+    price: number;
+    file?: File;
+    describe?: string;
+    offerType: string;
   }

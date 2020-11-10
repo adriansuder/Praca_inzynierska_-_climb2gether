@@ -10,7 +10,7 @@ import { DataStorageService } from '../_shared/data-storage/data-storage.service
 })
 export class InstructorsService {
 
-  
+  inAddingOfferMode = new Subject<boolean>();
   offersChanged = new Subject<OfferListItem[]>();
   userOffersChanged = new Subject<Offer[]>();
 
@@ -33,4 +33,7 @@ export class InstructorsService {
     });
   }
 
+  onAddOffer(offer: Offer){
+    this.dataStorage.addOffer(offer);
+  }
 }

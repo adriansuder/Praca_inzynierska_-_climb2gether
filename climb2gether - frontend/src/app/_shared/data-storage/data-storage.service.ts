@@ -72,4 +72,13 @@ export class DataStorageService {
       console.log(offers)
     ))
   }
+
+  addOffer(offer: Offer){
+    this.http.put(
+      'https://angular-course-d48e0.firebaseio.com/NewOffers.json',
+      offer
+    ).subscribe( resData => {
+      console.log(resData);
+    })
+  }
 }
