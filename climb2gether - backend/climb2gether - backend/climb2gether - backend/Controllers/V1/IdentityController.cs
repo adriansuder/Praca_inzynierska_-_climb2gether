@@ -64,7 +64,11 @@ namespace climb2gether___backend.Controllers.V1
             return Ok(new AuthSuccessResponse
             {
                 Token = authResponse.Token,
-                RefreshToken  = authResponse.RefreshToken
+                RefreshToken  = authResponse.RefreshToken,
+                UserId = authResponse.UserId,
+               // ExpiresIn = authResponse.ExpiresIn
+               ExpiresIn = TimeZoneInfo.ConvertTimeFromUtc(authResponse.ExpiresIn, TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id))
+
             });
         }
 

@@ -198,11 +198,13 @@ namespace climb2gether___backend.Services
 
             var userClaims = await _userManager.GetClaimsAsync(user);
             claims.AddRange(userClaims);
-
+            DateTime utc = DateTime.UtcNow;
+            TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id); 
+            DateTime localDateTime = TimeZoneInfo.ConvertTimeFromUtc(utc, zone);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.Add(_jwtSettings.TokenLifeTime),
+                Expires = localDateTime.Add(_jwtSettings.TokenLifeTime),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -223,7 +225,9 @@ namespace climb2gether___backend.Services
             {
                 Success = true,
                 Token = tokenHandler.WriteToken(token),
-                RefreshToken = refreshToken.Token
+                RefreshToken = refreshToken.Token,
+                ExpiresIn = DateTime.UtcNow.Add(_jwtSettings.TokenLifeTime),
+                UserId = user.Id
             };
         }
 

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Injectable } from '@angular/core';
+import { AuthService } from './_services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,12 @@ import { Injectable } from '@angular/core';
 })
 
 @Injectable()
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'climb2gether';
+
+  constructor(private authService: AuthService){}
+
+  ngOnInit(){
+    this.authService.automaticLogin();
+  }
 }

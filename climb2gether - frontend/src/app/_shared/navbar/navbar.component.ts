@@ -4,6 +4,7 @@ import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import { RegisterDialogComponent } from '../register-dialog/register-dialog.component';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/_services/auth.service';
+import { Subscription } from 'rxjs';
 
 
 
@@ -16,14 +17,20 @@ import { AuthService } from 'src/app/_services/auth.service';
 export class NavbarComponent implements OnInit {
 
   notificationsMock: string[] = ['Użytkownik XYZ obserwuje Cie', 'Użytkownik XYZ zareagował na Twój wpis' , 'Użytkownik XYZ zareagował na Twój wpis',  'Użytkownik XYZ zareagował na Twój wpis',  'Użytkownik XYZ zareagował na Twój wpis'];
-  
+  isAuthenticated: boolean;
+  loggedUserSubscription: Subscription;
+
+
   constructor(
     private dialog: MatDialog, 
     private router: Router,
-    private auth: AuthService
+    private authService: AuthService
     ) {}
 
   ngOnInit(): void {
+    this.loggedUserSubscription = this.authService.user.subscribe( user => {
+      this.isAuthenticated = !!user;
+    })
   }
 
   openLoginDialog() {
@@ -46,7 +53,7 @@ export class NavbarComponent implements OnInit {
   }
 
    logout() {
-     this.auth.logout();
-  }
+     //this.auth.logout();
+    }
 
 }

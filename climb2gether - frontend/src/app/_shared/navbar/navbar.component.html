@@ -19,7 +19,7 @@
         </button>
 
 
-    <div class="collapse navbar-collapse" id="navbarNav" *ngIf="checkIfUserIsLoggedIn() == false">
+    <div class="collapse navbar-collapse" id="navbarNav" *ngIf="!isAuthenticated">
         <ul class="navbar-nav">
             <li class="nav-item active d-flex justify-content-center">
                 <a class="nav-link" href="#" data-toggle="collapse" data-target="#navbarNav">Home <span
@@ -74,7 +74,7 @@
 
     </div>
     <!-- Navbar dla zalogowanego usera -->
-    <div class="collapse navbar-collapse" id="navbarNav" *ngIf="checkIfUserIsLoggedIn() == true">
+    <div class="collapse navbar-collapse" id="navbarNav" *ngIf="isAuthenticated">
         <ul class="navbar-nav">
             <li class="nav-item d-flex justify-content-center">
                 <a class="nav-link" routerLink="/dashboard/posts" routerLinkActive="active" data-toggle="collapse"
