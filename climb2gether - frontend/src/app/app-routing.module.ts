@@ -21,15 +21,7 @@ const routes: Routes = [
     path: 'dashboard', component: DashboardComponent, children: [
       {
         path: 'posts', component: PostsListComponent, children: [
-          {
-            path: ':id', component: PostsDetailsComponent, children: [
-              {
-                path: 'details', component: PostsDetailsComponent, children: [
-                  { path: 'edit', component: PostEditComponent }
-                ]
-              }
-            ]
-          }
+            { path: ':postId/edit', component: PostEditComponent }
         ]
       },
       { path: 'addPost', component: PostEditComponent }

@@ -1,7 +1,8 @@
 import { User } from './user';
 
 export class Post {
-    userId: string;
+    id?: number;
+    userId: number;
     userNameSurname?: string;
     content: string;
     imgURL: string;

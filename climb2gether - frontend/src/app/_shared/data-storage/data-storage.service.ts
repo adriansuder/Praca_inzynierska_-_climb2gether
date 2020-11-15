@@ -7,6 +7,7 @@ import { NgForm } from '@angular/forms';
 import { OfferListItem } from 'src/app/_models/OfferListItem';
 import { Offer } from 'src/app/_models/Offer';
 import { environment } from 'src/environments/environment';
+import { query } from '@angular/animations';
 
 
 @Injectable({
@@ -29,6 +30,12 @@ export class DataStorageService {
         , tap(posts => {
           console.log(posts);
         }));
+  }
+
+  fetchPostById(postId: string) : Promise<Post>{
+    return this.http.get<Post>(
+      `${environment.apiUrl}/posts/${postId}`
+    ).toPromise();
   }
 
   addPost(post: Post) {

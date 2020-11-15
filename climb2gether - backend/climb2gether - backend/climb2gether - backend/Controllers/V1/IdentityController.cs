@@ -33,8 +33,8 @@ namespace climb2gether___backend.Controllers.V1
                     Errors = ModelState.Values.SelectMany(x => x.Errors.Select(xx => xx.ErrorMessage))
                 });
             }
-
-            var authResponse = await _identitySerivce.RegisterAsync(request.Email, request.Password, request.Username, request.Name, request.Surname, request.DateOfBirth, request.Sex, request.RoleId, request.PhoneNumber);
+            
+            var authResponse = await _identitySerivce.RegisterAsync(request);
 
             if (!authResponse.Success)
             {
@@ -72,7 +72,7 @@ namespace climb2gether___backend.Controllers.V1
                 Token = authResponse.Token,
                 RefreshToken  = authResponse.RefreshToken,
                 UserId = authResponse.UserId,
-               ExpiresIn = TimeZoneInfo.ConvertTimeFromUtc(authResponse.ExpiresIn, TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id))
+                ExpiresIn = TimeZoneInfo.ConvertTimeFromUtc(authResponse.ExpiresIn, TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id))
 
             });
         }

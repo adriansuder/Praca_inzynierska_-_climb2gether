@@ -1,11 +1,11 @@
 <button mat-fab color="primary" class="float-right" id="addPostButton" *ngIf="displayAddButton" [routerLink]="['../addPost']">
       <mat-icon>add</mat-icon>
   </button>
+  <router-outlet></router-outlet>
 <div class="row  d-flex justify-content-center">
       <div class="row d-flex justify-content-center">
             <div class="col-md-10 col-sm-8 col-lg-8 col-10">
                   <app-post-item *ngFor="let post of loadedPosts; let i = index" [postItem]="post"></app-post-item>
             </div>
       </div>
-      <router-outlet></router-outlet>
 </div>

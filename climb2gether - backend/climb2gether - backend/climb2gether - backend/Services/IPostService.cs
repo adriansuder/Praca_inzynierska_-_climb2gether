@@ -10,12 +10,12 @@ namespace climb2gether___backend.Services
     {
         Task<List<Post>> GetPostsAsync();
 
-        Task<Post> GetPostByIdAsync(Guid PostId);
+        Task<Post> GetPostByIdAsync(int PostId);
 
         Task<bool> UpdatePostAsync(Post postToUpdate);
 
-        Task<bool> DeletePostAsync(Guid postId);
+        Task<bool> DeletePostAsync(int postId);
         Task<bool> CreatePostAsync(Post post);
-        Task<bool> UserOwnsPost(Guid postId, string userId);
+        Task<bool> UserOwnsPost(int postId, string userId);
     }
 }

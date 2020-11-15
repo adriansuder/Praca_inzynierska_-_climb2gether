@@ -33,7 +33,6 @@ namespace climb2gether___backend
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //app.UseDatabaseErrorPage();
             }
             else
             {
@@ -42,34 +41,24 @@ namespace climb2gether___backend
 
             IdentityModelEventSource.ShowPII = true;
 
-            var swaggerOptions = new SwaggerOptions();
-            Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);
-
-            app.UseSwagger(options =>
+            app.UseSwagger(o => o.RouteTemplate = "swagger/{documentName}/swagger.json") ;
+            app.UseSwaggerUI(options =>
             {
-                options.RouteTemplate = swaggerOptions.JsonRoute;
+                options.SwaggerEndpoint(
+                    "v1/swagger.json",
+                    "Our API"
+                    );
             });
-
             app.UseCors("ApiCorsPolicy");
-
-            app.UseSwaggerUI(options => { options.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description); });
-
-            app.UseHttpsRedirection();
+      
             app.UseStaticFiles();
-
-
-
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }

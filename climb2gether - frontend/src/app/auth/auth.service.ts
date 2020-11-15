@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export interface AuthResponseData {
   token: string;
   refreshToken: string;
-  userId: string;
+  userId: number;
   expiresIn: Date;
 }
 
@@ -83,7 +83,7 @@ export class AuthService {
     return this.http.get<{Id: number, RoleName: string, isAdmin: boolean }[]>(`${environment.apiUrl}/userRoles`).toPromise();
   }
 
-  private setLoggedUser(token: string, refreshToken: string, userId: string, expiresIn: Date) {
+  private setLoggedUser(token: string, refreshToken: string, userId: number, expiresIn: Date) {
     const user = new LoggedUser(token, refreshToken, userId, expiresIn);
     this.user.next(user);
     //this.autoLogout(expiresIn)

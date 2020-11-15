@@ -12,26 +12,22 @@ export class PostsListComponent implements OnInit, OnDestroy {
 
   postsSub: Subscription;
   loadedPosts: Post[] = [];
-  
+
   displayAddButton = true;
 
   constructor(private postsService: PostsService) { }
 
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.postsService.getPosts();
     this.postsSub = this.postsService.postsChanged.subscribe((posts: Post[]) => {
-      let sortedPosts = posts.sort((a,b) => a.creationDate < b.creationDate ? 1 : -1);
+      let sortedPosts = posts.sort((a, b) => a.creationDate < b.creationDate ? 1 : -1);
       this.loadedPosts = sortedPosts;
     });
-
   }
 
 
-
-
-
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.postsSub.unsubscribe();
   }
 }

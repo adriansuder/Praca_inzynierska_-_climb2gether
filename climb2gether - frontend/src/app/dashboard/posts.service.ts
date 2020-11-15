@@ -23,7 +23,10 @@ export class PostsService  {
       this.fetchedPosts = posts;
       this.postsChanged.next(this.fetchedPosts.slice());
     });
-    
+  }
+
+  async getPostById(id: number) : Promise<Post>{
+    return await this.dataStorage.fetchPostById(id.toString());
   }
 
 }

@@ -18,8 +18,8 @@ namespace climb2gether___backend.Domain
         public DateTime ExpiryDate { get; set; }
         public bool Used { get; set; }
         public bool Invalidated { get; set; }
-        public string UserId { get; set; }
-        //[ForeignKey(nameof(UserId))]
-       // public IdentityUser User { get; set; }
+        [ForeignKey("User")]
+        public int UserId { get; set; }
+        public User User { get; set; }
     }
 }

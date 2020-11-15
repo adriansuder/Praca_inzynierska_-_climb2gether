@@ -22,7 +22,7 @@ namespace climb2gether___backend.Services
             return await _dataContext.Posts.Include(p => p.User).ToListAsync();
         }
 
-        public async Task<bool> DeletePostAsync(Guid postId)
+        public async Task<bool> DeletePostAsync(int postId)
         {
             var post = await GetPostByIdAsync(postId);
             if (post == null)
@@ -33,9 +33,9 @@ namespace climb2gether___backend.Services
             return deleted > 0;
         }
 
-        public async Task<Post> GetPostByIdAsync(Guid postId)
+        public async Task<Post> GetPostByIdAsync(int postId)
         {
-            return await _dataContext.Posts.SingleOrDefaultAsync(x => x.PostId.ToString() == postId.ToString());
+            return await _dataContext.Posts.Include(p => p.User).SingleOrDefaultAsync(x => x.Id == postId);
         }
 
         public async Task<bool> UpdatePostAsync(Post postToUpdate)
@@ -48,14 +48,15 @@ namespace climb2gether___backend.Services
 
         public async Task<bool> CreatePostAsync(Post post)
         {
+            var result = post;
             await _dataContext.Posts.AddAsync(post);
             var created = await _dataContext.SaveChangesAsync();
             return created > 0;
         }
 
-        public async Task<bool> UserOwnsPost(Guid postId, string userId)
+        public async Task<bool> UserOwnsPost(int postId, string userId)
         {
-            var post = await _dataContext.Posts.AsNoTracking().SingleOrDefaultAsync(predicate: x => x.PostId.ToString() == postId.ToString());
+            var post = await _dataContext.Posts.AsNoTracking().SingleOrDefaultAsync(predicate: x => x.Id.ToString() == postId.ToString());
 
             if (post == null)
             {

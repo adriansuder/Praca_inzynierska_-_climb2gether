@@ -37,17 +37,17 @@ namespace climb2gether___backend.Controllers.V1
                 ImgURL = post.ImgUrl,
                 Content = post.Content,
                 UserId = post.UserId,
-                UserNameSurname = "",// (post.User.Name + " " + post.User.Surname),
+                UserNameSurname = (post.User.FirstName + " " + post.User.Surname),
                 CreationDate = post.CreationDate
             });
     
 
-            return Ok(_mapper.Map<List<PostResponse>>(posts));
+            return Ok(postResponse);
 
         }
 
         [HttpPut(ApiRoutes.Posts.Update)]
-        public async Task<IActionResult> Update([FromRoute] Guid postId, [FromBody] UpdatePostRequest request)
+        public async Task<IActionResult> Update([FromRoute] int postId, [FromBody] UpdatePostRequest request)
         {
             var userOwnsPost = await _postService.UserOwnsPost(postId, HttpContext.GetUserId());
 
@@ -71,19 +71,29 @@ namespace climb2gether___backend.Controllers.V1
         }
 
         [HttpGet(ApiRoutes.Posts.Get)]
-        public async Task<IActionResult> Get([FromRoute] Guid postId)
+        public async Task<IActionResult> Get([FromRoute] int postId)
         {
             var post = await _postService.GetPostByIdAsync(postId);
-
             if (post == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<PostResponse>(post));
+            var postResponse =  new PostResponse
+            {
+                Title = post.Title,
+                Subtitle = post.Subtitle,
+                ImgURL = post.ImgUrl,
+                Content = post.Content,
+                UserId = post.UserId,
+                UserNameSurname = (post.User.FirstName + " " + post.User.Surname),
+                CreationDate = post.CreationDate
+            };
+
+            return Ok(postResponse);
         }
 
         [HttpDelete(ApiRoutes.Posts.Delete)]
-        public async Task<IActionResult> Delete([FromRoute] Guid postId)
+        public async Task<IActionResult> Delete([FromRoute] int postId)
         {
             var userOwnsPost = await _postService.UserOwnsPost(postId, HttpContext.GetUserId());
 
@@ -108,14 +118,14 @@ namespace climb2gether___backend.Controllers.V1
                 Subtitle = postRequest.Subtitle,
                 ImgUrl = postRequest.ImgUrl,
                 Content = postRequest.Content,
-                UserId = postRequest.UserId.ToString(),
+                UserId = postRequest.UserId,
                 CreationDate = postRequest.CreationDate
             };
 
             await _postService.CreatePostAsync(post);
 
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
-            var locationUri = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.PostId.ToString());
+            var locationUri = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.Id.ToString());
             var response = _mapper.Map<PostResponse>(post);
 
             return Created(locationUri, response);

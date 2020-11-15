@@ -10,6 +10,7 @@
     <mat-card-actions>
         <button mat-button>LIKE</button>
         <button mat-button routerLink="/postDetails/">Czytaj dalej..</button>
-        <button mat-button>Autor: {{ postItem.userId }}</button>
+        <button mat-button>Autor: {{ postItem.userNameSurname }}</button>
+        <button mat-button class="float-right" *ngIf="postItem.userId === loggedUserId" (click)="editPost()" routerLink="{{postItem.id}}/edit">Edytuj post</button>
     </mat-card-actions>
 </mat-card>

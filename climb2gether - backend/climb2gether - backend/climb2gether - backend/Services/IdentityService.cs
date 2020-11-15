@@ -1,4 +1,5 @@
-﻿using climb2gether___backend.Data;
+﻿using climb2gether___backend.Contracts.V1.Requests;
+using climb2gether___backend.Data;
 using climb2gether___backend.Domain;
 using climb2gether___backend.Options;
 using Microsoft.AspNetCore.Identity;
@@ -67,26 +68,31 @@ namespace climb2gether___backend.Services
             return await GenerateAuthResultForUserAsync(user);
         }
 
-        public async Task<AuthenticationResult> RegisterAsync(string email, string password, string username, string name, string surname, DateTime dateOfBirth, string sex, Guid roleId, string phoneNumber)
+        public async Task<AuthenticationResult> RegisterAsync(UserRegistrationRequest userRequest)
         {
-            var existingUser = await _userManager.FindByEmailAsync(email);
-
-            if(existingUser != null)
+            var existingUser = await _userManager.FindByEmailAsync(userRequest.Email);
+            var existingLogin = await _userManager.FindByNameAsync(userRequest.UserName);
+            if (existingUser != null || existingLogin != null)
             {
                 return new AuthenticationResult
                 {
-                    Errors = new[] { "User with this email already exists" }
+                    Errors = new[] { "User with this email or login already exists" }
                 };
             }
-            var newUserId = Guid.NewGuid();
+
             var newUser = new User
             {  
-                Id = newUserId.ToString(),
-                Email = email,
-                UserName = username,
-            };
+                Email = userRequest.Email,
+                FirstName = userRequest.FirstName,
+                Surname = userRequest.Surname,
+                UserName = userRequest.UserName,
+                Sex = userRequest.Sex,
+                RoleId = userRequest.RoleId,
+                DateOfBirth = userRequest.DateOfBirth,
+                Phone = userRequest.Phone
+        };
 
-            var createdUser = await _userManager.CreateAsync(newUser, password);
+            var createdUser = await _userManager.CreateAsync(newUser, userRequest.Password);
            
 
             if (!createdUser.Succeeded)
@@ -98,18 +104,7 @@ namespace climb2gether___backend.Services
             }
 
             await _userManager.AddClaimAsync(newUser, new Claim("UserViewer", "true"));
-            await _userManager.AddToRoleAsync(newUser, "User");
-
-            User newAppUser = new User();
-            newAppUser.FirstName = name;
-            newAppUser.Surname = surname;
-            newAppUser.Login = username;
-            newAppUser.Sex = sex;
-            newAppUser.RoleId = roleId.ToString();
-            newAppUser.DateOfBirth = dateOfBirth;
-            newAppUser.PhoneNumber = phoneNumber;
-            _dataContext.Add(newAppUser);
-            await _dataContext.SaveChangesAsync();
+            //await _userManager.AddToRoleAsync(newUser, "User");
 
             return await GenerateAuthResultForUserAsync(newUser);
         }
@@ -208,11 +203,11 @@ namespace climb2gether___backend.Services
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-
+            var userId = await _userManager.FindByEmailAsync(user.Email);
             var refreshToken = new RefreshToken
             {
                 JwtId = token.Id,
-               // UserId = user.Id,
+                UserId = userId.Id,
                 CreationDate = DateTime.UtcNow,
                 ExpiryDate = DateTime.UtcNow.AddMonths(6)
             };
@@ -226,7 +221,7 @@ namespace climb2gether___backend.Services
                 Token = tokenHandler.WriteToken(token),
                 RefreshToken = refreshToken.Token,
                 ExpiresIn = DateTime.UtcNow.Add(_jwtSettings.TokenLifeTime),
-                //UserId = user.Id
+                UserId = userId.Id
             };
         }
 
@@ -235,9 +230,9 @@ namespace climb2gether___backend.Services
             return await _dataContext.Users.ToListAsync();
         }
 
-        public async Task<List<UserRole>> GetAllRolesAsync()
+        public async Task<List<ApplicationUserRole>> GetAllRolesAsync()
         {
-            return await _dataContext.UserRoles.ToListAsync();
+            return await _dataContext.ApplicationUserRoles.ToListAsync();
         }
 
 

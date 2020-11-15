@@ -2,7 +2,7 @@ export class LoggedUser {
     constructor(
         private _token: string,
         public refreshToken: string,
-        public userId: string,
+        public userId: number,
         public expiresIn: Date
     ){}
     

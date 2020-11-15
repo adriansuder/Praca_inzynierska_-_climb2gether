@@ -1,4 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 import { Post } from 'src/app/_models/Post';
 
 @Component({
@@ -6,14 +9,26 @@ import { Post } from 'src/app/_models/Post';
   templateUrl: './post-item.component.html',
   styleUrls: ['./post-item.component.scss']
 })
-export class PostItemComponent implements OnInit {
+export class PostItemComponent implements OnInit, OnDestroy{
 
   @Input() postItem: Post;
+  loggedUserId: number = null;
+  loggedUserSub: Subscription;
 
-  constructor() { }
+  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    console.log(this.postItem.imgURL)
+    this.loggedUserSub = this.authService.user.subscribe( user => {
+      this.loggedUserId = user.userId;
+    })
+  }
+
+  editPost(){
+    console.log('xxxx')
+  }
+
+  ngOnDestroy(){
+    this.loggedUserSub.unsubscribe();
   }
 
 }
