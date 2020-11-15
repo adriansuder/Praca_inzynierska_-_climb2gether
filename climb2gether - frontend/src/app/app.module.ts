@@ -37,8 +37,8 @@ import { MobileMessagesListComponent } from './mobile-chat/mobile-messages-list/
 import { MobileConversationComponent } from './mobile-chat/mobile-conversation/mobile-conversation.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuard } from './guards/auth.guard';
-import { AuthService } from './_services/auth.service';
-import { TokenInterceptor } from './_services/token.interceptor';
+import { AuthService } from './auth/auth.service';
+import { TokenInterceptor } from './auth/token.interceptor';
 import { PostsListComponent } from './dashboard/posts-list/posts-list.component';
 import { PostItemComponent } from './dashboard/posts-list/post-item/post-item.component';
 import { PostsDetailsComponent } from './dashboard/posts-details/posts-details.component';

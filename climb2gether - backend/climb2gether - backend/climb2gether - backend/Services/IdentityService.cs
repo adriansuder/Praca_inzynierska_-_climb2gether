@@ -18,13 +18,13 @@ namespace climb2gether___backend.Services
 {
     public class IdentityService : IIdentityService
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly JwtSettings _jwtSettings;
         private readonly TokenValidationParameters _tokenValidationParameter;
         private readonly DataContext _dataContext;
 
         public readonly AuthenticationResult invalidToken = new AuthenticationResult { Errors = new[] { "Invalid jwt token" } };
-        public IdentityService(UserManager<IdentityUser> userManager, JwtSettings jwtSettings, DataContext dataContext)
+        public IdentityService(UserManager<User> userManager, JwtSettings jwtSettings, DataContext dataContext)
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings;
@@ -36,7 +36,7 @@ namespace climb2gether___backend.Services
             var tokenToDelete = _dataContext.RefreshTokens
                                                 .Where(x => x.Token == refreshToken)
                                                 .FirstOrDefault();
-            _dataContext.Update(tokenToDelete.Invalidated = true);
+            _dataContext.Remove(tokenToDelete);
             await _dataContext.SaveChangesAsync();
 
             return true;
@@ -67,7 +67,7 @@ namespace climb2gether___backend.Services
             return await GenerateAuthResultForUserAsync(user);
         }
 
-        public async Task<AuthenticationResult> RegisterAsync(string email, string password, string username, string name, string surname, DateTime dateOfBirth, string sex, int roleId, string phoneNumber)
+        public async Task<AuthenticationResult> RegisterAsync(string email, string password, string username, string name, string surname, DateTime dateOfBirth, string sex, Guid roleId, string phoneNumber)
         {
             var existingUser = await _userManager.FindByEmailAsync(email);
 
@@ -79,7 +79,7 @@ namespace climb2gether___backend.Services
                 };
             }
             var newUserId = Guid.NewGuid();
-            var newUser = new IdentityUser
+            var newUser = new User
             {  
                 Id = newUserId.ToString(),
                 Email = email,
@@ -101,12 +101,11 @@ namespace climb2gether___backend.Services
             await _userManager.AddToRoleAsync(newUser, "User");
 
             User newAppUser = new User();
-            newAppUser.IdentityUserId = newUserId.ToString();
-            newAppUser.Name = name;
+            newAppUser.FirstName = name;
             newAppUser.Surname = surname;
-            newAppUser.Username = username;
+            newAppUser.Login = username;
             newAppUser.Sex = sex;
-            newAppUser.RoleId = roleId;
+            newAppUser.RoleId = roleId.ToString();
             newAppUser.DateOfBirth = dateOfBirth;
             newAppUser.PhoneNumber = phoneNumber;
             _dataContext.Add(newAppUser);
@@ -184,7 +183,7 @@ namespace climb2gether___backend.Services
             return await GenerateAuthResultForUserAsync(user);
         }
 
-        private async Task<AuthenticationResult> GenerateAuthResultForUserAsync(IdentityUser user)
+        private async Task<AuthenticationResult> GenerateAuthResultForUserAsync(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
@@ -193,7 +192,7 @@ namespace climb2gether___backend.Services
                     new Claim(type: JwtRegisteredClaimNames.Sub, user.Email),
                     new Claim(type: JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(type: JwtRegisteredClaimNames.Email, user.Email),
-                    new Claim(type: "id", value: user.Id)
+                    //new Claim(type: "id", value: user.Id)
             };
 
             var userClaims = await _userManager.GetClaimsAsync(user);
@@ -213,22 +212,32 @@ namespace climb2gether___backend.Services
             var refreshToken = new RefreshToken
             {
                 JwtId = token.Id,
-                UserId = user.Id,
+               // UserId = user.Id,
                 CreationDate = DateTime.UtcNow,
                 ExpiryDate = DateTime.UtcNow.AddMonths(6)
             };
 
             await _dataContext.RefreshTokens.AddAsync(refreshToken);
             await _dataContext.SaveChangesAsync();
-
+            //var userId = await _dataContext.Users.Select
             return new AuthenticationResult
             {
                 Success = true,
                 Token = tokenHandler.WriteToken(token),
                 RefreshToken = refreshToken.Token,
                 ExpiresIn = DateTime.UtcNow.Add(_jwtSettings.TokenLifeTime),
-                UserId = user.Id
+                //UserId = user.Id
             };
+        }
+
+        public async Task<List<User>> GetUsersAsync()
+        {
+            return await _dataContext.Users.ToListAsync();
+        }
+
+        public async Task<List<UserRole>> GetAllRolesAsync()
+        {
+            return await _dataContext.UserRoles.ToListAsync();
         }
 
 

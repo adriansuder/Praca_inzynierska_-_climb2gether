@@ -11,9 +11,9 @@ namespace climb2gether___backend.Validators
     {
         public CreatePostRequestValidator()
         {
-            RuleFor(x => x.Name)
-                .NotEmpty()
-                .Matches("^[a-zA-Z0-9]*$");
+        //    RuleFor(x => x.Title)
+        //        .NotEmpty()
+        //        .Matches("^[a-zA-Z0-9]*$");
         }
     }
 }

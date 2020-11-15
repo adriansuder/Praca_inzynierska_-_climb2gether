@@ -3,7 +3,7 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import { RegisterDialogComponent } from '../register-dialog/register-dialog.component';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/_services/auth.service';
+import { AuthService } from 'src/app/auth/auth.service';
 import { Subscription } from 'rxjs';
 
 
@@ -53,7 +53,9 @@ export class NavbarComponent implements OnInit {
   }
 
    logout() {
-     //this.auth.logout();
+     this.authService.logout().subscribe( resData => {
+       console.log(resData)
+     });
     }
 
 }

@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AuthService } from '../../_services/auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { User } from 'src/app/_models/user';
 import { MatDialogRef } from '@angular/material/dialog';
 
@@ -43,7 +43,7 @@ export class LoginDialogComponent implements OnInit {
       .toPromise();
 
     if (login) {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/dashboard/posts']);
       this.dialogRef.close();
     }
   }

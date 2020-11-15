@@ -1,7 +1,12 @@
+import { User } from './user';
+
 export class Post {
-    autor: string;
+    userId: string;
+    userNameSurname?: string;
     content: string;
     imgURL: string;
     subtitle: string;
     title: string;
+    creationDate: Date;
+    user?: User;
 }

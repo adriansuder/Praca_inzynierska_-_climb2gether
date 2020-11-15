@@ -17,10 +17,12 @@ export class PostsListComponent implements OnInit, OnDestroy {
 
   constructor(private postsService: PostsService) { }
 
+
   ngOnInit(): void {
     this.postsService.getPosts();
     this.postsSub = this.postsService.postsChanged.subscribe((posts: Post[]) => {
-      this.loadedPosts = posts;
+      let sortedPosts = posts.sort((a,b) => a.creationDate < b.creationDate ? 1 : -1);
+      this.loadedPosts = sortedPosts;
     });
 
   }

@@ -13,7 +13,7 @@ export class PostItemComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-
+    console.log(this.postItem.imgURL)
   }
 
 }

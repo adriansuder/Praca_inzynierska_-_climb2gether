@@ -1,4 +1,5 @@
 ﻿using climb2gether___backend.Data;
+using climb2gether___backend.Domain;
 using climb2gether___backend.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -18,12 +19,13 @@ namespace climb2gether___backend.Installers
             services.AddDbContext<DataContext>(options =>
                  options.UseSqlServer(
                      configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<DataContext>();
 
             services.AddScoped<IPostService, PostService>();
-            services.AddScoped<IUserService, UserService>();
+
+
         }
     }
 }

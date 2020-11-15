@@ -3,6 +3,8 @@ using climb2gether___backend.Contracts;
 using climb2gether___backend.Contracts.V1.Requests;
 using climb2gether___backend.Contracts.V1.Responses;
 using climb2gether___backend.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -42,9 +44,13 @@ namespace climb2gether___backend.Controllers.V1
                 });
             }
 
-            return Ok(new AuthSuccessResponse { 
+            return Ok(new AuthSuccessResponse
+            {
                 Token = authResponse.Token,
-                //RefreshToken  = authResponse.RefreshToken
+                RefreshToken = authResponse.RefreshToken,
+                UserId = authResponse.UserId,
+                ExpiresIn = TimeZoneInfo.ConvertTimeFromUtc(authResponse.ExpiresIn, TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id))
+
             });
         }
 
@@ -66,7 +72,6 @@ namespace climb2gether___backend.Controllers.V1
                 Token = authResponse.Token,
                 RefreshToken  = authResponse.RefreshToken,
                 UserId = authResponse.UserId,
-               // ExpiresIn = authResponse.ExpiresIn
                ExpiresIn = TimeZoneInfo.ConvertTimeFromUtc(authResponse.ExpiresIn, TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id))
 
             });
@@ -98,6 +103,20 @@ namespace climb2gether___backend.Controllers.V1
              await _identitySerivce.LogoutAsync(request.RefreshToken);
 
             return Ok();
+        }
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "SuperAdmin, Admin")]
+        [HttpGet(ApiRoutes.Users.GetAll)]
+        public async Task<IActionResult> GetAll()
+        {
+            var users = await _identitySerivce.GetUsersAsync();
+            return Ok(_mapper.Map<List<UserResponse>>(users));
+        }
+
+        [HttpGet(ApiRoutes.Users.UserRoles)]
+        public async Task<IActionResult> GetAllUserRoles()
+        {
+            var userRoles = await _identitySerivce.GetAllRolesAsync();
+            return Ok(userRoles);
         }
     }
 }

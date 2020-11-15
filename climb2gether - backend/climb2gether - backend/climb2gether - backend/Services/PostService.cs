@@ -19,7 +19,7 @@ namespace climb2gether___backend.Services
 
         public async Task<List<Post>> GetPostsAsync()
         {
-            return await _dataContext.Posts.ToListAsync();
+            return await _dataContext.Posts.Include(p => p.User).ToListAsync();
         }
 
         public async Task<bool> DeletePostAsync(Guid postId)
@@ -35,7 +35,7 @@ namespace climb2gether___backend.Services
 
         public async Task<Post> GetPostByIdAsync(Guid postId)
         {
-            return await _dataContext.Posts.SingleOrDefaultAsync(x => x.Id == postId);
+            return await _dataContext.Posts.SingleOrDefaultAsync(x => x.PostId.ToString() == postId.ToString());
         }
 
         public async Task<bool> UpdatePostAsync(Post postToUpdate)
@@ -55,14 +55,14 @@ namespace climb2gether___backend.Services
 
         public async Task<bool> UserOwnsPost(Guid postId, string userId)
         {
-            var post = await _dataContext.Posts.AsNoTracking().SingleOrDefaultAsync(predicate: x => x.Id == postId);
+            var post = await _dataContext.Posts.AsNoTracking().SingleOrDefaultAsync(predicate: x => x.PostId.ToString() == postId.ToString());
 
             if (post == null)
             {
                 return false;
             }
 
-            if(post.UserId != userId)
+            if(post.UserId.ToString() != userId.ToString())
             {
                 return false;
             }

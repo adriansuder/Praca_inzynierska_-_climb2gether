@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace climb2gether___backend.Controllers.V1
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PostController : Controller
     {
         private readonly IPostService _postService;
@@ -29,8 +29,21 @@ namespace climb2gether___backend.Controllers.V1
         [HttpGet(ApiRoutes.Posts.GetAll)]
         public async Task<IActionResult> GetAll()
         {
-            var posts = await _postService.GetPostsAsync();
-             return Ok(_mapper.Map<List<PostResponse>>(posts));
+           var posts = await _postService.GetPostsAsync();
+            var postResponse = posts.Select(post => new PostResponse
+            {
+                Title = post.Title,
+                Subtitle = post.Subtitle,
+                ImgURL = post.ImgUrl,
+                Content = post.Content,
+                UserId = post.UserId,
+                UserNameSurname = "",// (post.User.Name + " " + post.User.Surname),
+                CreationDate = post.CreationDate
+            });
+    
+
+            return Ok(_mapper.Map<List<PostResponse>>(posts));
+
         }
 
         [HttpPut(ApiRoutes.Posts.Update)]
@@ -44,7 +57,9 @@ namespace climb2gether___backend.Controllers.V1
             }
 
             var post = await _postService.GetPostByIdAsync(postId);
-            post.Name = request.Name;
+            post.Subtitle = request.Subtitle;
+            post.ImgUrl = request.ImgUrl;
+            post.Content = request.Content;
 
 
             var updated = await _postService.UpdatePostAsync(post);
@@ -89,14 +104,18 @@ namespace climb2gether___backend.Controllers.V1
         public async Task<IActionResult> Create([FromBody] CreatePostRequest postRequest)
         {
             var post = new Post {
-                Name = postRequest.Name,
-                UserId = HttpContext.GetUserId()
+                Title = postRequest.Title,
+                Subtitle = postRequest.Subtitle,
+                ImgUrl = postRequest.ImgUrl,
+                Content = postRequest.Content,
+                UserId = postRequest.UserId.ToString(),
+                CreationDate = postRequest.CreationDate
             };
 
             await _postService.CreatePostAsync(post);
 
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
-            var locationUri = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.Id.ToString());
+            var locationUri = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.PostId.ToString());
             var response = _mapper.Map<PostResponse>(post);
 
             return Created(locationUri, response);

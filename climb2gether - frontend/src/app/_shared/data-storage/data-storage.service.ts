@@ -6,6 +6,8 @@ import { map, tap } from 'rxjs/operators'
 import { NgForm } from '@angular/forms';
 import { OfferListItem } from 'src/app/_models/OfferListItem';
 import { Offer } from 'src/app/_models/Offer';
+import { environment } from 'src/environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +19,11 @@ export class DataStorageService {
   fetchPosts() {
     return this.http
       .get<Post[]>(
-        'https://angular-course-d48e0.firebaseio.com/Posts.json'
+        `${environment.apiUrl}/posts`
       ).pipe(map(resData => {
-        const postArray: Post[] = [];
-        for (const key in resData) {
-          if (resData.hasOwnProperty(key)) {
-            postArray.push({ ...resData[key] });
-          }
-        }
+        let postArray: Post[] = [];
+        postArray = JSON.parse(JSON.stringify(resData));
+        console.log(postArray);
         return postArray;
       })
         , tap(posts => {
@@ -34,7 +33,7 @@ export class DataStorageService {
 
   addPost(post: Post) {
     this.http.post(
-      'https://angular-course-d48e0.firebaseio.com/Posts.json',
+      `${environment.apiUrl}/posts`,
       post
     ).subscribe(response => {
       console.log(response);
@@ -46,12 +45,8 @@ export class DataStorageService {
       .get<OfferListItem[]>(
         'https://angular-course-d48e0.firebaseio.com/Offers.json'
       ).pipe(map(resData => {
-        const offerArray: OfferListItem[] = [];
-        for (const key in resData) {
-          if (resData.hasOwnProperty(key)) {
-            offerArray.push({ ...resData[key] });
-          }
-        }
+        let offerArray: OfferListItem[] = [];
+        offerArray = JSON.parse(JSON.stringify(resData));
         return offerArray;
       })
         , tap(offers => {
@@ -65,8 +60,6 @@ export class DataStorageService {
     ).pipe(map(resData => {
       let userOffersArray: Offer[] = [];
       userOffersArray = JSON.parse(JSON.stringify(resData));
-      console.log('xxxxx');
-      console.log(userOffersArray)
       return userOffersArray;
     }), tap( offers =>
       console.log(offers)

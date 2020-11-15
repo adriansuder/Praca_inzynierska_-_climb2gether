@@ -1,5 +1,11 @@
 export class User {
-    id;
+    identityUserId: string;
+    name: string;
+    surname: string;
     username: string;
-    token?: string;
+    sex: string;
+    roleId: number;
+    dateOfBirth: Date;
+    phoneNumber: string;
+
 }

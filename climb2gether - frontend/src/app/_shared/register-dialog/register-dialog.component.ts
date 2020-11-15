@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/_services/auth.service';
+import { AuthService } from 'src/app/auth/auth.service';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 
 @Component({
@@ -14,7 +14,7 @@ export class RegisterDialogComponent implements OnInit {
   registerForm: FormGroup;
   hide = true;
 
-  UserRoles = [];
+  UserRoles : { Id: number, RoleName: string, isAdmin: boolean }[] = [];
 
   constructor(
     private auth: AuthService, 
@@ -52,7 +52,7 @@ export class RegisterDialogComponent implements OnInit {
         username: this.f.username.value,
         sex: this.f.sex.value,
         surname: this.f.surname.value,
-        roleId: parseInt(this.f.roleId.value),
+        roleId: +this.f.roleId.value,
         dateOfBirth: this.f.dateOfBirth.value,
         phoneNumber: this.f.phoneNumber.value
       }
@@ -67,6 +67,14 @@ export class RegisterDialogComponent implements OnInit {
 
    async getRoles(){
     this.UserRoles = await this.auth.getUserRoles();
+    console.log(this.UserRoles)
+  }
+
+  logout() {
+    this.auth.logout().subscribe( res => {
+      console.log(res)
+    });
+
   }
 
 }
