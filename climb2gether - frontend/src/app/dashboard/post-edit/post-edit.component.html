@@ -1,18 +1,17 @@
 <div class="container mt-4">
     <div class="row d-flex justify-content-center">
         <div class="col-md-12" id="editPostDiv" class="px-5 py-3 ">
-            <h1>Dodaj nowy post</h1>
+            <h1>{{ inEditMode ? 'Edytu swój post' : 'Dodaj nowy post' }}</h1>
             <hr>
-            <form (ngSubmit)="onSubmit()" #form="ngForm" >
+            <form (ngSubmit)="onSubmit()"[formGroup]="postForm" >
                 <div class="form-group ">
                         <label for="title">Tytuł</label>
                         <input
                           type="text"
                           id="title"
                           class="form-control"
-                          ngModel
-                          name="title"
-                          required>
+                          formControlName="title"
+                          >
                 </div>
                 <div class="form-group ">
                     <label for="subtitle">Podtytuł</label>
@@ -20,8 +19,7 @@
                       type="text"
                       id="subtitle"
                       class="form-control"
-                      ngModel
-                      name="subtitle"
+                      formControlName="subtitle"
                       >
                 </div>
                 <div class="form-group ">
@@ -30,9 +28,7 @@
                       type="text"
                       id="imgURL"
                       class="form-control"
-                      ngModel
-                      name="imgURL"
-                      
+                      formControlName="imgURL"
                       #imgURL>
                 </div>
                 <div class="col-xs-12 d-flex justify-content-center">
@@ -44,14 +40,13 @@
                       type="text"
                       id="content"
                       class="form-control"
-                      ngModel
-                      name="content"
-                      required
-                      #imgURL
+                      formControlName="content"
                       rows="10"></textarea>  
                 </div>
                 <div class="col-xs-12">
-                    <button class="btn btn-primary" type="submit" [disabled]="!form.valid">Dodaj post</button>
+                    <button class="btn btn-primary" type="submit" [disabled]="!postForm.valid">{{ inEditMode ? 'Aktualizuj' : 'Dodaj' }}</button> | 
+                    <button class="btn btn-warning" type="button" (click)="onFormCancell()">Anuluj</button> <span *ngIf="inEditMode"> |
+                    <button class="btn btn-danger" type="button" (click)="onPostDelete()" >Usuń post</button></span>
                 </div>
             </form>
         </div>

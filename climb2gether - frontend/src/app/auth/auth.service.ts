@@ -23,6 +23,7 @@ export class AuthService {
   private readonly JWT_TOKEN = 'Token';
 
   user = new BehaviorSubject<LoggedUser>(null);
+  loggedUser: LoggedUser;
   private jwtExpirationTimer: any;
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -41,7 +42,8 @@ export class AuthService {
     if (!userData) {
       return;
     }
-    const loggedUser = new LoggedUser(userData.token, userData.refreshToken, userData.userId, userData.expiresIn);
+    const loggedUser = new LoggedUser(userData._token, userData.refreshToken, userData.userId, userData.expiresIn);
+    this.loggedUser = loggedUser;
     this.user.next(loggedUser);
     this.router.navigate(['dashboard/posts']);
   }
@@ -64,16 +66,14 @@ export class AuthService {
   }
 
   getJwtToken() {
-    return localStorage.getItem(this.JWT_TOKEN);
+    const userData: LoggedUser = JSON.parse(localStorage.getItem('userData'));
+    return userData?._token;
   }
 
-  // isLoggedIn() {
-  //   return !!this.getJwtToken();
-  // }
-
   refreshToken() {
-    return this.http.post<any>(`${environment.apiUrl}/refresh`, {
-      'refreshToken': this.getRefreshToken()
+    return this.http.post<any>(`${environment.apiUrl}/refreshToken`, {
+      'Token': this.getJwtToken(),
+      'RefreshToken': this.getRefreshToken()
     }).pipe(tap((tokens: Tokens) => {
       this.storeJwtToken(tokens.token);
     }));
@@ -99,7 +99,7 @@ export class AuthService {
       case 'EMAIL_EXISTS':
         errorMessage = 'This email exists already!';
     }
-    return throwError(errorMessage);
+    return throwError(error.error.error.message);
   }
 
   private storeJwtToken(token: string) {

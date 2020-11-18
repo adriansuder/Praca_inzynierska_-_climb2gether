@@ -54,7 +54,7 @@ namespace climb2gether___backend.Services
             return created > 0;
         }
 
-        public async Task<bool> UserOwnsPost(int postId, string userId)
+        public async Task<bool> UserOwnsPost(int postId, int userId)
         {
             var post = await _dataContext.Posts.AsNoTracking().SingleOrDefaultAsync(predicate: x => x.Id.ToString() == postId.ToString());
 

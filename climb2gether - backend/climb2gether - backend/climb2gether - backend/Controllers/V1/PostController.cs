@@ -7,7 +7,6 @@ using climb2gether___backend.Contracts;
 using climb2gether___backend.Contracts.V1.Requests;
 using climb2gether___backend.Contracts.V1.Responses;
 using climb2gether___backend.Domain;
-using climb2gether___backend.Extensions;
 using climb2gether___backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -15,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace climb2gether___backend.Controllers.V1
 {
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PostController : Controller
     {
         private readonly IPostService _postService;
@@ -31,7 +30,8 @@ namespace climb2gether___backend.Controllers.V1
         {
            var posts = await _postService.GetPostsAsync();
             var postResponse = posts.Select(post => new PostResponse
-            {
+            {  
+                Id = post.Id,
                 Title = post.Title,
                 Subtitle = post.Subtitle,
                 ImgURL = post.ImgUrl,
@@ -49,7 +49,7 @@ namespace climb2gether___backend.Controllers.V1
         [HttpPut(ApiRoutes.Posts.Update)]
         public async Task<IActionResult> Update([FromRoute] int postId, [FromBody] UpdatePostRequest request)
         {
-            var userOwnsPost = await _postService.UserOwnsPost(postId, HttpContext.GetUserId());
+            var userOwnsPost = await _postService.UserOwnsPost(postId, request.UserId);
 
             if (!userOwnsPost)
             {
@@ -57,6 +57,7 @@ namespace climb2gether___backend.Controllers.V1
             }
 
             var post = await _postService.GetPostByIdAsync(postId);
+            post.Title = request.Title;
             post.Subtitle = request.Subtitle;
             post.ImgUrl = request.ImgUrl;
             post.Content = request.Content;
@@ -93,9 +94,9 @@ namespace climb2gether___backend.Controllers.V1
         }
 
         [HttpDelete(ApiRoutes.Posts.Delete)]
-        public async Task<IActionResult> Delete([FromRoute] int postId)
+        public async Task<IActionResult> Delete([FromRoute] int postId, [FromHeader] int userId)
         {
-            var userOwnsPost = await _postService.UserOwnsPost(postId, HttpContext.GetUserId());
+            var userOwnsPost = await _postService.UserOwnsPost(postId, userId);
 
             if (!userOwnsPost)
             {
@@ -104,7 +105,7 @@ namespace climb2gether___backend.Controllers.V1
 
             var deleted = await _postService.DeletePostAsync(postId);
 
-            if(deleted)
+            if (deleted)
                 return NoContent();
 
             return NotFound();

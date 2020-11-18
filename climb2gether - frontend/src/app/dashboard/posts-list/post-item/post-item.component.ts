@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Post } from 'src/app/_models/Post';
+import { PostsService } from '../../posts.service';
 
 @Component({
   selector: 'app-post-item',
@@ -15,16 +16,16 @@ export class PostItemComponent implements OnInit, OnDestroy{
   loggedUserId: number = null;
   loggedUserSub: Subscription;
 
-  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute, private postsService: PostsService) { }
 
   ngOnInit(): void {
     this.loggedUserSub = this.authService.user.subscribe( user => {
-      this.loggedUserId = user.userId;
-    })
+      this.loggedUserId = user?.userId;
+    });
   }
 
   editPost(){
-    console.log('xxxx')
+    //this.postsService.inEditMode.next(true);
   }
 
   ngOnDestroy(){

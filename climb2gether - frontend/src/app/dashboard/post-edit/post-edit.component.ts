@@ -1,10 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Post } from 'src/app/_models/Post';
-import { DataStorageService } from 'src/app/_shared/data-storage/data-storage.service';
 import { PostsService } from '../posts.service';
 
 @Component({
@@ -12,63 +11,68 @@ import { PostsService } from '../posts.service';
   templateUrl: './post-edit.component.html',
   styleUrls: ['./post-edit.component.scss']
 })
-export class PostEditComponent implements OnInit {
+export class PostEditComponent implements OnInit, OnDestroy {
 
   inEditMode = false;
-  postId: number;
+  editModeSubscription: Subscription;
+  postId: string;
   loggedUserId: number = null;
   loadedPost: Post;
   userSubscription: Subscription;
-  @ViewChild('form', { static: false }) addPostForm: NgForm;
+  //@ViewChild('form', { static: false }) postForm: NgForm;
+  postForm: FormGroup;
 
   constructor(
-    private dataStorage: DataStorageService,
     private postsService: PostsService,
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService
   ) { }
 
-  ngOnInit(): void {
-    this.userSubscription = this.authService.user.subscribe( user => {
+  ngOnInit() {
+    this.createForm();
+
+    this.userSubscription = this.authService.user.subscribe(user => {
       this.loggedUserId = user.userId;
     });
     this.route.params.subscribe((params: Params) => {
-      this.postId = +params['id'];
-      this.inEditMode = params['id'] != null;
+      this.postId = params['postId'];
+      this.inEditMode = params['postId'] != null;
       this.createForm();
     });
-
-
   }
+
 
   onSubmit(): void {
     const post: Post = {
-      title: this.addPostForm.value.title,
-      subtitle: this.addPostForm.value.subtitle,
-      imgURL: this.addPostForm.value.imgURL,
-      content: this.addPostForm.value.content,
+      title: this.postForm.value.title,
+      subtitle: this.postForm.value.subtitle,
+      imgURL: this.postForm.value.imgURL,
+      content: this.postForm.value.content,
       userId: this.loggedUserId,
-      creationDate: new Date(Date.now()),
-      userNameSurname: this.loadedPost.userNameSurname
+      creationDate: new Date(Date.now())
     }
-    this.dataStorage.addPost(post);
+    if(this.inEditMode){
+      this.postsService.updatePost(this.postId, post);
+    }
+    else{
+      this.postsService.addPost(post);
+    }
+    this.inEditMode = false;
+    this.router.navigate(['dashboard/posts']);
     this.postsService.getPosts();
-    this.router.navigate(['../posts'], { relativeTo: this.route });
   }
 
-  private async createForm(){
+  private async createForm() {
     let title = '';
     let subtitle = '';
-    let imgURL = ''
+    let imgURL = '';
     let content = '';
     let userId = this.loggedUserId;
     let creationDate = new Date(Date.now());
-    
-    if(this.inEditMode){
-      this.loadedPost = await this.postsService.getPostById(this.postId);
-      console.log('xxxx');
-      console.log(this.loadedPost)
+
+    if (this.inEditMode) {
+      this.loadedPost = await this.postsService.getPostById(+this.postId);
       title = this.loadedPost.title;
       subtitle = this.loadedPost.subtitle;
       imgURL = this.loadedPost.imgURL;
@@ -77,14 +81,31 @@ export class PostEditComponent implements OnInit {
       creationDate = this.loadedPost.creationDate;
     }
 
-    this.addPostForm.setValue({
-      title,
-      subtitle,
-      imgURL,
-      content,
-      userId,
-      creationDate
-    })
+
+    this.postForm = new FormGroup({
+      title: new FormControl(title, [Validators.required]),
+      subtitle: new FormControl(subtitle, [Validators.required]),
+      imgURL: new FormControl(imgURL, [Validators.required]),
+      content: new FormControl(content, [Validators.required]),
+    });
+  }
+
+  onPostDelete(){
+    this.postsService.deletePost(this.postId, this.loggedUserId.toString()); 
+    this.postsService.getPosts();
+    this.router.navigate(['dashboard/posts']);
+  }
+
+  onFormCancell(){
+    this.postForm.reset();
+    this.inEditMode = false;
+    this.router.navigate(['dashboard/posts']);
+  }
+  
+
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
+
   }
 
 }
