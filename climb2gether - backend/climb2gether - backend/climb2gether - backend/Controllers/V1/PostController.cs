@@ -131,5 +131,34 @@ namespace climb2gether___backend.Controllers.V1
 
             return Created(locationUri, response);
         }
+        [HttpPut(ApiRoutes.Posts.Like)]
+        public async Task<IActionResult> LikePost([FromQuery] int postId, [FromQuery] int userId)
+        {
+            var isAlreadyLiked = await _postService.IsPostAlreadyLiked(postId, userId);
+
+            if (isAlreadyLiked)
+            {
+                return BadRequest(new { error = "Post already liked by this user" });
+            }
+
+            var result = await _postService.LikePost(postId, userId);
+            if (!result)
+            {
+                return BadRequest(new { error = "Sth went wrong - add like" });
+            }
+
+            return Ok(result);
+        }
+        [HttpPut(ApiRoutes.Posts.Dislike)]
+        public async Task<IActionResult> DislikePost([FromQuery] int postLikeId)
+        {
+            var result = await _postService.DislikePost(postLikeId);
+            if (!result)
+            {
+                return BadRequest(new { error = "Sth went wrong - add like" });
+            }
+
+            return Ok(result);
+        }
     }
 }

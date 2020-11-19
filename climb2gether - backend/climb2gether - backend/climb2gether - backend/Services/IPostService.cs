@@ -17,5 +17,8 @@ namespace climb2gether___backend.Services
         Task<bool> DeletePostAsync(int postId);
         Task<bool> CreatePostAsync(Post post);
         Task<bool> UserOwnsPost(int postId, int userId);
+        Task<bool> IsPostAlreadyLiked(int postId, int userId);
+        Task<bool> LikePost(int postId, int userId);
+        Task<bool> DislikePost(int postLikeId);
     }
 }

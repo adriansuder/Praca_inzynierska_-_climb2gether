@@ -24,8 +24,8 @@ export class PostItemComponent implements OnInit, OnDestroy{
     });
   }
 
-  editPost(){
-    //this.postsService.inEditMode.next(true);
+  onLikeClick(){
+    this.postsService.likePost(this.postItem.id, this.loggedUserId)
   }
 
   ngOnDestroy(){

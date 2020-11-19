@@ -15,7 +15,8 @@ namespace climb2gether___backend.Data
         {
         }
 
-        public DbSet<Post> Posts { get; set; } 
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<PostLikes> PostLikes { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<ApplicationUserRole> ApplicationUserRoles { get; set; }
     }

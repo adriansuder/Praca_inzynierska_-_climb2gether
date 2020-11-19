@@ -1,7 +1,8 @@
+import { JsonPipe } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { tap, map, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { Post } from '../_models/Post';
@@ -71,6 +72,17 @@ export class PostsService  {
     ).subscribe(response => {
       this.getPosts();
     });
+  }
+
+  likePost(postId: number, userId: number){
+    this.http.put(
+      `${environment.apiUrl}/posts/like?postId=${postId}&userId=${userId}`, null
+    ).subscribe( x=> {
+      console.log(x);
+    }, err=> {
+      console.log(err)
+    }
+    )
   }
 
 

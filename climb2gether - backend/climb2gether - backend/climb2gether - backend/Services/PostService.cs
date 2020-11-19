@@ -48,7 +48,7 @@ namespace climb2gether___backend.Services
 
         public async Task<bool> CreatePostAsync(Post post)
         {
-            var result = post;
+            //var result = post;
             await _dataContext.Posts.AddAsync(post);
             var created = await _dataContext.SaveChangesAsync();
             return created > 0;
@@ -69,6 +69,40 @@ namespace climb2gether___backend.Services
             }
 
             return true;
+        }
+
+        public async Task<bool> IsPostAlreadyLiked(int postId, int userId)
+        {
+            var liked =  await _dataContext.PostLikes.SingleOrDefaultAsync(like => like.UserId == userId && like.PostId == postId);
+
+            if(liked == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public async Task<bool> LikePost(int postId, int userId)
+        {
+            PostLikes like = new PostLikes{
+                PostId = postId,
+                UserId = userId
+            };
+            await _dataContext.PostLikes.AddAsync(like);
+            var created = await _dataContext.SaveChangesAsync();
+            return created > 0;
+        }
+
+        public async Task<bool> DislikePost(int postLikeId)
+        {
+            PostLikes like = await _dataContext.PostLikes.SingleOrDefaultAsync(x => x.Id == postLikeId);
+            if (!(like != null))
+            {
+                return false;
+            }
+            _dataContext.PostLikes.Remove(like);
+            var deleted = await _dataContext.SaveChangesAsync();
+            return deleted > 0;
         }
     }
 }
