@@ -10,4 +10,7 @@ export class Post {
     title: string;
     creationDate: Date;
     user?: User;
+    likeCounter?: number;
+    postLikedByLoggedUser?: any;
+    loggedUserPostLikeId?: number;
 }

@@ -35,7 +35,13 @@ namespace climb2gether___backend.Installers
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 RequireExpirationTime = false,
-                ValidateLifetime = true
+                ValidateLifetime = true,
+                LifetimeValidator = (DateTime? notBefore, DateTime? expires, SecurityToken securityToken,
+                                     TokenValidationParameters validationParameters) =>
+                {
+                    return notBefore <= DateTime.UtcNow &&
+                           expires >= DateTime.UtcNow;
+                }
             };
 
             services.AddSingleton(tokenValidationParameters);

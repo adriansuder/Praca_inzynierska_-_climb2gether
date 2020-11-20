@@ -1,4 +1,5 @@
-﻿using climb2gether___backend.Data;
+﻿using climb2gether___backend.Contracts.V1.Responses;
+using climb2gether___backend.Data;
 using climb2gether___backend.Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,9 +18,47 @@ namespace climb2gether___backend.Services
             _dataContext = dataContext;
         }
 
-        public async Task<List<Post>> GetPostsAsync()
+        public async Task<List<PostResponse>> GetPostsAsync(int userId)
         {
-            return await _dataContext.Posts.Include(p => p.User).ToListAsync();
+            var query = await (from post in _dataContext.Posts
+                               select new PostResponse
+                               {
+                                   Id = post.Id,
+                                   Title = post.Title,
+                                   Subtitle = post.Subtitle,
+                                   ImgURL = post.ImgUrl,
+                                   Content = post.Content,
+                                   UserId = post.UserId,
+                                   UserNameSurname = (post.User.FirstName + " " + post.User.Surname),
+                                   CreationDate = post.CreationDate,
+                                   LikeCounter = (from like in _dataContext.PostLikes where like.PostId == post.Id select like).Count(),
+                                   PostLikedByLoggedUser = (from like in _dataContext.PostLikes where like.UserId == userId && like.PostId == post.Id select like).Any(),
+                                   LoggedUserPostLikeId = (from like in _dataContext.PostLikes where like.UserId == userId && like.PostId == post.Id select like.Id).FirstOrDefault()
+                               }
+                          ).ToListAsync();
+            return query;
+                          
+            //return await _dataContext.PostLikes.Include(p => p.User)
+            //    .Join(_dataContext.Posts,
+            //            like => like.PostId,
+            //            post => post.Id,
+            //            (like, post) => new PostResponse
+            //            //{
+            //            //    Id = post.Id,
+            //            //    Title = post.Title,
+            //            //    Subtitle = post.Subtitle,
+            //            //    ImgURL = post.ImgUrl,
+            //            //    Content = post.Content,
+            //            //    UserId = post.UserId,
+            //            //    UserNameSurname = (post.User.FirstName + " " + post.User.Surname),
+            //            //    CreationDate = post.CreationDate,
+            //            //    LikeCounter = like.Id.Count(),
+            //            //    PostLikedByLoggedUser = true
+
+            //            //}
+            //    )
+            //    .ToListAsync();
+
         }
 
         public async Task<bool> DeletePostAsync(int postId)
@@ -82,7 +121,7 @@ namespace climb2gether___backend.Services
             return true;
         }
 
-        public async Task<bool> LikePost(int postId, int userId)
+        public async Task<int> LikePost(int postId, int userId)
         {
             PostLikes like = new PostLikes{
                 PostId = postId,
@@ -90,7 +129,7 @@ namespace climb2gether___backend.Services
             };
             await _dataContext.PostLikes.AddAsync(like);
             var created = await _dataContext.SaveChangesAsync();
-            return created > 0;
+            return like.Id;
         }
 
         public async Task<bool> DislikePost(int postLikeId)

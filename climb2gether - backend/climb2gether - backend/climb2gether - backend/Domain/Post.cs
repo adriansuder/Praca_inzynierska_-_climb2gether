@@ -20,7 +20,7 @@ namespace climb2gether___backend.Domain
         public DateTime CreationDate { get; set; }
         [ForeignKey("User")]
         public int UserId { get; set; }
-
         public User User { get; set; }
+        public IEnumerable<PostLikes> PostLikes { get; set; }
     }
 }

@@ -10,25 +10,44 @@ import { PostsService } from '../../posts.service';
   templateUrl: './post-item.component.html',
   styleUrls: ['./post-item.component.scss']
 })
-export class PostItemComponent implements OnInit, OnDestroy{
+export class PostItemComponent implements OnInit, OnDestroy {
 
   @Input() postItem: Post;
   loggedUserId: number = null;
   loggedUserSub: Subscription;
+  likeSub: Subscription;
+  unlikeSub: Subscription;
 
   constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute, private postsService: PostsService) { }
 
   ngOnInit(): void {
-    this.loggedUserSub = this.authService.user.subscribe( user => {
+    this.loggedUserSub = this.authService.user.subscribe(user => {
       this.loggedUserId = user?.userId;
     });
   }
 
-  onLikeClick(){
-    this.postsService.likePost(this.postItem.id, this.loggedUserId)
+  async onLikeClick() {
+    if (this.postItem.postLikedByLoggedUser) {
+      let res = await this.postsService.unlikePost(this.postItem.loggedUserPostLikeId);
+      if (res) {
+        this.postItem.postLikedByLoggedUser = false;
+        this.postItem.likeCounter--;
+      }
+    }
+    else{
+      let res = await this.postsService.likePost(this.postItem.id, this.authService.loggedUser.userId);
+      if (res) {
+        this.postItem.postLikedByLoggedUser = true;
+        this.postItem.likeCounter++;
+        this.postItem.loggedUserPostLikeId = JSON.parse(JSON.stringify(res));
+      }
+    }
+
   }
 
-  ngOnDestroy(){
+
+
+  ngOnDestroy() {
     this.loggedUserSub.unsubscribe();
   }
 

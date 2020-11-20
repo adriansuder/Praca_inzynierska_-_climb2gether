@@ -19,7 +19,7 @@ namespace climb2gether___backend.Contracts
             public const string Update = Base + "/posts/{postId}";
             public const string Delete = Base + "/posts/{postId}";
             public const string Like = Base + "/posts/like";
-            public const string Dislike = Base + "/posts/dislike";
+            public const string Unlike = Base + "/posts/unlike";
         }
 
         public static class Identity

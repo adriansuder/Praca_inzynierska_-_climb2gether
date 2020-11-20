@@ -26,23 +26,23 @@ namespace climb2gether___backend.Controllers.V1
             _mapper = mapper;
         }
         [HttpGet(ApiRoutes.Posts.GetAll)]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery]int userId)
         {
-           var posts = await _postService.GetPostsAsync();
-            var postResponse = posts.Select(post => new PostResponse
-            {  
-                Id = post.Id,
-                Title = post.Title,
-                Subtitle = post.Subtitle,
-                ImgURL = post.ImgUrl,
-                Content = post.Content,
-                UserId = post.UserId,
-                UserNameSurname = (post.User.FirstName + " " + post.User.Surname),
-                CreationDate = post.CreationDate
-            });
+           var posts = await _postService.GetPostsAsync(userId);
+            //var postResponse = posts.Select(post => new PostResponse
+            //{  
+                //Id = post.Id,
+                //Title = post.Title,
+                //Subtitle = post.Subtitle,
+                //ImgURL = post.ImgUrl,
+                //Content = post.Content,
+                //UserId = post.UserId,
+                //UserNameSurname = (post.User.FirstName + " " + post.User.Surname),
+                //CreationDate = post.CreationDate
+           // });
     
 
-            return Ok(postResponse);
+            return Ok(posts);
 
         }
 
@@ -142,17 +142,17 @@ namespace climb2gether___backend.Controllers.V1
             }
 
             var result = await _postService.LikePost(postId, userId);
-            if (!result)
+            if (result == null)
             {
                 return BadRequest(new { error = "Sth went wrong - add like" });
             }
 
             return Ok(result);
         }
-        [HttpPut(ApiRoutes.Posts.Dislike)]
-        public async Task<IActionResult> DislikePost([FromQuery] int postLikeId)
+        [HttpPut(ApiRoutes.Posts.Unlike)]
+        public async Task<IActionResult> DislikePost([FromQuery] int likeId)
         {
-            var result = await _postService.DislikePost(postLikeId);
+            var result = await _postService.DislikePost(likeId);
             if (!result)
             {
                 return BadRequest(new { error = "Sth went wrong - add like" });

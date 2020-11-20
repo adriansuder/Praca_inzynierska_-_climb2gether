@@ -11,19 +11,18 @@ import { Post } from '../_models/Post';
 @Injectable({
   providedIn: 'root'
 })
-export class PostsService  {
-
+export class PostsService {
   postsChanged = new Subject<Post[]>();
 
   private fetchedPosts: Post[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
 
   getPosts() {
     this.http
       .get<Post[]>(
-        `${environment.apiUrl}/posts`
+        `${environment.apiUrl}/posts?userId=${this.authService.loggedUser.userId}`,
       ).pipe(map(resData => {
         let postArray: Post[] = [];
         postArray = JSON.parse(JSON.stringify(resData));
@@ -32,16 +31,16 @@ export class PostsService  {
       })
         , tap(posts => {
           console.log(posts);
-        })).subscribe( posts => {
+        })).subscribe(posts => {
           this.fetchedPosts = posts;
           this.postsChanged.next(this.fetchedPosts);
         })
   }
 
-  getPostById(postId: number) : Promise<Post>{
+  getPostById(postId: number): Promise<Post> {
     return this.http.get<Post>(
       `${environment.apiUrl}/posts/${postId}`
-    ).pipe(map( resData => {
+    ).pipe(map(resData => {
       return JSON.parse(JSON.stringify(resData));
     })).toPromise();
   }
@@ -66,24 +65,25 @@ export class PostsService  {
 
   deletePost(postId: string, userId: string) {
     this.http.delete(
-      `${environment.apiUrl}/posts/` +postId,
-      { headers: new HttpHeaders({userId: userId})}
+      `${environment.apiUrl}/posts/` + postId,
+      { headers: new HttpHeaders({ userId: userId }) }
 
     ).subscribe(response => {
       this.getPosts();
     });
   }
 
-  likePost(postId: number, userId: number){
-    this.http.put(
+  likePost(postId: number, userId: number) {
+    return this.http.put(
       `${environment.apiUrl}/posts/like?postId=${postId}&userId=${userId}`, null
-    ).subscribe( x=> {
-      console.log(x);
-    }, err=> {
-      console.log(err)
-    }
-    )
+      ).toPromise();
   }
 
+  unlikePost(likeId: number){
+    return this.http.put(
+      `${environment.apiUrl}/posts/unlike?likeId=${likeId}`, null
+      ).toPromise();
+    
+  }
 
 }

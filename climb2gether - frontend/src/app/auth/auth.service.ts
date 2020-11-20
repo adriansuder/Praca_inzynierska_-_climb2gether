@@ -71,12 +71,10 @@ export class AuthService {
   }
 
   refreshToken() {
-    return this.http.post<any>(`${environment.apiUrl}/refreshToken`, {
+    return this.http.post<AuthResponseData>(`${environment.apiUrl}/refreshToken`, {
       'Token': this.getJwtToken(),
       'RefreshToken': this.getRefreshToken()
-    }).pipe(tap((tokens: Tokens) => {
-      this.storeJwtToken(tokens.token);
-    }));
+    }).pipe(tap(authRes => this.setLoggedUser(authRes.token, authRes.refreshToken, authRes.userId, authRes.expiresIn)));
   }
 
   getUserRoles() {
@@ -102,16 +100,13 @@ export class AuthService {
     return throwError(error.error.error.message);
   }
 
-  private storeJwtToken(token: string) {
-    localStorage.setItem(this.JWT_TOKEN, token)
-  }
-
   private getRefreshToken() {
     var userData:LoggedUser = JSON.parse(localStorage.getItem('userData'));
     return userData.refreshToken;
   }
 
   private handleLogout() {
+    this.loggedUser = null;
     localStorage.removeItem('userData');
     this.user.next(null);
     this.router.navigate(['']);

@@ -25,11 +25,12 @@ namespace climb2gether___backend.Services
         private readonly DataContext _dataContext;
 
         public readonly AuthenticationResult invalidToken = new AuthenticationResult { Errors = new[] { "Invalid jwt token" } };
-        public IdentityService(UserManager<User> userManager, JwtSettings jwtSettings, DataContext dataContext)
+        public IdentityService(UserManager<User> userManager, JwtSettings jwtSettings, DataContext dataContext, TokenValidationParameters tokenValidationParameters)
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings;
             _dataContext = dataContext;
+            _tokenValidationParameter = tokenValidationParameters;
         }
 
         public async Task<bool> LogoutAsync(string refreshToken)
@@ -124,8 +125,9 @@ namespace climb2gether___backend.Services
                 }
                 return principal;
             }
-            catch
+            catch(Exception e)
             {
+                Console.WriteLine(e);
                 return null; 
             }
         }
@@ -187,7 +189,7 @@ namespace climb2gether___backend.Services
                     new Claim(type: JwtRegisteredClaimNames.Sub, user.Email),
                     new Claim(type: JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(type: JwtRegisteredClaimNames.Email, user.Email),
-                    //new Claim(type: "id", value: user.Id)
+                    new Claim(type: "id", value: user.Id.ToString())
             };
 
             var userClaims = await _userManager.GetClaimsAsync(user);
