@@ -1,9 +1,10 @@
 export class Offer {
-    date: string;
+    id?: number;
+    date: Date;
     location: string;
-    maxQty: number;
+    maxParticipants: number;
     price: number;
-    file?: File;
     describe?: string;
     offerType: string;
+    OfferOwnerUserId?: number
   }

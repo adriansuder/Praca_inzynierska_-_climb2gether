@@ -13,7 +13,7 @@ import { PostsListComponent } from './dashboard/posts-list/posts-list.component'
 import { PostsDetailsComponent } from './dashboard/posts-details/posts-details.component';
 import { PostEditComponent } from './dashboard/post-edit/post-edit.component';
 import { OffersComponent } from './instructors/offers/offers.component';
-import { AddOfferComponent } from './instructors/offers/add-offer/add-offer.component';
+import { AddOfferComponent } from './instructors/add-offer/add-offer.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginDialogComponent },

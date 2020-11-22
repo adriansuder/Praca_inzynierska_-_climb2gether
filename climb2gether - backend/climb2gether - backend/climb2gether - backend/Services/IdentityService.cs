@@ -69,6 +69,14 @@ namespace climb2gether___backend.Services
             return await GenerateAuthResultForUserAsync(user);
         }
 
+        public int GetUserIdFromJWT(string JWT)
+        {
+            var validatedToken = GetPrincipalFromToken(JWT);
+            int userId = Int32.Parse(validatedToken.Claims.Single(x => x.Type == "id").Value);
+
+            return userId;
+        }
+
         public async Task<AuthenticationResult> RegisterAsync(UserRegistrationRequest userRequest)
         {
             var existingUser = await _userManager.FindByEmailAsync(userRequest.Email);

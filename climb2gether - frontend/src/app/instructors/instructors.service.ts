@@ -2,7 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { Offer } from '../_models/Offer';
+import { OfferDetails } from '../_models/OfferDetails';
 import { OfferListItem } from '../_models/OfferListItem';
 
 
@@ -14,6 +16,7 @@ export class InstructorsService {
   inAddingOfferMode = new Subject<boolean>();
   offersChanged = new Subject<OfferListItem[]>();
   userOffersChanged = new Subject<Offer[]>();
+  offerDetailsSubject = new Subject<OfferDetails>();
 
   private fetchedOffers: OfferListItem[] = [];
   private fetchedUserOffers: Offer[] = [];
@@ -23,7 +26,7 @@ export class InstructorsService {
   getOffers(){
   this.http
   .get<OfferListItem[]>(
-    'https://angular-course-d48e0.firebaseio.com/Offers.json'
+    `${environment.apiUrl}/offers`
   ).pipe(map(resData => {
     let offerArray: OfferListItem[] = [];
     offerArray = JSON.parse(JSON.stringify(resData));
@@ -53,11 +56,19 @@ export class InstructorsService {
   }
 
   onAddOffer(offer: Offer){
-    this.http.put(
-      'https://angular-course-d48e0.firebaseio.com/NewOffers.json',
+    this.http.post(
+      `${environment.apiUrl}/offers`,
       offer
     ).subscribe( resData => {
       console.log(resData);
+    });
+  }
+
+  getOfferDetails(offerId: number){
+    this.http.get(
+      `${environment.apiUrl}/offers/details?offerId=${offerId}`
+    ).subscribe( resData => {
+      this.offerDetailsSubject.next(JSON.parse(JSON.stringify(resData)));
     });
   }
 }

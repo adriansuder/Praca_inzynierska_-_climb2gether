@@ -22,7 +22,7 @@ export class PostsService {
   getPosts() {
     this.http
       .get<Post[]>(
-        `${environment.apiUrl}/posts?userId=${this.authService.loggedUser.userId}`,
+        `${environment.apiUrl}/posts`,
       ).pipe(map(resData => {
         let postArray: Post[] = [];
         postArray = JSON.parse(JSON.stringify(resData));

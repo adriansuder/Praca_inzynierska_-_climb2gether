@@ -31,6 +31,8 @@ export class TokenInterceptor implements HttpInterceptor {
         return throwError(error);
       }
     }));
+
+
   }
 
   private addToken(request: HttpRequest<any>, token: string) {

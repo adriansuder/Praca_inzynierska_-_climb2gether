@@ -7,16 +7,20 @@ using System.Threading.Tasks;
 
 namespace climb2gether___backend.Domain
 {
-    public class PostLikes
+    public class Offer
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        public DateTime Date { get; set; }
+        public string Location { get; set; }
+        public int MaxParticipants { get; set; }
+        public double Price { get; set; }
+        public string Describe { get; set; }
+        public string OfferType { get; set; }
+        public DateTime CreationDate { get; set; }
         [ForeignKey("User")]
-        public int UserId { get; set; }
+        public int OfferOwnerUserId { get; set; }
         public User User { get; set; }
-        [ForeignKey("Post")]
-        public int PostId { get; set; }
-        public Post Post { get; set; }
     }
 }

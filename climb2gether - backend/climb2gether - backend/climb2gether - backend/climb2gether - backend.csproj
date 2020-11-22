@@ -6,6 +6,10 @@
     <RootNamespace>climb2gether___backend</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Migrations\20201119190000_add_postLike_table.cs" />
     <Compile Remove="Migrations\20201119190000_add_postLike_table.Designer.cs" />

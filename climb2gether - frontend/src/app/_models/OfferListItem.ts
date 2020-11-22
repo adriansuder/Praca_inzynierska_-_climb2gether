@@ -2,7 +2,7 @@ import { Offer } from './Offer';
 
 export class OfferListItem {
     userId: number;
-    userName: string;
+    userNameSurname: string;
     userRole: string;
     offers: Offer[];
 }

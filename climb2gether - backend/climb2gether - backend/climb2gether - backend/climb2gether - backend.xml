@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>climb2gether - backend</name>
+    </assembly>
+    <members>
+        <member name="M:climb2gether___backend.Services.PostService.GetPostsAsync(System.Int32)">
+            <summary>
+             Funkcja jako parametr przyjmuje Id użytkownika i
+             zwraca listę obiektów PostResponse. UserId niezbędny jest do tego, by 
+             zwrócić informację czy post został polubiony przez użytkownika
+            </summary>
+            <param name="userId">Id użytkownika</param>
+            <returns>Funkcja zwraca listę obiektów PostResponse</returns>
+        </member>
+        <member name="M:climb2gether___backend.Services.PostService.DeletePostAsync(System.Int32)">
+            <summary>
+             Funkcja jako parametr przyjmuje Id postu, który ma zostać usunięty,
+             następnie sprawdza czy taki rekord istnieje i usuwa taką krotkę.
+            </summary>
+            <param name="postId">Id posta z tabeli Posts</param>
+            <returns>Funkcja zwraca wartość boolean - true, jeżeli post został usunięty</returns>
+        </member>
+        <member name="M:climb2gether___backend.Services.PostService.GetPostByIdAsync(System.Int32)">
+            <summary>
+             Funkcja jako parametr przyjmuje Id postu, którego szczegóły mają zostać zwrócone.
+            </summary>
+            <param name="postId">Id posta z tabeli Posts</param>
+            <returns>Funkcja zwraca obiekt Post</returns>
+        </member>
+        <member name="M:climb2gether___backend.Services.PostService.UpdatePostAsync(climb2gether___backend.Domain.Post)">
+            <summary>
+             Funkcja jako parametr przyjmuje obiekt Post, który zostanie zaktualizowany.
+            </summary>
+            <param name="postToUpdate">Obiekt Post (domain)</param>
+            <returns>Funkcja zwraca wartość boolean - true, jeżeli post został zaktualizowany</returns>
+        </member>
+        <member name="M:climb2gether___backend.Services.PostService.CreatePostAsync(climb2gether___backend.Domain.Post)">
+            <summary>
+             Funkcja jako parametr przyjmuje obiekt Post, który zostanie dodany do bazy.
+            </summary>
+            <param name="post">Obiekt Post (domain)</param>
+            <returns>Funkcja zwraca wartość boolean - true, jeżeli post został dodany</returns>
+        </member>
+        <member name="M:climb2gether___backend.Services.PostService.UserOwnsPost(System.Int32,System.Int32)">
+            <summary>
+             Funkcja sprawdza czy użytkownik jest właścicielem wskazanego posta.
+            </summary>
+            <param name="postId">Id posta</param>
+            <param name="userId">Id użytkownika</param>
+            <returns>Funkcja zwraca wartość boolean - true, jeżeli użytkownik jest twórcą posta.</returns>
+        </member>
+    </members>
+</doc>

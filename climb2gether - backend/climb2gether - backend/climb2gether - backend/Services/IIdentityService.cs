@@ -16,6 +16,7 @@ namespace climb2gether___backend.Services
         Task<bool> LogoutAsync(string refreshToken);
         Task<List<User>> GetUsersAsync();
         Task<List<ApplicationUserRole>> GetAllRolesAsync();
+        int GetUserIdFromJWT(string token);
 
     }   
 }

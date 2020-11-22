@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Offer } from 'src/app/_models/Offer';
-import { InstructorsService } from '../../instructors.service';
+import { InstructorsService } from '../instructors.service';
 
 @Component({
   selector: 'app-add-offer',
@@ -36,9 +36,8 @@ export class AddOfferComponent implements OnInit {
     const offer: Offer = {
       date: this.form.date.value,
       location: this.form.location.value,
-      maxQty: this.form.maxQty.value,
+      maxParticipants: this.form.maxQty.value,
       price: this.form.price.value,
-      file: this.form.fileControl.value,
       describe: this.form.describe.value,
       offerType: this.form.offerType.value
     }

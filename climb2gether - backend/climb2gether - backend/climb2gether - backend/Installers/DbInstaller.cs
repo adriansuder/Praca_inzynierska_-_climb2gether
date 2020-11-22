@@ -24,6 +24,7 @@ namespace climb2gether___backend.Installers
                 .AddEntityFrameworkStores<DataContext>();
 
             services.AddScoped<IPostService, PostService>();
+            services.AddScoped<IOfferService, OfferService>();
 
 
         }

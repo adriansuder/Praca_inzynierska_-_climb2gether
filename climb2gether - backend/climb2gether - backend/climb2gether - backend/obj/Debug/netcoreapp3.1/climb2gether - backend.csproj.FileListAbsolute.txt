@@ -78,7 +78,6 @@ C:\Users\adria\source\repos\climb2gether - backend\climb2gether - backend\bin\De
 C:\Users\adria\source\repos\climb2gether - backend\climb2gether - backend\obj\Debug\netcoreapp3.1\climb2gether - backend.csproj.CoreCompileInputs.cache
 C:\Users\adria\source\repos\climb2gether - backend\climb2gether - backend\obj\Debug\netcoreapp3.1\climb2gether - backend.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\adria\source\repos\climb2gether - backend\climb2gether - backend\obj\Debug\netcoreapp3.1\climb2gether - backend.MvcApplicationPartsAssemblyInfo.cache
-D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\obj\Debug\netcoreapp3.1\climb2gether - backend.csprojAssemblyReference.cache
 D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\obj\Debug\netcoreapp3.1\climb2gether - backend.AssemblyInfoInputs.cache
 D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\obj\Debug\netcoreapp3.1\climb2gether - backend.AssemblyInfo.cs
 D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\obj\Debug\netcoreapp3.1\climb2gether - backend.dll
@@ -235,3 +234,4 @@ D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - ba
 D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\obj\Debug\netcoreapp3.1\climb2gether - backend.csproj.CoreCompileInputs.cache
 D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\obj\Debug\netcoreapp3.1\climb2gether - backend.MvcApplicationPartsAssemblyInfo.cs
 D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\obj\Debug\netcoreapp3.1\climb2gether - backend.MvcApplicationPartsAssemblyInfo.cache
+D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\obj\Debug\netcoreapp3.1\climb2gether - backend.csprojAssemblyReference.cache

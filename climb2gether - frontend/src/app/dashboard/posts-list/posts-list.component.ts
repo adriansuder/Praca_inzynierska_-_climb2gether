@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Post } from 'src/app/_models/Post';
@@ -9,7 +9,7 @@ import { PostsService } from '../posts.service';
   templateUrl: './posts-list.component.html',
   styleUrls: ['./posts-list.component.scss']
 })
-export class PostsListComponent implements OnInit, OnDestroy {
+export class PostsListComponent implements OnInit ,OnDestroy {
 
   postsSub: Subscription;
   loadedPosts: Post[] = [];
@@ -32,6 +32,9 @@ export class PostsListComponent implements OnInit, OnDestroy {
 
   }
 
+  onActivate(event) {
+    window.scroll(0,0);
+}
 
   ngOnDestroy() {
     this.postsSub.unsubscribe();

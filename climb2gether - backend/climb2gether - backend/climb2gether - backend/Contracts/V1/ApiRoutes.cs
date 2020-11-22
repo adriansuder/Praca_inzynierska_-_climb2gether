@@ -35,5 +35,13 @@ namespace climb2gether___backend.Contracts
             public const string GetAll = Base + "/users";
             public const string UserRoles = Base + "/userRoles";
         }
+
+        public static class Offers
+        {
+            public const string Create = Base + "/offers";
+            public const string GetAll = Base + "/offers";
+            public const string Get = Base + "/offers/{offerId}";
+            public const string GetOfferDetails = Base + "/offers/details";
+        }
     }
 }

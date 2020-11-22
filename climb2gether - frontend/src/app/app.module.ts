@@ -47,10 +47,10 @@ import { CutStringPipe } from './_shared/pipes/cut-string.pipe';
 import { InstructorListComponent } from './instructors/instructor-list/instructor-list.component';
 import { InstructorItemComponent } from './instructors/instructor-list/instructor-item/instructor-item.component';
 import { OffersComponent } from './instructors/offers/offers.component';
-import { AddOfferComponent } from './instructors/offers/add-offer/add-offer.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgxMatFileInputModule } from '@angular-material-components/file-input';
+import { AddOfferComponent } from './instructors/add-offer/add-offer.component';
 
 
 @NgModule({

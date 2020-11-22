@@ -18,28 +18,22 @@ namespace climb2gether___backend.Controllers.V1
     public class PostController : Controller
     {
         private readonly IPostService _postService;
+        private readonly IIdentityService _identityService;
         private readonly IMapper _mapper;
 
-        public PostController(IPostService postService, IMapper mapper)
+        public PostController(IPostService postService, IMapper mapper, IIdentityService identityService)
         {
             _postService = postService;
             _mapper = mapper;
+            _identityService = identityService;
         }
         [HttpGet(ApiRoutes.Posts.GetAll)]
-        public async Task<IActionResult> GetAll([FromQuery]int userId)
+        public async Task<IActionResult> GetAll()
         {
-           var posts = await _postService.GetPostsAsync(userId);
-            //var postResponse = posts.Select(post => new PostResponse
-            //{  
-                //Id = post.Id,
-                //Title = post.Title,
-                //Subtitle = post.Subtitle,
-                //ImgURL = post.ImgUrl,
-                //Content = post.Content,
-                //UserId = post.UserId,
-                //UserNameSurname = (post.User.FirstName + " " + post.User.Surname),
-                //CreationDate = post.CreationDate
-           // });
+            var token = Request.Headers["Authorization"][0].ToString();
+            token = token.Substring(token.IndexOf(" ")+1);
+            var userId = _identityService.GetUserIdFromJWT(token);
+            var posts = await _postService.GetPostsAsync(userId);
     
 
             return Ok(posts);
@@ -131,6 +125,7 @@ namespace climb2gether___backend.Controllers.V1
 
             return Created(locationUri, response);
         }
+
         [HttpPut(ApiRoutes.Posts.Like)]
         public async Task<IActionResult> LikePost([FromQuery] int postId, [FromQuery] int userId)
         {

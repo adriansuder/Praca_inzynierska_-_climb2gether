@@ -4,6 +4,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import { Offer } from 'src/app/_models/Offer';
 import { OfferListItem } from 'src/app/_models/OfferListItem';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ModalDetailsComponent } from './modal-details/modal-details.component';
 
 // const ELEMENT_DATA: Offer[] = [
 //   {data: '2020-09-20', trasa: 'Hydrogen', iloscMiejsc: 1.0079, cena: 500},
@@ -20,10 +22,10 @@ import { OfferListItem } from 'src/app/_models/OfferListItem';
 export class InstructorItemComponent implements OnInit {
   @Input() offerItem: OfferListItem;
   panelOpenState = false;
-  displayedColumns: string[] = ['data', 'trasa', 'iloscMiejsc', 'cena', 'typ','info'];
+  displayedColumns: string[] = ['data', 'trasa', 'iloscMiejsc', 'cena', 'typ','info', 'book'];
   dataSource = new MatTableDataSource();
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -38,6 +40,14 @@ export class InstructorItemComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  openDetailsDialog() {
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+
+    this.dialog.open(ModalDetailsComponent, dialogConfig);
   }
 
 }
