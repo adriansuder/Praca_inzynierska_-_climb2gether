@@ -1,4 +1,4 @@
-<mat-expansion-panel>
+<mat-expansion-panel class="col-12 ">
     <mat-expansion-panel-header>
         <mat-panel-title>
             {{ offerItem.userNameSurname }}
@@ -19,7 +19,7 @@
     </mat-form-field>
 
     <!-- <div class="wrapper "> -->
-    <mat-table [dataSource]="dataSource" class="mat-table mat-elevation-z8 col-lg-12 col-12 " > 
+    <mat-table [dataSource]="dataSource" class="mat-table mat-elevation-z8 col-lg-12 col-12" > 
 
         <ng-container matColumnDef="data">
             <mat-header-cell *matHeaderCellDef class="mat-header-cell"> Termin </mat-header-cell>
@@ -37,7 +37,7 @@
         </ng-container>
 
         <ng-container matColumnDef="iloscMiejsc">
-            <mat-header-cell *matHeaderCellDef class="mat-header-cell"> Max. uczestników </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef class="mat-header-cell"> Ilość miejsc </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{element.maxParticipants}} </mat-cell>
         </ng-container>
 
@@ -78,7 +78,7 @@
         </mat-row>
     </mat-table>
 <!-- </div> -->
-    <mat-paginator [pageSizeOptions]="[1, 5, 10, 100]"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
 
 
 </mat-expansion-panel>

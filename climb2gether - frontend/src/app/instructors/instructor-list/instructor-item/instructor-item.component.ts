@@ -46,7 +46,7 @@ export class InstructorItemComponent implements OnInit {
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
-
+    dialogConfig.maxHeight = '70vh';
     this.dialog.open(ModalDetailsComponent, dialogConfig);
   }
 

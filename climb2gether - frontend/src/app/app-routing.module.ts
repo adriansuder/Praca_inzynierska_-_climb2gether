@@ -32,6 +32,7 @@ const routes: Routes = [
   { path: 'instructors', component: InstructorsComponent },
   { path: 'myOffers', component: OffersComponent, children: [
     { path: 'addOffer', component: AddOfferComponent },
+    { path: ':offerId/edit', component: AddOfferComponent }
   ] },
   { path: 'userClimbings', component: UserClimbingsComponent },
   { path: 'userSettings', component: UserSettingsComponent },

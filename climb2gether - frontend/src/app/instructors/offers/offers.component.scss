@@ -27,6 +27,12 @@
   #addOfferButton{
     position: fixed;
     top: 12vh;
-    right: 5vw;
+    right: 4vw;
     z-index:10;
+}
+
+.gridButton {
+  width:12px!important;
+  margin: 0 auto!important;
+  padding: 0 0!important;
 }

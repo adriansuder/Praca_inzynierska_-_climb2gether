@@ -50,5 +50,25 @@ namespace climb2gether___backend.Services
 
             return result;
         }
+
+        public async Task<List<Offer>> GetUserOffersAsync(int userId)
+        {
+            return await _dataContext.Offers.Where(offer => offer.OfferOwnerUserId == userId).ToListAsync();
+        }
+
+        public async Task<bool> UserOwnsOffer(int offerId, int userId)
+        {
+            var result = _dataContext.Offers.Where(x => x.Id == offerId && x.OfferOwnerUserId == userId).Count();
+            return result > 0;
+        }
+
+        public async Task<bool> DeleteOfferAsync(int offerId)
+        {
+            var offerToDelete = await _dataContext.Offers.SingleOrDefaultAsync(offer => offer.Id == offerId);
+             _dataContext.Offers.Remove(offerToDelete);
+            var result = await _dataContext.SaveChangesAsync();
+
+                return result > 0;
+        }
     }
 }

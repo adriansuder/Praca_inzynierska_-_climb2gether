@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { AuthService } from '../auth/auth.service';
 import { Offer } from '../_models/Offer';
 import { OfferDetails } from '../_models/OfferDetails';
 import { OfferListItem } from '../_models/OfferListItem';
@@ -21,7 +22,7 @@ export class InstructorsService {
   private fetchedOffers: OfferListItem[] = [];
   private fetchedUserOffers: Offer[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   getOffers(){
   this.http
@@ -40,9 +41,10 @@ export class InstructorsService {
       });
   }
 
-  getInstructorOffers(userId: number){
+  getInstructorOffers(){
+    let userId = this.authService.loggedUser.userId;
     this.http.get<Offer[]>(
-      'https://angular-course-d48e0.firebaseio.com/Offers/0/offers.json'
+      `${environment.apiUrl}/offers/user/${userId}`
     ).pipe(map(resData => {
       let userOffersArray: Offer[] = [];
       userOffersArray = JSON.parse(JSON.stringify(resData));
@@ -51,17 +53,15 @@ export class InstructorsService {
       console.log(offers)
     )).subscribe(offers => {
         this.fetchedUserOffers = offers;
-        this.userOffersChanged.next(this.fetchedUserOffers.slice());
+        this.userOffersChanged.next(this.fetchedUserOffers);
       });
   }
 
-  onAddOffer(offer: Offer){
-    this.http.post(
+  addOffer(offer: Offer){
+    return this.http.post(
       `${environment.apiUrl}/offers`,
       offer
-    ).subscribe( resData => {
-      console.log(resData);
-    });
+    ).toPromise();
   }
 
   getOfferDetails(offerId: number){
@@ -70,5 +70,11 @@ export class InstructorsService {
     ).subscribe( resData => {
       this.offerDetailsSubject.next(JSON.parse(JSON.stringify(resData)));
     });
+  }
+
+  deleteOffer(offerId: number){
+    return this.http.delete(
+      `${environment.apiUrl}/offers/${offerId}`
+    );
   }
 }

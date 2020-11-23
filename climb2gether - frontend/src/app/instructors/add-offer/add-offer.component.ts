@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Offer } from 'src/app/_models/Offer';
 import { InstructorsService } from '../instructors.service';
 
@@ -10,6 +11,10 @@ import { InstructorsService } from '../instructors.service';
   styleUrls: ['./add-offer.component.scss']
 })
 export class AddOfferComponent implements OnInit {
+
+  inEditMode = false;
+  editModeSubscription: Subscription;
+  offerId: number;
   addOfferFormGroup: FormGroup;
   displayAddButton = false;
   @Input() fileControl: FormControl;
@@ -17,6 +22,13 @@ export class AddOfferComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private instructorsService: InstructorsService, private router: Router) { }
 
   ngOnInit(): void {
+    this.route.params.subscribe((params: Params) => {
+      this.offerId = params['offerId'];
+      this.inEditMode = params['offerId'] != null;
+      //this.createForm();
+    });
+
+
     this.addOfferFormGroup = this.formBuilder.group({
       date: [''],
       location: [''],
@@ -32,7 +44,7 @@ export class AddOfferComponent implements OnInit {
 
   get form() { return this.addOfferFormGroup.controls; }
 
-  onSubmit() {
+  async onSubmit() {
     const offer: Offer = {
       date: this.form.date.value,
       location: this.form.location.value,
@@ -41,7 +53,10 @@ export class AddOfferComponent implements OnInit {
       describe: this.form.describe.value,
       offerType: this.form.offerType.value
     }
-    this.instructorsService.onAddOffer(offer);
+    let result = await this.instructorsService.addOffer(offer);
+    if(result){
+      this.instructorsService.getInstructorOffers();
+    }
     this.changeEditingMode();
     this.router.navigate(['../'], { relativeTo: this.route });
   }

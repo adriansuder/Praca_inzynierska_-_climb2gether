@@ -32,4 +32,7 @@ justify-content: center;;
   .iconWrapper{
     font-size:1.5em;
   }
+  mat-expansion-panel {
+    padding: 0!important;
+  }
 }

@@ -1,0 +1,84 @@
+<button mat-fab color="primary"  id="addOfferButton" *ngIf="!inAddingOfferMode"
+(click)="addOffer()">
+<mat-icon>add</mat-icon>
+</button>
+<br>
+<div class="container ">
+        <router-outlet> </router-outlet>
+
+    <div class="d-flex justify-content-center">
+        <div class="col-lg-12 col-md-12 col-12 myOfferWrapper mat-elevation-z8 mt-2">
+            <br>
+            <h1>Twoje wszystkie oferty: </h1>
+            <hr>
+            <mat-form-field>
+                <mat-label>Filter</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Szukaj.." #input>
+            </mat-form-field>
+
+            <mat-table [dataSource]="dataSource" class="mat-table mat-elevation-z8 col-lg-12 col-12 ">
+
+                <ng-container matColumnDef="data">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-cell"> Termin </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.date | date:'dd/MM/yy'}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="typ">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-cell"> Oferta </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.offerType}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="trasa">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-cell"> Lokalizacja </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.location}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="iloscMiejsc">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-cell"> Max. uczest. </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.maxParticipants}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="cena">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-cell"> Cena </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.price}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="akcje" class="">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-cell"> Info </mat-header-cell>
+                    <mat-cell *matCellDef="let element" >
+
+
+                        
+                            <div class="d-block mx-auto">
+                                <button mat-button class="gridButton">
+                                    <mat-icon>info</mat-icon>
+                                </button>
+                                <button mat-button class="gridButton">
+                                    <mat-icon>how_to_reg</mat-icon>
+                                </button>
+                            </div>
+                            <div class="d-block mx-auto">
+                                <button mat-button (click)="onDeleteOffer(element.id)" class="gridButton">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                                <button mat-button (click)="onDeleteOffer(element.id)" class="gridButton">
+                                    <mat-icon>cancell</mat-icon>
+                                </button>
+                            </div>
+                        
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+                <!-- Wynik kiedy brak pasujących wyników. -->
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="4">Brak wyników dla: "{{input.value}}"</td>
+                </tr>
+            </mat-table>
+            <!-- </div> -->
+            <mat-paginator [pageSizeOptions]="[5, 10, 50]"></mat-paginator>
+        </div>
+    </div>
+</div>

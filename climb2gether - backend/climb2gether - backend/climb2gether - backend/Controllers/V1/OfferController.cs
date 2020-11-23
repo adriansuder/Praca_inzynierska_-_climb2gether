@@ -62,6 +62,18 @@ namespace climb2gether___backend.Controllers.V1
             return Ok(offers);
         }
 
+        [HttpGet(ApiRoutes.Offers.GetUserOffers)]
+        public async Task<IActionResult> GetUserOffers()
+        {
+            var token = Request.Headers["Authorization"][0].ToString();
+            token = token.Substring(token.IndexOf(" ") + 1);
+            var userId = _identityService.GetUserIdFromJWT(token);
+
+            var offers = await _offerService.GetUserOffersAsync(userId);
+
+            return Ok(offers);
+        }
+
         [HttpGet(ApiRoutes.Offers.GetOfferDetails)]
         public async Task<IActionResult> GetOfferDetails(int offerId)
         {
@@ -71,6 +83,23 @@ namespace climb2gether___backend.Controllers.V1
             var details = await _offerService.GetOfferDetails(offerId);
 
             return Ok(details);
+        }
+
+        [HttpDelete(ApiRoutes.Offers.Delete)]
+        public async Task<IActionResult> Delete(int offerId)
+        {
+            var token = Request.Headers["Authorization"][0].ToString();
+            token = token.Substring(token.IndexOf(" ") + 1);
+            var userId = _identityService.GetUserIdFromJWT(token);
+
+            var userOwnsOffer = await _offerService.UserOwnsOffer(offerId, userId);
+
+            if (userOwnsOffer)
+            {
+                var offers = await _offerService.DeleteOfferAsync(offerId);
+                return Ok(offers);
+            }
+            return BadRequest();
         }
     }
 }
