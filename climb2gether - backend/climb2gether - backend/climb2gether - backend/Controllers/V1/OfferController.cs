@@ -101,5 +101,30 @@ namespace climb2gether___backend.Controllers.V1
             }
             return BadRequest();
         }
+
+        [HttpPut(ApiRoutes.Offers.Update)]
+        public async Task<IActionResult> UpdateOffer([FromBody] UpdateOfferRequest offerRequest)
+        {
+            var offer = new Offer
+            {   
+                Id = offerRequest.Id,
+                Date = offerRequest.Date,
+                Location = offerRequest.Location,
+                MaxParticipants = offerRequest.MaxParticipants,
+                Price = offerRequest.Price,
+                Describe = offerRequest.Describe,
+                OfferType = offerRequest.OfferType,
+                CreationDate = offerRequest.Date,
+                OfferOwnerUserId = offerRequest.OfferOwnerUserId
+            };
+
+            var isUpdated = await _offerService.UpdateOffer(offer);
+            if (!isUpdated)
+            {
+                return BadRequest();
+            }
+            return Ok(isUpdated);
+        }
+
     }
 }

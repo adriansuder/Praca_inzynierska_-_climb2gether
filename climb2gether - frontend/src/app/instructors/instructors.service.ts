@@ -19,8 +19,8 @@ export class InstructorsService {
   userOffersChanged = new Subject<Offer[]>();
   offerDetailsSubject = new Subject<OfferDetails>();
 
-  private fetchedOffers: OfferListItem[] = [];
-  private fetchedUserOffers: Offer[] = [];
+  fetchedOffers: OfferListItem[] = [];
+  fetchedUserOffers: Offer[] = [];
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -59,6 +59,13 @@ export class InstructorsService {
 
   addOffer(offer: Offer){
     return this.http.post(
+      `${environment.apiUrl}/offers`,
+      offer
+    ).toPromise();
+  }
+
+  updateOffer(offer: Offer){
+    return this.http.put(
       `${environment.apiUrl}/offers`,
       offer
     ).toPromise();

@@ -70,5 +70,20 @@ namespace climb2gether___backend.Services
 
                 return result > 0;
         }
+        public async Task<bool> UpdateOffer(Offer offer)
+        {
+            var fetchedOffer = await _dataContext.Offers.SingleOrDefaultAsync(x => x.Id == offer.Id);
+            var temp = fetchedOffer;
+            temp.Date = offer.Date;
+            temp.Location = offer.Location;
+            temp.Price = offer.Price;
+            temp.Describe = offer.Describe;
+            temp.OfferType = offer.OfferType;
+            _dataContext.Offers.Update(temp);
+            var result = await _dataContext.SaveChangesAsync();
+
+            return result > 0;
+
+        }
     }
 }
