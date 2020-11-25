@@ -45,6 +45,9 @@ namespace climb2gether___backend.Contracts
             public const string GetUserOffers = Base + "/offers/user/{userId}";
             public const string GetOfferDetails = Base + "/offers/details";
             public const string Update = Base + "/offers";
+            public const string CreateEnrollment = Base + "/offers/addEnrollment";
+            public const string DeleteEnrollment = Base + "/offers/deleteEnrollment";
+            public const string ParticipantsList = Base + "/offers/ParticipantsList";
         }
     }
 }

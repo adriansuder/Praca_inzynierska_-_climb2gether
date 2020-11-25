@@ -53,7 +53,7 @@
                                 <button mat-button class="gridButton" routerLink="{{element.id}}/edit">
                                     <mat-icon>info</mat-icon>
                                 </button>
-                                <button mat-button class="gridButton">
+                                <button mat-button class="gridButton" (click)="openParticipantsListDialog(element.id)">
                                     <mat-icon>how_to_reg</mat-icon>
                                 </button>
                             </div>

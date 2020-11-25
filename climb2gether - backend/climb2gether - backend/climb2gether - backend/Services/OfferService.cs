@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace climb2gether___backend.Services
@@ -36,7 +37,26 @@ namespace climb2gether___backend.Services
                                    UserNameSurname = user.FirstName + " " + user.Surname,
                                    userRole = role.RoleName,
                                    UserId = user.Id,
-                                   Offers = (from userOffer in _dataContext.Offers where userOffer.OfferOwnerUserId == user.Id select userOffer).ToList<Offer>()
+                                   Offers = (from userOffer in _dataContext.Offers
+                                             where userOffer.OfferOwnerUserId == user.Id
+                                             select new Offer
+                                             {
+                                                 Id = userOffer.Id,
+                                                 Date = userOffer.Date,
+                                                 Location = userOffer.Location,
+                                                 MaxParticipants = userOffer.MaxParticipants,
+                                                 Price = userOffer.Price,
+                                                 Describe = userOffer.Describe,
+                                                 OfferType = userOffer.OfferType,
+                                                 OfferOwnerUserId = userOffer.OfferOwnerUserId,
+                                                 IsUserAlreadyEnrolled = (from offEnr in _dataContext.OfferEnrollments 
+                                                                          where offEnr.OfferId == userOffer.Id && offEnr.ParticipantUserId == userId 
+                                                                          select offEnr.Id).Any(),
+                                                 UserEnrollmentId = (from offEnr in _dataContext.OfferEnrollments 
+                                                                     where offEnr.OfferId == userOffer.Id && offEnr.ParticipantUserId == userId 
+                                                                     select offEnr.Id).SingleOrDefault()
+                                             }
+                                             ).ToList<Offer>()
                                }
                           ).Distinct().ToListAsync();
 
@@ -84,6 +104,50 @@ namespace climb2gether___backend.Services
 
             return result > 0;
 
+        }
+
+        public async Task<bool> CreateEnrollment(OfferEnrollment offerEnrollment)
+        {
+            _dataContext.OfferEnrollments.Add(offerEnrollment);
+            var result = await _dataContext.SaveChangesAsync();
+
+            return result > 0;
+        }
+
+        public async Task<bool> IsUserAlreadyEnrolled(int offerId, int userId)
+        {
+            var result = await  _dataContext.OfferEnrollments
+                .SingleOrDefaultAsync(x => x.OfferId == offerId && x.ParticipantUserId == userId);
+            return result != null;
+        }
+
+        public async Task<bool> DeleteEnrollment(int offerId, int userId)
+        {
+            var offerToDelete = await _dataContext.OfferEnrollments.SingleOrDefaultAsync(x => x.ParticipantUserId == userId && x.OfferId == offerId);
+            if (offerToDelete == null)
+            {
+                return false;
+            }
+            _dataContext.OfferEnrollments.Remove(offerToDelete);
+            var result = await _dataContext.SaveChangesAsync();
+            return result > 0;
+        }
+
+        public async Task<List<ParticipantResponse>> GetParticipantsList(int offerId)
+        {
+            var query = await (from offEnr in _dataContext.OfferEnrollments
+                         join user in _dataContext.Users on offEnr.ParticipantUserId equals user.Id
+                         where offEnr.OfferId == offerId
+                         select new ParticipantResponse
+                         {
+                             Id = user.Id,
+                             FirstName = user.FirstName,
+                             Surname = user.Surname,
+                             Phone = user.Phone,
+                             Email = user.Email
+                         }
+                        ).ToListAsync();
+            return query;
         }
     }
 }

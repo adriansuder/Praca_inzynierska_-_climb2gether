@@ -39,7 +39,7 @@ namespace climb2gether___backend.Services
                                    CreationDate = post.CreationDate,
                                    LikeCounter = (from like in _dataContext.PostLikes where like.PostId == post.Id select like).Count(),
                                    PostLikedByLoggedUser = (from like in _dataContext.PostLikes where like.UserId == userId && like.PostId == post.Id select like).Any(),
-                                   LoggedUserPostLikeId = (from like in _dataContext.PostLikes where like.UserId == userId && like.PostId == post.Id select like.Id).FirstOrDefault()
+                                   LoggedUserPostLikeId = (from like in _dataContext.PostLikes where like.UserId == userId && like.PostId == post.Id select like.Id).SingleOrDefault()
                                }
                           ).ToListAsync();
             return query;

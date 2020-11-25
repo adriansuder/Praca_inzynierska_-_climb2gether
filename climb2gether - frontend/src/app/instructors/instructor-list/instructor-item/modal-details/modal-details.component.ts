@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { InstructorsService } from 'src/app/instructors/instructors.service';
 import { OfferDetails } from 'src/app/_models/OfferDetails';
 
@@ -9,13 +10,16 @@ import { OfferDetails } from 'src/app/_models/OfferDetails';
 })
 export class ModalDetailsComponent implements OnInit {
   offerDetails: OfferDetails = null;
-  constructor(private instructorsService: InstructorsService) { }
+  constructor(
+    private instructorsService: InstructorsService,
+    @Inject(MAT_DIALOG_DATA) public data: any //offerId
+    ) { }
 
   ngOnInit(): void {
-    this.instructorsService.getOfferDetails(1);
+    this.instructorsService.getOfferDetails(this.data);
     this.instructorsService.offerDetailsSubject.subscribe( data => {
       this.offerDetails = data;
-    })
+    });
   }
 
 }

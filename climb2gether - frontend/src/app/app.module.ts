@@ -51,6 +51,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgxMatFileInputModule } from '@angular-material-components/file-input';
 import { AddOfferComponent } from './instructors/add-offer/add-offer.component';
+import { ModalConfirmEnrollmentComponent } from './instructors/instructor-list/instructor-item/modal-confirm-enrollment/modal-confirm-enrollment.component';
+import { ModalParticipantsListComponent } from './instructors/offers/modal-participants-list/modal-participants-list.component';
 
 
 @NgModule({
@@ -77,7 +79,9 @@ import { AddOfferComponent } from './instructors/add-offer/add-offer.component';
     InstructorListComponent,
     InstructorItemComponent,
     OffersComponent,
-    AddOfferComponent
+    AddOfferComponent,
+    ModalConfirmEnrollmentComponent,
+    ModalParticipantsListComponent
   ],
   imports: [
     BrowserModule,

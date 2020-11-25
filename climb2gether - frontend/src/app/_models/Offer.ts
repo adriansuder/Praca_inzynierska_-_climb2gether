@@ -6,5 +6,7 @@ export class Offer {
     price: number;
     describe?: string;
     offerType: string;
-    OfferOwnerUserId?: number
+    OfferOwnerUserId?: number;
+    isUserAlreadyEnrolled?: boolean;
+    userEnrollmentId?: number;
   }

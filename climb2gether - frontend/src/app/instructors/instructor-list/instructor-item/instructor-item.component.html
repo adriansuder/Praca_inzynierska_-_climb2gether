@@ -50,7 +50,7 @@
             <mat-header-cell *matHeaderCellDef class="mat-header-cell"> Info </mat-header-cell>
             <mat-cell *matCellDef="let element" class="iconWrapper d-flex flex-center">
                 <!-- <div class="iconWrapper"> -->
-                    <button mat-button (click)="openDetailsDialog()">
+                    <button mat-button (click)="openDetailsDialog(element.id)">
                         <mat-icon class="icon">info</mat-icon>
                       </button>  
                 <!-- </div>  -->
@@ -61,8 +61,8 @@
             <mat-header-cell *matHeaderCellDef class="mat-header-cell"> Rezerwuj </mat-header-cell>
             <mat-cell *matCellDef="let element" class="iconWrapper d-flex flex-center">
                 <!-- <div class="iconWrapper"> -->
-                      <button mat-button>
-                        <mat-icon class="icon">how_to_reg</mat-icon>
+                      <button mat-button (click)="courseEnrollment(element.id)" [class.enrolled]="element.isUserAlreadyEnrolled">
+                        <mat-icon class="icon">{{ element.isUserAlreadyEnrolled ? 'close': 'how_to_reg'}}</mat-icon>
                       </button>  
                 <!-- </div>  -->
             </mat-cell>

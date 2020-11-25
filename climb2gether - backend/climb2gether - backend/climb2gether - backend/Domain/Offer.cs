@@ -22,5 +22,9 @@ namespace climb2gether___backend.Domain
         [ForeignKey("User")]
         public int OfferOwnerUserId { get; set; }
         public User User { get; set; }
+        [NotMapped]
+        public bool? IsUserAlreadyEnrolled { get; set; }
+        [NotMapped]
+        public int? UserEnrollmentId { get; set; }
     }
 }

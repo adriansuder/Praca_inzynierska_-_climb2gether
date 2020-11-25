@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>{{ data.isUserAlreadyEnrolled ? 'Czy chcesz zrezgynować? :(' : 'Czy potwierdzasz udział we wspólnej przygodzie? :)'}}</h1>
+<div mat-dialog-content>
+  <h5>Szczegóły:</h5>
+  <p><b>Termin: </b>{{ data.date | date: 'shortDate'}} | <b>Oferta: </b>{{ data.offerType }} | <b>Cena: </b>{{data.price}}</p>
+    
+</div>
+<div mat-dialog-actions class="float-right">
+  <button mat-raised-button mat-dialog-close>Anuluj</button>
+  <button mat-raised-button color="primary" (click)="confirmDialog()">Potwierdź</button><!--cdkFocusInitial-->
+</div>

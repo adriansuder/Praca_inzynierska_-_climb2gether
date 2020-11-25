@@ -16,5 +16,9 @@ namespace climb2gether___backend.Services
         Task<bool> UserOwnsOffer(int offerId, int userId);
         Task<bool> DeleteOfferAsync(int offerId);
         Task<bool> UpdateOffer(Offer offer);
+        Task<bool> CreateEnrollment(OfferEnrollment offerEnrollment);
+        Task<bool> IsUserAlreadyEnrolled(int offerId, int userId);
+        Task<bool> DeleteEnrollment(int offerId, int userId);
+        Task<List<ParticipantResponse>> GetParticipantsList(int offerId);
     }
 }

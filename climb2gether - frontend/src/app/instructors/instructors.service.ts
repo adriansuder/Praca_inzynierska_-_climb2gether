@@ -7,6 +7,7 @@ import { AuthService } from '../auth/auth.service';
 import { Offer } from '../_models/Offer';
 import { OfferDetails } from '../_models/OfferDetails';
 import { OfferListItem } from '../_models/OfferListItem';
+import { Participant } from '../_models/Participant';
 
 
 @Injectable({
@@ -83,5 +84,28 @@ export class InstructorsService {
     return this.http.delete(
       `${environment.apiUrl}/offers/${offerId}`
     );
+  }
+
+  addCourseEnrollment(offerId: number){
+    return this.http.post(
+      `${environment.apiUrl}/offers/addEnrollment`,
+      {
+        offerId,
+        userId: this.authService.loggedUser.userId
+      }
+    ).toPromise();
+  }
+
+  deleteCourseEnrollment(offerId: number){
+    let userId = this.authService.loggedUser.userId;
+    return this.http.delete(
+      `${environment.apiUrl}/offers/deleteEnrollment?offerId=${offerId}&userId=${userId}`
+    ).toPromise();
+  }
+
+  getOfferParticipants(offerId: number){
+    return this.http.get<Participant[]>(
+      `${environment.apiUrl}/offers/ParticipantsList?offerId=${offerId}`
+    ).pipe(tap(res => console.log(res))).toPromise();
   }
 }

@@ -1,4 +1,5 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Offer } from 'src/app/_models/Offer';
 import { InstructorsService } from '../instructors.service';
+import { ModalParticipantsListComponent } from './modal-participants-list/modal-participants-list.component';
 
 @Component({
   selector: 'app-offers',
@@ -21,6 +23,7 @@ export class OffersComponent implements OnInit, OnDestroy {
   inAddingOfferMode ;
 
   constructor(
+    public dialog: MatDialog,
     private instructorsService: InstructorsService,
     private router: Router, 
     private route: ActivatedRoute
@@ -64,6 +67,15 @@ export class OffersComponent implements OnInit, OnDestroy {
         this.instructorsService.getInstructorOffers();
       }
     })
+  }
+
+  openParticipantsListDialog(offerId: number) {
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.maxHeight = '70vh';
+    dialogConfig.data = offerId;
+    this.dialog.open(ModalParticipantsListComponent, dialogConfig);
   }
 
   ngOnDestroy(){

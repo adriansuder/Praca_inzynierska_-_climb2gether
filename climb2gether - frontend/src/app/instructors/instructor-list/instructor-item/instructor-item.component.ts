@@ -5,7 +5,10 @@ import {MatPaginator} from '@angular/material/paginator';
 import { Offer } from 'src/app/_models/Offer';
 import { OfferListItem } from 'src/app/_models/OfferListItem';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+
 import { ModalDetailsComponent } from './modal-details/modal-details.component';
+import { ModalConfirmEnrollmentComponent } from './modal-confirm-enrollment/modal-confirm-enrollment.component';
+import { InstructorsService } from '../../instructors.service';
 
 // const ELEMENT_DATA: Offer[] = [
 //   {data: '2020-09-20', trasa: 'Hydrogen', iloscMiejsc: 1.0079, cena: 500},
@@ -22,10 +25,10 @@ import { ModalDetailsComponent } from './modal-details/modal-details.component';
 export class InstructorItemComponent implements OnInit {
   @Input() offerItem: OfferListItem;
   panelOpenState = false;
-  displayedColumns: string[] = ['data', 'trasa', 'iloscMiejsc', 'cena', 'typ','info', 'book'];
+  displayedColumns: string[] = ['data', 'trasa', 'iloscMiejsc', 'cena', 'typ', 'info', 'book'];
   dataSource = new MatTableDataSource();
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private instructorsService: InstructorsService) { }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -42,12 +45,34 @@ export class InstructorItemComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  openDetailsDialog() {
+  openDetailsDialog(offerId: number) {
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.maxHeight = '70vh';
+    dialogConfig.data = offerId;
     this.dialog.open(ModalDetailsComponent, dialogConfig);
+  }
+
+  async courseEnrollment(offerId: number){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.maxHeight = '70vh';
+    dialogConfig.data = this.offerItem.offers.find(x => x.id === offerId);
+
+    let result = await this.dialog.open(ModalConfirmEnrollmentComponent, dialogConfig).afterClosed().toPromise();
+    if(result === 'OK'){
+      let isAddedOrDeleted;
+      if(!dialogConfig.data.isUserAlreadyEnrolled){
+        isAddedOrDeleted = await this.instructorsService.addCourseEnrollment(offerId);
+      }else{
+        isAddedOrDeleted = await this.instructorsService.deleteCourseEnrollment(offerId);
+      }
+
+      if(isAddedOrDeleted){
+        this.instructorsService.getOffers();
+      }
+    }
   }
 
 }
