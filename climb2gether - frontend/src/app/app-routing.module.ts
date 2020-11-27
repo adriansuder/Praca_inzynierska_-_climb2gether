@@ -18,7 +18,7 @@ import { AddOfferComponent } from './instructors/add-offer/add-offer.component';
 const routes: Routes = [
   { path: 'login', component: LoginDialogComponent },
   {
-    path: 'dashboard', component: DashboardComponent, children: [
+    path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], children: [
       {
         path: 'posts', component: PostsListComponent, children: [
             { path: ':postId/edit', component: PostEditComponent }
@@ -28,14 +28,14 @@ const routes: Routes = [
     ]
   },
   { path: '', component: HomeComponent },
-  { path: 'climbingPartners', component: ClimbingPartnersComponent },
-  { path: 'instructors', component: InstructorsComponent },
-  { path: 'myOffers', component: OffersComponent, children: [
+  { path: 'climbingPartners', component: ClimbingPartnersComponent, canActivate: [AuthGuard] },
+  { path: 'instructors', component: InstructorsComponent, canActivate: [AuthGuard] },
+  { path: 'myOffers', component: OffersComponent, canActivate: [AuthGuard], children: [
     { path: 'addOffer', component: AddOfferComponent },
     { path: ':offerId/edit', component: AddOfferComponent }
   ] },
-  { path: 'userClimbings', component: UserClimbingsComponent },
-  { path: 'userSettings', component: UserSettingsComponent },
+  { path: 'userClimbings', component: UserClimbingsComponent, canActivate: [AuthGuard] },
+  { path: 'userSettings', component: UserSettingsComponent, canActivate: [AuthGuard] },
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] }
 ];
 

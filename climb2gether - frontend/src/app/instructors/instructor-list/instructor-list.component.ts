@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { OfferListItem } from 'src/app/_models/OfferListItem';
 import { InstructorsService } from '../instructors.service';
 
@@ -17,7 +17,11 @@ export class InstructorListComponent implements OnInit {
    this.instructorsService.getOffers();
    this.instructorsService.offersChanged.subscribe( offers => {
      this.loadedOffers = offers;
-   })
+   });
+  }
+
+  trackByIndex(el:any): number {
+    return el.id;
   }
 
 }

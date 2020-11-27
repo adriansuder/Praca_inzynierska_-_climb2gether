@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable, Subject, interval } from 'rxjs';
+import { map, repeatWhen, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { Offer } from '../_models/Offer';
@@ -25,24 +25,26 @@ export class InstructorsService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-  getOffers(){
-  this.http
-  .get<OfferListItem[]>(
-    `${environment.apiUrl}/offers`
-  ).pipe(map(resData => {
-    let offerArray: OfferListItem[] = [];
-    offerArray = JSON.parse(JSON.stringify(resData));
-    return offerArray;
-  })
-    , tap(offers => {
-      console.log(offers);
-    })).subscribe(offers => {
+  getOffers() {
+    this.http
+      .get<OfferListItem[]>(
+        `${environment.apiUrl}/offers`
+      ).pipe(map(resData => {
+        let offerArray: OfferListItem[] = [];
+        offerArray = JSON.parse(JSON.stringify(resData));
+        return offerArray;
+      })
+        , tap(offers => {
+          console.log(offers);
+        })
+        , repeatWhen(() => interval(10000))
+        ).subscribe(offers => {
           this.fetchedOffers = offers;
           this.offersChanged.next(this.fetchedOffers);
-      });
+        });
   }
 
-  getInstructorOffers(){
+  getInstructorOffers() {
     let userId = this.authService.loggedUser.userId;
     this.http.get<Offer[]>(
       `${environment.apiUrl}/offers/user/${userId}`
@@ -50,43 +52,43 @@ export class InstructorsService {
       let userOffersArray: Offer[] = [];
       userOffersArray = JSON.parse(JSON.stringify(resData));
       return userOffersArray;
-    }), tap( offers =>
+    }), tap(offers =>
       console.log(offers)
     )).subscribe(offers => {
-        this.fetchedUserOffers = offers;
-        this.userOffersChanged.next(this.fetchedUserOffers);
-      });
+      this.fetchedUserOffers = offers;
+      this.userOffersChanged.next(this.fetchedUserOffers);
+    });
   }
 
-  addOffer(offer: Offer){
+  addOffer(offer: Offer) {
     return this.http.post(
       `${environment.apiUrl}/offers`,
       offer
     ).toPromise();
   }
 
-  updateOffer(offer: Offer){
+  updateOffer(offer: Offer) {
     return this.http.put(
       `${environment.apiUrl}/offers`,
       offer
     ).toPromise();
   }
 
-  getOfferDetails(offerId: number){
+  getOfferDetails(offerId: number) {
     this.http.get(
       `${environment.apiUrl}/offers/details?offerId=${offerId}`
-    ).subscribe( resData => {
+    ).subscribe(resData => {
       this.offerDetailsSubject.next(JSON.parse(JSON.stringify(resData)));
     });
   }
 
-  deleteOffer(offerId: number){
+  deleteOffer(offerId: number) {
     return this.http.delete(
       `${environment.apiUrl}/offers/${offerId}`
     );
   }
 
-  addCourseEnrollment(offerId: number){
+  addCourseEnrollment(offerId: number) {
     return this.http.post(
       `${environment.apiUrl}/offers/addEnrollment`,
       {
@@ -96,14 +98,14 @@ export class InstructorsService {
     ).toPromise();
   }
 
-  deleteCourseEnrollment(offerId: number){
+  deleteCourseEnrollment(offerId: number) {
     let userId = this.authService.loggedUser.userId;
     return this.http.delete(
       `${environment.apiUrl}/offers/deleteEnrollment?offerId=${offerId}&userId=${userId}`
     ).toPromise();
   }
 
-  getOfferParticipants(offerId: number){
+  getOfferParticipants(offerId: number) {
     return this.http.get<Participant[]>(
       `${environment.apiUrl}/offers/ParticipantsList?offerId=${offerId}`
     ).pipe(tap(res => console.log(res))).toPromise();

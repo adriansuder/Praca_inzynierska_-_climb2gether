@@ -31,7 +31,11 @@ export class AuthService {
   login(user: { username: string, password: string }) {
     return this.http.post<AuthResponseData>(`${environment.apiUrl}/login`, user)
       .pipe(
-        tap(authRes => this.setLoggedUser(authRes.token, authRes.refreshToken, authRes.userId, authRes.expiresIn)),
+        tap(authRes => {
+          this.setLoggedUser(authRes.token, authRes.refreshToken, authRes.userId, authRes.expiresIn);
+          this.loggedUser = new LoggedUser(authRes.token, authRes.refreshToken, authRes.userId, authRes.expiresIn);
+        }
+        ),
         catchError(this.handleResponseError)
       );
   }
@@ -59,9 +63,9 @@ export class AuthService {
   logout() {
     return this.http.post<any>(`${environment.apiUrl}/logout`, {
       'refreshToken': this.getRefreshToken()
-    }).pipe(tap( () => {
+    }).pipe(tap(() => {
       this.handleLogout();
-    }), catchError(this.handleResponseError ))
+    }), catchError(this.handleResponseError))
 
   }
 
@@ -78,7 +82,7 @@ export class AuthService {
   }
 
   getUserRoles() {
-    return this.http.get<{Id: number, RoleName: string, isAdmin: boolean }[]>(`${environment.apiUrl}/userRoles`).toPromise();
+    return this.http.get<{ Id: number, RoleName: string, isAdmin: boolean }[]>(`${environment.apiUrl}/userRoles`).toPromise();
   }
 
   private setLoggedUser(token: string, refreshToken: string, userId: number, expiresIn: Date) {
@@ -101,7 +105,7 @@ export class AuthService {
   }
 
   private getRefreshToken() {
-    var userData:LoggedUser = JSON.parse(localStorage.getItem('userData'));
+    var userData: LoggedUser = JSON.parse(localStorage.getItem('userData'));
     return userData.refreshToken;
   }
 

@@ -53,6 +53,8 @@ import { NgxMatFileInputModule } from '@angular-material-components/file-input';
 import { AddOfferComponent } from './instructors/add-offer/add-offer.component';
 import { ModalConfirmEnrollmentComponent } from './instructors/instructor-list/instructor-item/modal-confirm-enrollment/modal-confirm-enrollment.component';
 import { ModalParticipantsListComponent } from './instructors/offers/modal-participants-list/modal-participants-list.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 @NgModule({
@@ -108,7 +110,8 @@ import { ModalParticipantsListComponent } from './instructors/offers/modal-parti
     ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    NgxMatFileInputModule
+    NgxMatFileInputModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     AuthGuard,

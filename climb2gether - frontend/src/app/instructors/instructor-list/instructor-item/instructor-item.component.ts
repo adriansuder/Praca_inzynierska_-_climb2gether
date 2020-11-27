@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { MatTableDataSource } from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
@@ -22,7 +22,7 @@ import { InstructorsService } from '../../instructors.service';
   styleUrls: ['./instructor-item.component.scss'],
   viewProviders: [MatExpansionPanel]
 })
-export class InstructorItemComponent implements OnInit {
+export class InstructorItemComponent implements OnInit, OnChanges {
   @Input() offerItem: OfferListItem;
   panelOpenState = false;
   displayedColumns: string[] = ['data', 'trasa', 'iloscMiejsc', 'cena', 'typ', 'info', 'book'];
@@ -35,6 +35,11 @@ export class InstructorItemComponent implements OnInit {
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource(this.offerItem.offers);
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('changes!!');
+  }
+
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     
