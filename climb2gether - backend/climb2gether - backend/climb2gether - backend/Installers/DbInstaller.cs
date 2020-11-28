@@ -25,6 +25,7 @@ namespace climb2gether___backend.Installers
 
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IOfferService, OfferService>();
+            services.AddScoped<IExpeditionsService, ExpeditionsService>();
 
 
         }

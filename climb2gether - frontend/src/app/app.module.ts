@@ -55,6 +55,8 @@ import { ModalConfirmEnrollmentComponent } from './instructors/instructor-list/i
 import { ModalParticipantsListComponent } from './instructors/offers/modal-participants-list/modal-participants-list.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { ListItemComponent } from './climbing-partners/list-item/list-item.component';
+import { AddPrivateOfferComponent } from './climbing-partners/add-private-offer/add-private-offer.component';
 
 
 @NgModule({
@@ -83,7 +85,9 @@ import { environment } from '../environments/environment';
     OffersComponent,
     AddOfferComponent,
     ModalConfirmEnrollmentComponent,
-    ModalParticipantsListComponent
+    ModalParticipantsListComponent,
+    ListItemComponent,
+    AddPrivateOfferComponent
   ],
   imports: [
     BrowserModule,

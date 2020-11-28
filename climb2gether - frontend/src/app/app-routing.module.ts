@@ -14,6 +14,7 @@ import { PostsDetailsComponent } from './dashboard/posts-details/posts-details.c
 import { PostEditComponent } from './dashboard/post-edit/post-edit.component';
 import { OffersComponent } from './instructors/offers/offers.component';
 import { AddOfferComponent } from './instructors/add-offer/add-offer.component';
+import { AddPrivateOfferComponent } from './climbing-partners/add-private-offer/add-private-offer.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginDialogComponent },
@@ -28,7 +29,10 @@ const routes: Routes = [
     ]
   },
   { path: '', component: HomeComponent },
-  { path: 'climbingPartners', component: ClimbingPartnersComponent, canActivate: [AuthGuard] },
+  { path: 'climbingPartners', component: ClimbingPartnersComponent, canActivate: [AuthGuard], children: [
+    {path: ':offerId/edit', component: AddPrivateOfferComponent}
+  ] },
+  {path: 'addPrivateOffer', component: AddPrivateOfferComponent, canActivate: [AuthGuard] },
   { path: 'instructors', component: InstructorsComponent, canActivate: [AuthGuard] },
   { path: 'myOffers', component: OffersComponent, canActivate: [AuthGuard], children: [
     { path: 'addOffer', component: AddOfferComponent },

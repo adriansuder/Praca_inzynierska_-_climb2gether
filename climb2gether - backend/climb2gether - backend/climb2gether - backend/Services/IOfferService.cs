@@ -11,14 +11,14 @@ namespace climb2gether___backend.Services
     {
         Task<bool> CreateOfferAsync(Offer offer);
         Task<List<OfferResponse>> GetOffersAsync(int userId);
-        Task<OfferDetailsResponse> GetOfferDetails(int offerId);
+        Task<OfferDetailsResponse> GetOfferDetailsAsync(int offerId);
         Task<List<Offer>> GetUserOffersAsync(int userId);
-        Task<bool> UserOwnsOffer(int offerId, int userId);
+        Task<bool> UserOwnsOfferAsync(int offerId, int userId);
         Task<bool> DeleteOfferAsync(int offerId);
-        Task<bool> UpdateOffer(Offer offer);
-        Task<bool> CreateEnrollment(OfferEnrollment offerEnrollment);
-        Task<bool> IsUserAlreadyEnrolled(int offerId, int userId);
-        Task<bool> DeleteEnrollment(int offerId, int userId);
-        Task<List<ParticipantResponse>> GetParticipantsList(int offerId);
+        Task<bool> UpdateOfferAsync(Offer offer);
+        Task<bool> CreateEnrollmentAsync(OfferEnrollment offerEnrollment);
+        Task<bool> IsUserAlreadyEnrolledAsync(int offerId, int userId);
+        Task<bool> DeleteEnrollmentAsync(int offerId, int userId);
+        Task<List<ParticipantResponse>> GetParticipantsListAsync(int offerId);
     }
 }

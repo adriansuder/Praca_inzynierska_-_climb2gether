@@ -80,7 +80,7 @@ namespace climb2gether___backend.Controllers.V1
             //var token = Request.Headers["Authorization"][0].ToString();
             //token = token.Substring(token.IndexOf(" ") + 1);
             //var userId = _identityService.GetUserIdFromJWT(token);
-            var details = await _offerService.GetOfferDetails(offerId);
+            var details = await _offerService.GetOfferDetailsAsync(offerId);
 
             return Ok(details);
         }
@@ -92,7 +92,7 @@ namespace climb2gether___backend.Controllers.V1
             token = token.Substring(token.IndexOf(" ") + 1);
             var userId = _identityService.GetUserIdFromJWT(token);
 
-            var userOwnsOffer = await _offerService.UserOwnsOffer(offerId, userId);
+            var userOwnsOffer = await _offerService.UserOwnsOfferAsync(offerId, userId);
 
             if (userOwnsOffer)
             {
@@ -118,7 +118,7 @@ namespace climb2gether___backend.Controllers.V1
                 OfferOwnerUserId = offerRequest.OfferOwnerUserId
             };
 
-            var isUpdated = await _offerService.UpdateOffer(offer);
+            var isUpdated = await _offerService.UpdateOfferAsync(offer);
             if (!isUpdated)
             {
                 return BadRequest();
@@ -128,7 +128,7 @@ namespace climb2gether___backend.Controllers.V1
         [HttpPost(ApiRoutes.Offers.CreateEnrollment)]
         public async Task<IActionResult> CreateEnrollment([FromBody] AddEnrollmentRequest request)
         {
-            var isUserAlreadyAddedToEvent = await _offerService.IsUserAlreadyEnrolled(request.OfferId, request.UserId);
+            var isUserAlreadyAddedToEvent = await _offerService.IsUserAlreadyEnrolledAsync(request.OfferId, request.UserId);
             if (isUserAlreadyAddedToEvent)
             {
                 return BadRequest("User is already enrolled");
@@ -138,7 +138,7 @@ namespace climb2gether___backend.Controllers.V1
                 ParticipantUserId = request.UserId,
                 OfferId = request.OfferId
             };
-            var result = await _offerService.CreateEnrollment(offerEnrollment);
+            var result = await _offerService.CreateEnrollmentAsync(offerEnrollment);
             if (!result)
             {
                 return BadRequest();
@@ -150,7 +150,7 @@ namespace climb2gether___backend.Controllers.V1
         [HttpDelete(ApiRoutes.Offers.DeleteEnrollment)]
         public async Task<IActionResult> DeleteEnrollment([FromQuery] int offerId, [FromQuery] int userId)
         {
-            var result = await _offerService.DeleteEnrollment(offerId, userId);
+            var result = await _offerService.DeleteEnrollmentAsync(offerId, userId);
             if (!result)
             {
                 return BadRequest();
@@ -160,7 +160,7 @@ namespace climb2gether___backend.Controllers.V1
         [HttpGet(ApiRoutes.Offers.ParticipantsList)]
         public async Task<IActionResult> GetParticipantsList([FromQuery] int offerId)
         {
-            var participantsList = await _offerService.GetParticipantsList(offerId);
+            var participantsList = await _offerService.GetParticipantsListAsync(offerId);
 
             return Ok(participantsList);
         }

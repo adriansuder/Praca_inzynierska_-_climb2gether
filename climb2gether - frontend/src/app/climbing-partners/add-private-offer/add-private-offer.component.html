@@ -1,0 +1,49 @@
+<div class="container mt-4">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-12" id="addPrivateOffer" class="px-5 py-3 ">
+            <h1>Dodaj prywatną wyprawę </h1>
+            <hr>
+            <form [formGroup]="privateOfferForm">
+                <div class="row">
+                    <mat-form-field appearance="outline" class="col-lg-6 col-12">
+                        <mat-label>Cel wyprawy - miasto(np. Zakopane)</mat-label>
+                        <input matInput formControlName="celWyprawyMiasto" type="text">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-6 col-12">
+                        <mat-label>Cel wyprawy - rejon(np. Tatry Wysokie)</mat-label>
+                        <input matInput formControlName="celWyprawyRejon" type="text">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-4 col-12">
+                        <mat-label>Skąd wyjeżdżasz?</mat-label>
+                        <input matInput formControlName="wyjazdZ" type="text">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-2 col-12">
+                        <mat-label>Max. ilość osób w ekipie</mat-label>
+                        <input matInput formControlName="maxIloscOsob" type="number">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-2 col-12">
+                        <mat-label>Data wyprawy</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="dataWyprawy">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-4 col-12">
+                        <mat-label>Tytuł opisu</mat-label>
+                        <input matInput formControlName="tytulOpisu" type="text">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-12">
+                        <mat-label>Opisz swoją wyprawę</mat-label>
+                        <textarea matInput formControlName="tytulOpisu" rows="6"></textarea>
+                    </mat-form-field>
+                </div>
+
+
+                <div class="col-xs-12">
+                    <button class="btn btn-primary" type="submit" [disabled]="!privateOfferForm.valid">Dodaj</button> | 
+                    <button class="btn btn-warning" type="button">Anuluj</button> <span *ngIf="true"> |
+                    <button class="btn btn-danger" type="button" >Usuń ofertę</button></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

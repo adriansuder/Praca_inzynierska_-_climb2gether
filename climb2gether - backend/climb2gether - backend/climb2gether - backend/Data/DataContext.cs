@@ -21,6 +21,7 @@ namespace climb2gether___backend.Data
         public DbSet<ApplicationUserRole> ApplicationUserRoles { get; set; }
         public DbSet<Offer> Offers { get; set; }
         public DbSet<OfferEnrollment> OfferEnrollments { get; set; }
+        public DbSet<Expedition> Expeditions { get; set; }
 
     }
 }

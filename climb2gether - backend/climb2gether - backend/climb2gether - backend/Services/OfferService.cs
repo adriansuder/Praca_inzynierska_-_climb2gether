@@ -63,7 +63,7 @@ namespace climb2gether___backend.Services
             return query;
         }
 
-        public async Task<OfferDetailsResponse> GetOfferDetails(int offerId)
+        public async Task<OfferDetailsResponse> GetOfferDetailsAsync(int offerId)
         {
             var offer = await _dataContext.Offers.Where(offer => offer.Id == offerId).SingleOrDefaultAsync();
             var result = new OfferDetailsResponse { Description = offer.Describe };
@@ -76,7 +76,7 @@ namespace climb2gether___backend.Services
             return await _dataContext.Offers.Where(offer => offer.OfferOwnerUserId == userId).ToListAsync();
         }
 
-        public async Task<bool> UserOwnsOffer(int offerId, int userId)
+        public async Task<bool> UserOwnsOfferAsync(int offerId, int userId)
         {
             var result = _dataContext.Offers.Where(x => x.Id == offerId && x.OfferOwnerUserId == userId).Count();
             return result > 0;
@@ -90,7 +90,7 @@ namespace climb2gether___backend.Services
 
                 return result > 0;
         }
-        public async Task<bool> UpdateOffer(Offer offer)
+        public async Task<bool> UpdateOfferAsync(Offer offer)
         {
             var fetchedOffer = await _dataContext.Offers.SingleOrDefaultAsync(x => x.Id == offer.Id);
             var temp = fetchedOffer;
@@ -106,7 +106,7 @@ namespace climb2gether___backend.Services
 
         }
 
-        public async Task<bool> CreateEnrollment(OfferEnrollment offerEnrollment)
+        public async Task<bool> CreateEnrollmentAsync(OfferEnrollment offerEnrollment)
         {
             _dataContext.OfferEnrollments.Add(offerEnrollment);
             var result = await _dataContext.SaveChangesAsync();
@@ -114,14 +114,14 @@ namespace climb2gether___backend.Services
             return result > 0;
         }
 
-        public async Task<bool> IsUserAlreadyEnrolled(int offerId, int userId)
+        public async Task<bool> IsUserAlreadyEnrolledAsync(int offerId, int userId)
         {
             var result = await  _dataContext.OfferEnrollments
                 .SingleOrDefaultAsync(x => x.OfferId == offerId && x.ParticipantUserId == userId);
             return result != null;
         }
 
-        public async Task<bool> DeleteEnrollment(int offerId, int userId)
+        public async Task<bool> DeleteEnrollmentAsync(int offerId, int userId)
         {
             var offerToDelete = await _dataContext.OfferEnrollments.SingleOrDefaultAsync(x => x.ParticipantUserId == userId && x.OfferId == offerId);
             if (offerToDelete == null)
@@ -133,7 +133,7 @@ namespace climb2gether___backend.Services
             return result > 0;
         }
 
-        public async Task<List<ParticipantResponse>> GetParticipantsList(int offerId)
+        public async Task<List<ParticipantResponse>> GetParticipantsListAsync(int offerId)
         {
             var query = await (from offEnr in _dataContext.OfferEnrollments
                          join user in _dataContext.Users on offEnr.ParticipantUserId equals user.Id
