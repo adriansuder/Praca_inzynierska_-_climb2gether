@@ -52,7 +52,7 @@ export class AuthService {
     this.router.navigate(['dashboard/posts']);
   }
 
-  register(newUser: { email: string, password: string, name: string, username: string, sex: string, surname: string, roleId: number, dateOfBirth: Date, phoneNumber: string }) {
+  register(newUser: { email: string, password: string, name: string, username: string, sex: string, surname: string, roleId: number, dateOfBirth: Date, phoneNumber: string, city: string }) {
     return this.http.post<AuthResponseData>(`${environment.apiUrl}/register`, newUser)
       .pipe(
         tap(authRes => this.setLoggedUser(authRes.token, authRes.refreshToken, authRes.userId, authRes.expiresIn)),

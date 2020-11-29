@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { ExpeditionListItem } from 'src/app/_models/ExpeditionListItem';
 
 @Component({
   selector: 'app-list-item',
@@ -11,6 +12,8 @@ export class ListItemComponent implements OnInit {
   displayedColumns: string[] = ['data', 'trasa', 'iloscMiejsc', 'typ', 'akcje'];
   dataSource = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @Input() expItem: ExpeditionListItem;
+
   constructor() { }
 
   ngOnInit(): void {

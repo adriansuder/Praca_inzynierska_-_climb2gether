@@ -32,7 +32,8 @@ export class RegisterDialogComponent implements OnInit {
       surname: [''],
       roleId: [''],
       dateOfBirth: [''],
-      phoneNumber: ['']
+      phoneNumber: [''],
+      city: ['']
     });
 
     this.getRoles();
@@ -54,7 +55,8 @@ export class RegisterDialogComponent implements OnInit {
         surname: this.f.surname.value,
         roleId: +this.f.roleId.value,
         dateOfBirth: this.f.dateOfBirth.value,
-        phoneNumber: this.f.phoneNumber.value
+        phoneNumber: this.f.phoneNumber.value,
+        city: this.f.city.value
       }
     )
     .subscribe(success => {
@@ -67,12 +69,12 @@ export class RegisterDialogComponent implements OnInit {
 
    async getRoles(){
     this.UserRoles = await this.auth.getUserRoles();
-    console.log(this.UserRoles)
+    console.log(this.UserRoles);
   }
 
   logout() {
     this.auth.logout().subscribe( res => {
-      console.log(res)
+      console.log(res);
     });
 
   }

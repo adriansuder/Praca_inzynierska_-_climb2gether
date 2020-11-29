@@ -17,6 +17,7 @@ namespace climb2gether___backend.Domain
         public ApplicationUserRole Role { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Phone { get; set; }
+        public string City { get; set; }
 
     }
 }

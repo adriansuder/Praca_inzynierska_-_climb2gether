@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Post } from 'src/app/_models/Post';
-import { PostsService } from '../../posts.service';
+import { PostsService } from '../../../services/posts.service';
 
 @Component({
   selector: 'app-post-item',

@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { InstructorsService } from 'src/app/instructors/instructors.service';
+import { InstructorsService } from 'src/app/services/instructors.service';
 import { OfferDetails } from 'src/app/_models/OfferDetails';
 
 @Component({

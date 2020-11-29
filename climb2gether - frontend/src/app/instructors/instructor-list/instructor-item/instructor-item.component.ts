@@ -8,7 +8,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { ModalDetailsComponent } from './modal-details/modal-details.component';
 import { ModalConfirmEnrollmentComponent } from './modal-confirm-enrollment/modal-confirm-enrollment.component';
-import { InstructorsService } from '../../instructors.service';
+import { InstructorsService } from '../../../services/instructors.service';
 
 // const ELEMENT_DATA: Offer[] = [
 //   {data: '2020-09-20', trasa: 'Hydrogen', iloscMiejsc: 1.0079, cena: 500},

@@ -18,5 +18,6 @@ namespace climb2gether___backend.Contracts.V1.Requests
         public int RoleId { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Phone { get; set; }
+        public string City { get; set; }
     }
 }

@@ -12,28 +12,24 @@
                         <div mat-subheader><b>Info o użytkowniku: </b></div>
                         <mat-list-item>
                             <mat-icon mat-list-icon>account_box</mat-icon>
-                            <div mat-line>Jan Kowalski</div>
+                            <div mat-line>{{ expItem.user.firstName + ' '+ expItem.user.surname}}</div>
                             <!-- <div mat-line> folder.updated </div> -->
                         </mat-list-item>
                         <mat-list-item>
                             <mat-icon mat-list-icon>location_city</mat-icon>
-                            <div mat-line>Kraków</div>
-                        </mat-list-item>
-                        <mat-list-item>
-                            <mat-icon mat-list-icon>cake</mat-icon>
-                            <div mat-line>02.02.1992</div>
+                            <div mat-line>{{ expItem.user.city }}</div>
                         </mat-list-item>
                         <mat-list-item>
                             <mat-icon mat-list-icon>terrain</mat-icon>
-                            <div mat-line>Wspinacz</div>
+                            <div mat-line>{{ expItem.user.roleName }}</div>
                         </mat-list-item>
                         <mat-list-item>
                             <mat-icon mat-list-icon>local_phone</mat-icon>
-                            <div mat-line>123 456 789</div>
+                            <div mat-line>{{ expItem.user.phone }}</div>
                         </mat-list-item>
                         <mat-list-item>
                             <mat-icon mat-list-icon>email</mat-icon>
-                            <div mat-line>mailtest@example.com</div>
+                            <div mat-line>{{ expItem.user.email }}</div>
                         </mat-list-item>
                     </mat-list>
                 </div>
@@ -43,13 +39,13 @@
                         <div class="row">
                             <mat-list-item class="horizontal-mat-list-item col-12 col-md-6 col-lg-3">
                                 <mat-icon mat-list-icon>location_on</mat-icon>
-                                <div mat-line>Cel wyprawy: Zakopane</div>
-                                <div mat-line>Wyjazd z: Kraków</div>
+                                <div mat-line>Cel wyprawy: {{expItem.destinationCity}}</div>
+                                <div mat-line>Wyjazd z: {{expItem.departureCity}}</div>
                             </mat-list-item>
                             <mat-list-item class="horizontal-mat-list-item col-12 col-md-6 col-lg-3">
                                 <mat-icon mat-list-icon>terrain</mat-icon>
-                                <div mat-line>Środkowe Żebro - Skrajny Granat</div>
-                                <div mat-line>Tatry Wysokie</div>
+                                <div mat-line>{{expItem.destination}}</div>
+                                <div mat-line>{{expItem.destinationRegion}}</div>
                             </mat-list-item>
                             
                             <mat-list-item class="horizontal-mat-list-item col-12 col-md-6 col-lg-3">
@@ -59,16 +55,14 @@
                             </mat-list-item>
                             <mat-list-item class="horizontal-mat-list-item col-12 col-md-6 col-lg-3">
                                 <mat-icon mat-list-icon>event_available</mat-icon>
-                                <div mat-line>27.10.2020</div>
+                                <div mat-line>{{expItem.expeditionDate}}</div>
                                 <div mat-line>Data wyprawy</div>
                             </mat-list-item>
                         </div>
                     </mat-list>
                     <mat-card class="mt-2 mat-elevation-z4">
-                        <h3>Środkowe Żebro - Skrajny Granat</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat. </p>
+                        <h3>{{expItem.descriptionTitle}}</h3>
+                        <p>{{expItem.description}}</p>
                     </mat-card>
                 </div>
             </div>

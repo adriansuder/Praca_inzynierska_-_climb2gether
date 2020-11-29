@@ -3,10 +3,7 @@
     <mat-icon>add</mat-icon>
 </button>
 <div class="container listItemWrapper mt-3 mb-3">
-    <app-list-item></app-list-item>
-    <app-list-item></app-list-item>
-    <app-list-item></app-list-item>
-    <app-list-item></app-list-item>
+    <app-list-item *ngFor="let exp of fetchedOffers; let i = index" [expItem]="exp"></app-list-item>
 </div>
 
 

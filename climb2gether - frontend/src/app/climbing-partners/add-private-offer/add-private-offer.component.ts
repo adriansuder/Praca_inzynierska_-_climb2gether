@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/auth/auth.service';
+import { ClimbingPartnersService } from 'src/app/services/climbing-partners.service';
+import { Expedition } from 'src/app/_models/Expedition';
 
 @Component({
   selector: 'app-add-private-offer',
@@ -9,10 +12,27 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class AddPrivateOfferComponent implements OnInit {
 
   privateOfferForm: FormGroup;
-  constructor() { }
+  constructor(private climbService: ClimbingPartnersService, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.createForm();
+  }
+
+  async onSubmit() {
+    const expedition: Expedition = {
+      userId: this.authService.loggedUser.userId,
+      destinationCity: this.privateOfferForm.value.celWyprawyMiasto,
+      destination: this.privateOfferForm.value.celWyprawy,
+      destinationRegion: this.privateOfferForm.value.celWyprawyRejon,
+      departureCity: this.privateOfferForm.value.wyjazdZ,
+      maxParticipants: this.privateOfferForm.value.maxIloscOsob,
+      creationDate: new Date(Date.now()),
+      expeditionDate:  this.privateOfferForm.value.dataWyprawy,
+      descriptionTitle: this.privateOfferForm.value.tytulOpisu,
+      description: this.privateOfferForm.value.opisWyprawy
+    }
+    const result = await this.climbService.createExpedition(expedition);
+    console.log(result);
   }
 
   private async createForm() {

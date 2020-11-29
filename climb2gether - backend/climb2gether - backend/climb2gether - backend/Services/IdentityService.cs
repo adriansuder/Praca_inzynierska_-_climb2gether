@@ -98,7 +98,8 @@ namespace climb2gether___backend.Services
                 Sex = userRequest.Sex,
                 RoleId = userRequest.RoleId,
                 DateOfBirth = userRequest.DateOfBirth,
-                Phone = userRequest.Phone
+                Phone = userRequest.Phone,
+                City = userRequest.City
         };
 
             var createdUser = await _userManager.CreateAsync(newUser, userRequest.Password);

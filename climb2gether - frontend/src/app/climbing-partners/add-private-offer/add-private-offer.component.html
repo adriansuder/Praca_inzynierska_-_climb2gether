@@ -3,8 +3,12 @@
         <div class="col-md-12" id="addPrivateOffer" class="px-5 py-3 ">
             <h1>Dodaj prywatną wyprawę </h1>
             <hr>
-            <form [formGroup]="privateOfferForm">
+            <form [formGroup]="privateOfferForm" (ngSubmit)="onSubmit()">
                 <div class="row">
+                    <mat-form-field appearance="outline" class="col-12">
+                        <mat-label>Cel wyprawy (np. Świnica)</mat-label>
+                        <input matInput formControlName="celWyprawy" type="text">
+                    </mat-form-field>
                     <mat-form-field appearance="outline" class="col-lg-6 col-12">
                         <mat-label>Cel wyprawy - miasto(np. Zakopane)</mat-label>
                         <input matInput formControlName="celWyprawyMiasto" type="text">
@@ -39,7 +43,7 @@
 
 
                 <div class="col-xs-12">
-                    <button class="btn btn-primary" type="submit" [disabled]="!privateOfferForm.valid">Dodaj</button> | 
+                    <button class="btn btn-primary" type="submit" [disabled]="privateOfferForm.valid">Dodaj</button> | 
                     <button class="btn btn-warning" type="button">Anuluj</button> <span *ngIf="true"> |
                     <button class="btn btn-danger" type="button" >Usuń ofertę</button></span>
                 </div>

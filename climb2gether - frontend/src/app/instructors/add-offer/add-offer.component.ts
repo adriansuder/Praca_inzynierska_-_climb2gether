@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Offer } from 'src/app/_models/Offer';
-import { InstructorsService } from '../instructors.service';
+import { InstructorsService } from '../../services/instructors.service';
 
 @Component({
   selector: 'app-add-offer',

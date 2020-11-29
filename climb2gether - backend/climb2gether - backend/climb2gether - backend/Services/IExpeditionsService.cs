@@ -9,5 +9,6 @@ namespace climb2gether___backend.Services
     public interface IExpeditionsService
     {
         Task<bool> CreateExpeditionAsync(Expedition expedition);
+        Task<List<Expedition>> GetExpeditionsAsync();
     }
 }

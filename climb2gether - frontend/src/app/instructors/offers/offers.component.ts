@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Offer } from 'src/app/_models/Offer';
-import { InstructorsService } from '../instructors.service';
+import { InstructorsService } from '../../services/instructors.service';
 import { ModalParticipantsListComponent } from './modal-participants-list/modal-participants-list.component';
 
 @Component({

@@ -1,6 +1,6 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { OfferListItem } from 'src/app/_models/OfferListItem';
-import { InstructorsService } from '../instructors.service';
+import { InstructorsService } from '../../services/instructors.service';
 
 @Component({
   selector: 'app-instructor-list',

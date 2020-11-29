@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Participant } from 'src/app/_models/Participant';
-import { InstructorsService } from '../../instructors.service';
+import { InstructorsService } from '../../../services/instructors.service';
 
 @Component({
   selector: 'app-modal-participants-list',

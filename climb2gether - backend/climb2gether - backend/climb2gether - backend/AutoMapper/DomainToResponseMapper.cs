@@ -17,6 +17,7 @@ namespace climb2gether___backend.AutoMapper
                 //.ForMember(dest => dest.UserNameSurname, m => m.MapFrom(u => u.User.Name + " " + u.User.Surname)); 
             CreateMap<User, UserResponse>();
             CreateMap<ApplicationUserRole, UserRoleResponse>();
+            CreateMap<Expedition, ExpeditionResponse>();
         }
     }
 }
