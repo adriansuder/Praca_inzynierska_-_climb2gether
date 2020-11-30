@@ -57,7 +57,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { ListItemComponent } from './climbing-partners/list-item/list-item.component';
 import { AddPrivateOfferComponent } from './climbing-partners/add-private-offer/add-private-offer.component';
-
+import { ExpeditionEnrollmentModalComponent } from './climbing-partners/expedition-enrollment-modal/expedition-enrollment-modal.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { AddPrivateOfferComponent } from './climbing-partners/add-private-offer/
     ModalConfirmEnrollmentComponent,
     ModalParticipantsListComponent,
     ListItemComponent,
-    AddPrivateOfferComponent
+    AddPrivateOfferComponent,
+    ExpeditionEnrollmentModalComponent
   ],
   imports: [
     BrowserModule,
@@ -115,6 +117,7 @@ import { AddPrivateOfferComponent } from './climbing-partners/add-private-offer/
     MatDatepickerModule,
     MatNativeDateModule,
     NgxMatFileInputModule,
+    MatSnackBarModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [

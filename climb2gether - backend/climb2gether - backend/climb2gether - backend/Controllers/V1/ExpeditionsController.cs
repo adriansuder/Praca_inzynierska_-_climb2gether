@@ -67,5 +67,25 @@ namespace climb2gether___backend.Controllers.V1
             }).ToList();
             return Ok(result);
         }
+
+        [HttpPost(ApiRoutes.Expeditions.CreateEnrollment)]
+        public async Task<IActionResult> CreateEnrollment([FromBody] AddExpeditionEnrollmentRequest request)
+        {
+            var expedition = _mapper.Map<ExpeditionEnrollment>(request);
+            var isUserAlreadyEnrolled = await _expeditionsService.CheckIfUserIsAlreadyEnrolled(expedition);
+
+            if (isUserAlreadyEnrolled)
+            {
+                return BadRequest("User is already Enrolled");
+            }
+
+            var result = await _expeditionsService.CreateEnrollmentAsync(expedition);
+            if (!result)
+            {
+                return BadRequest("Sth went wrong");
+            }
+
+            return Ok(result);
+        }
     }
 }

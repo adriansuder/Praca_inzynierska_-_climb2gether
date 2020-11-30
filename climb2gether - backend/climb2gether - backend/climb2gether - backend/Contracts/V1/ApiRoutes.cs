@@ -53,6 +53,7 @@ namespace climb2gether___backend.Contracts
         {
             public const string Create = Base + "/expeditions";
             public const string GetAll = Base + "/expeditions";
+            public const string CreateEnrollment = Base + "/expeditions/addEnrollment";
         }
     }
 }

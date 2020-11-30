@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>{{data.destination + ' - ' + data.destinationRegion}}</h2>
+<h3>{{data.expeditionDate | date: 'shortDate'}}</h3>
+<div mat-dialog-content>
+
+    <p>Czy chcesz potwierdzić swój udział?</p>
+</div>
+<div mat-dialog-actions class="float-right">
+    <button mat-raised-button mat-dialog-close>Anuluj</button>
+    <button mat-raised-button color="primary" (click)="confirm()">Potwierdź</button>
+
+</div>

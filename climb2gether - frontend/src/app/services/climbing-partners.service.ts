@@ -5,13 +5,26 @@ import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { Expedition } from '../_models/Expedition';
 import { ExpeditionListItem } from '../_models/ExpeditionListItem';
+import {
+  MatSnackBar,
+  MatSnackBarConfig,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClimbingPartnersService {
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+
+  constructor(
+    private http: HttpClient, 
+    private authService: AuthService,
+    private snackBar: MatSnackBar
+    ) { }
 
   createExpedition(expedition: Expedition){
     return this.http.post<any>(
@@ -26,5 +39,24 @@ export class ClimbingPartnersService {
     ).pipe(map(resData => {
       return JSON.parse(JSON.stringify(resData));
     }), tap(resData => console.log(resData))).toPromise();
+  }
+
+  addExpeditionEnrollment(expeditionId: number){
+    return this.http.post<any>(
+      `${environment.apiUrl}/expeditions/addEnrollment`,
+      {
+        participantUserId: this.authService.loggedUser.userId,
+        expeditionId
+      }
+    ).toPromise();
+  }
+
+  openSnackBar(message: string) {
+    const config = new MatSnackBarConfig();
+    config.panelClass = ['snackBarStyle'];
+    config.horizontalPosition = this.horizontalPosition;
+    config.verticalPosition = this.verticalPosition;
+    config.duration = 3000;
+    this.snackBar.open(message, 'X', config);
   }
 }

@@ -3,8 +3,8 @@
     <div class="d-flex justify-content-center">
         <div class="col-lg-12 col-md-12 col-12 myOfferWrapper mat-elevation-z8 mt-2">
             <br>
-            <h2 class="title">Środkowe Żebro - skrajny granat</h2>
-            <h4 class="title">Tatry Wysokie</h4>
+            <h2 class="title">{{ expItem.destination }}</h2>
+            <h4 class="title">{{ expItem.destinationRegion }}</h4>
             <hr>
             <div class="row mt-2">
                 <div class="col-lg-3 col-md-12 col-12">
@@ -55,7 +55,7 @@
                             </mat-list-item>
                             <mat-list-item class="horizontal-mat-list-item col-12 col-md-6 col-lg-3">
                                 <mat-icon mat-list-icon>event_available</mat-icon>
-                                <div mat-line>{{expItem.expeditionDate}}</div>
+                                <div mat-line>{{expItem.expeditionDate | date: 'shortDate'}}</div>
                                 <div mat-line>Data wyprawy</div>
                             </mat-list-item>
                         </div>
@@ -69,7 +69,7 @@
             <hr>
             <div class="row pb-2">
                 <div class="col-12">
-                    <button class="btn btn-primary">Umów się!</button>
+                    <button class="btn btn-primary" (click)="confrimEnrollmentDialog()">Umów się!</button>
                 </div>
             </div>
         </div>

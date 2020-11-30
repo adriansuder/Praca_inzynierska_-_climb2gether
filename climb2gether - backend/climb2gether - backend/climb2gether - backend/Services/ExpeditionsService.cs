@@ -17,6 +17,21 @@ namespace climb2gether___backend.Services
             _dataContext = dataContext;
         }
 
+        public async Task<bool> CheckIfUserIsAlreadyEnrolled(ExpeditionEnrollment expeditionEnrollment)
+        {
+            var result = await _dataContext.ExpeditionEnrollments
+                .AnyAsync(x => x.ParticipantUserId == expeditionEnrollment.ParticipantUserId && x.ExpeditionId == expeditionEnrollment.ExpeditionId);
+            return result;
+        }
+
+        public async Task<bool> CreateEnrollmentAsync(ExpeditionEnrollment expeditionEnrollment)
+        {
+            _dataContext.ExpeditionEnrollments.Add(expeditionEnrollment);
+            var result = await _dataContext.SaveChangesAsync();
+
+            return result > 0;
+        }
+
         public async Task<bool> CreateExpeditionAsync(Expedition expedition)
         {
             await _dataContext.Expeditions.AddAsync(expedition);
