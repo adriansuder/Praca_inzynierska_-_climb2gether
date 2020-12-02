@@ -33,11 +33,13 @@ export class ClimbingPartnersService {
     ).toPromise();
   }
 
-  getAllExpeditions() {
+   getAllExpeditions() {
     return this.http.get<any>(
       `${environment.apiUrl}/expeditions`
     ).pipe(map(resData => {
-      return JSON.parse(JSON.stringify(resData));
+      var result = JSON.parse(JSON.stringify(resData));
+      result.sort((a, b) => a.creationDate < b.creationDate ? 1 : -1);
+      return result;
     }), tap(resData => console.log(resData))).toPromise();
   }
 

@@ -15,6 +15,7 @@ import { PostEditComponent } from './dashboard/post-edit/post-edit.component';
 import { OffersComponent } from './instructors/offers/offers.component';
 import { AddOfferComponent } from './instructors/add-offer/add-offer.component';
 import { AddPrivateOfferComponent } from './climbing-partners/add-private-offer/add-private-offer.component';
+import { InstructorsService } from './services/instructors.service';
 
 const routes: Routes = [
   { path: 'login', component: LoginDialogComponent },
@@ -47,6 +48,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes)
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [InstructorsService]
 })
 export class AppRoutingModule { }

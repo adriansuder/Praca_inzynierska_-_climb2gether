@@ -23,7 +23,7 @@ namespace climb2gether___backend.Installers
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = new JwtSettings();
-            configuration.Bind(key: nameof(jwtSettings), jwtSettings);
+            configuration.Bind(nameof(jwtSettings), jwtSettings);
             services.AddSingleton(jwtSettings);
 
             services.AddScoped<IIdentityService, IdentityService>();

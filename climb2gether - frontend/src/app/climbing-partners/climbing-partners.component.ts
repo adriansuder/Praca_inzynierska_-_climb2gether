@@ -12,12 +12,10 @@ export class ClimbingPartnersComponent implements OnInit {
   fetchedOffers: ExpeditionListItem[];
   constructor(private climbService: ClimbingPartnersService) { }
 
-  ngOnInit() {
-    this.fetchOffers();
+  async ngOnInit() {
+    this.fetchedOffers = await this.climbService.getAllExpeditions();
+  
   }
 
-  private async fetchOffers(){
-    this.fetchedOffers = await this.climbService.getAllExpeditions();
-  }
 
 }

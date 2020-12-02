@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, Subject, interval } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { MatSnackBar, MatSnackBarConfig, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { Observable, Subject, interval, Subscription } from 'rxjs';
 import { map, repeatWhen, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
@@ -14,34 +15,43 @@ import { Participant } from '../_models/Participant';
   providedIn: 'root'
 })
 export class InstructorsService {
-
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
   inAddingOfferMode = new Subject<boolean>();
   offersChanged = new Subject<OfferListItem[]>();
   userOffersChanged = new Subject<Offer[]>();
   offerDetailsSubject = new Subject<OfferDetails>();
+  OffersSubscription: Subscription;
 
   fetchedOffers: OfferListItem[] = [];
   fetchedUserOffers: Offer[] = [];
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(private http: HttpClient, private authService: AuthService, private snackBar: MatSnackBar) { }
 
-  getOffers() {
-    this.http
+  openSnackBar(message: string) {
+    const config = new MatSnackBarConfig();
+    config.panelClass = ['snackBarStyle'];
+    config.horizontalPosition = this.horizontalPosition;
+    config.verticalPosition = this.verticalPosition;
+    config.duration = 3000;
+    this.snackBar.open(message, 'X', config);
+  }
+
+  async getOffers() {
+    await this.http
       .get<OfferListItem[]>(
         `${environment.apiUrl}/offers`
       ).pipe(map(resData => {
         let offerArray: OfferListItem[] = [];
         offerArray = JSON.parse(JSON.stringify(resData));
-        return offerArray;
+        return resData;
       })
         , tap(offers => {
-          console.log(offers);
-        })
-        , repeatWhen(() => interval(10000))
-        ).subscribe(offers => {
           this.fetchedOffers = offers;
-          this.offersChanged.next(this.fetchedOffers);
-        });
+          this.offersChanged.next(offers);
+        })
+        , repeatWhen(() => interval(90000))
+        ).toPromise();
   }
 
   getInstructorOffers() {

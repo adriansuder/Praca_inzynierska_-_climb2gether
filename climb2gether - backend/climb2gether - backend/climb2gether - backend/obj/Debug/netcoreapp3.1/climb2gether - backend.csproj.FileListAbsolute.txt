@@ -231,7 +231,16 @@ D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - ba
 D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\bin\Debug\netcoreapp3.1\FluentValidation.dll
 D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\bin\Debug\netcoreapp3.1\FluentValidation.AspNetCore.dll
 D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\bin\Debug\netcoreapp3.1\FluentValidation.DependencyInjectionExtensions.dll
+D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\obj\Debug\netcoreapp3.1\climb2gether - backend.csprojAssemblyReference.cache
 D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\obj\Debug\netcoreapp3.1\climb2gether - backend.csproj.CoreCompileInputs.cache
 D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\obj\Debug\netcoreapp3.1\climb2gether - backend.MvcApplicationPartsAssemblyInfo.cs
 D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\obj\Debug\netcoreapp3.1\climb2gether - backend.MvcApplicationPartsAssemblyInfo.cache
-D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\obj\Debug\netcoreapp3.1\climb2gether - backend.csprojAssemblyReference.cache
+D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\bin\Debug\netcoreapp3.1\System.Web.Razor.dll
+D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\bin\Debug\netcoreapp3.1\Microsoft.Web.Helpers.dll
+D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\bin\Debug\netcoreapp3.1\System.Web.Helpers.dll
+D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\bin\Debug\netcoreapp3.1\System.Web.WebPages.Deployment.dll
+D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\bin\Debug\netcoreapp3.1\System.Web.WebPages.Razor.dll
+D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\bin\Debug\netcoreapp3.1\System.Web.WebPages.dll
+D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\bin\Debug\netcoreapp3.1\WebMatrix.Data.dll
+D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\bin\Debug\netcoreapp3.1\WebMatrix.WebData.dll
+D:\Repositories\climb2gether_INZYNIERKA\climb2gether - backend\climb2gether - backend\climb2gether - backend\bin\Debug\netcoreapp3.1\Microsoft.Web.Infrastructure.dll

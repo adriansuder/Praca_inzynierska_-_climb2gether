@@ -59,6 +59,9 @@ import { ListItemComponent } from './climbing-partners/list-item/list-item.compo
 import { AddPrivateOfferComponent } from './climbing-partners/add-private-offer/add-private-offer.component';
 import { ExpeditionEnrollmentModalComponent } from './climbing-partners/expedition-enrollment-modal/expedition-enrollment-modal.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { ImageDrawingModule } from 'ngx-image-drawing';
+import { AddClimbingSchemaComponent } from './user-climbings/add-climbing-schema/add-climbing-schema.component';
+
 
 @NgModule({
   declarations: [
@@ -89,7 +92,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     ModalParticipantsListComponent,
     ListItemComponent,
     AddPrivateOfferComponent,
-    ExpeditionEnrollmentModalComponent
+    ExpeditionEnrollmentModalComponent,
+    AddClimbingSchemaComponent
   ],
   imports: [
     BrowserModule,
@@ -118,6 +122,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatNativeDateModule,
     NgxMatFileInputModule,
     MatSnackBarModule,
+    ImageDrawingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [

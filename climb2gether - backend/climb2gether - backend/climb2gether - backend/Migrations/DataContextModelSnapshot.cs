@@ -171,6 +171,27 @@ namespace climb2gether___backend.Migrations
                     b.ToTable("ApplicationUserRoles");
                 });
 
+            modelBuilder.Entity("climb2gether___backend.Domain.Attatchment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FilePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ObjectTypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ObjectTypeNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Attatchments");
+                });
+
             modelBuilder.Entity("climb2gether___backend.Domain.Expedition", b =>
                 {
                     b.Property<int>("Id")

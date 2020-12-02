@@ -27,6 +27,7 @@
           "AutoMapper": "10.0.0",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "8.0.1",
           "FluentValidation.AspNetCore": "9.2.0",
+          "Microsoft.AspNet.WebHelpers": "3.2.7",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
           "Microsoft.AspNetCore.Cors": "2.2.0",
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "3.1.3",
@@ -383,6 +384,17 @@
           "lib/netstandard2.0/FluentValidation.DependencyInjectionExtensions.dll": {}
         }
       },
+      "Microsoft.AspNet.Razor/3.2.7": {
+        "runtime": {
+          "lib/net45/System.Web.Razor.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.61128.0"
+          }
+        },
+        "compile": {
+          "lib/net45/System.Web.Razor.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/4.0.20710": {
         "dependencies": {
           "Microsoft.Net.Http": "2.0.20710",
@@ -410,6 +422,76 @@
         },
         "compile": {
           "lib/net40/System.Web.Http.dll": {}
+        }
+      },
+      "Microsoft.AspNet.WebHelpers/3.2.7": {
+        "dependencies": {
+          "Microsoft.AspNet.WebPages": "3.2.7",
+          "Microsoft.AspNet.WebPages.WebData": "3.2.7"
+        },
+        "runtime": {
+          "lib/net45/Microsoft.Web.Helpers.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.61128.0"
+          }
+        },
+        "compile": {
+          "lib/net45/Microsoft.Web.Helpers.dll": {}
+        }
+      },
+      "Microsoft.AspNet.WebPages/3.2.7": {
+        "dependencies": {
+          "Microsoft.AspNet.Razor": "3.2.7",
+          "Microsoft.Web.Infrastructure": "1.0.0"
+        },
+        "runtime": {
+          "lib/net45/System.Web.Helpers.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.61128.0"
+          },
+          "lib/net45/System.Web.WebPages.Deployment.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.61128.0"
+          },
+          "lib/net45/System.Web.WebPages.Razor.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.61128.0"
+          },
+          "lib/net45/System.Web.WebPages.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.61128.0"
+          }
+        },
+        "compile": {
+          "lib/net45/System.Web.Helpers.dll": {},
+          "lib/net45/System.Web.WebPages.Deployment.dll": {},
+          "lib/net45/System.Web.WebPages.Razor.dll": {},
+          "lib/net45/System.Web.WebPages.dll": {}
+        }
+      },
+      "Microsoft.AspNet.WebPages.Data/3.2.7": {
+        "runtime": {
+          "lib/net45/WebMatrix.Data.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.61128.0"
+          }
+        },
+        "compile": {
+          "lib/net45/WebMatrix.Data.dll": {}
+        }
+      },
+      "Microsoft.AspNet.WebPages.WebData/3.2.7": {
+        "dependencies": {
+          "Microsoft.AspNet.WebPages.Data": "3.2.7"
+        },
+        "runtime": {
+          "lib/net45/WebMatrix.WebData.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.61128.0"
+          }
+        },
+        "compile": {
+          "lib/net45/WebMatrix.WebData.dll": {}
         }
       },
       "Microsoft.AspNetCore.Authentication.JwtBearer/3.1.8": {
@@ -1392,6 +1474,17 @@
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll": {}
+        }
+      },
+      "Microsoft.Web.Infrastructure/1.0.0": {
+        "runtime": {
+          "lib/net40/Microsoft.Web.Infrastructure.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.20105.407"
+          }
+        },
+        "compile": {
+          "lib/net40/Microsoft.Web.Infrastructure.dll": {}
         }
       },
       "Microsoft.Win32.Primitives/4.3.0": {
@@ -4175,6 +4268,13 @@
       "path": "fluentvalidation.dependencyinjectionextensions/9.2.0",
       "hashPath": "fluentvalidation.dependencyinjectionextensions.9.2.0.nupkg.sha512"
     },
+    "Microsoft.AspNet.Razor/3.2.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-BpWEZ+Ys7g9VAkbAfpG5jr5A1fKcmadCCXv3fYfps5YfTVABJIGV4uc9yvmXKxsNsjL+BzDld2gs+xtgT2gg1g==",
+      "path": "microsoft.aspnet.razor/3.2.7",
+      "hashPath": "microsoft.aspnet.razor.3.2.7.nupkg.sha512"
+    },
     "Microsoft.AspNet.WebApi.Client/4.0.20710": {
       "type": "package",
       "serviceable": true,
@@ -4188,6 +4288,34 @@
       "sha512": "sha512-ufD+tH4W7+eNsb4pzX5oFTDcgI6J3lffughFTkyLHPBZ+A4Eo+VncAxt3lbt9zxxbLHXIbgJHYRLvtgR5YEZAQ==",
       "path": "microsoft.aspnet.webapi.core/4.0.20710",
       "hashPath": "microsoft.aspnet.webapi.core.4.0.20710.nupkg.sha512"
+    },
+    "Microsoft.AspNet.WebHelpers/3.2.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-nHJFEnvCcTI/9aYZ0PJAd7l1J+XA9UMb8FCOYP/WN6sV3G20LD1ZdL/CS0AczBzPyr5H/h2ys9w1QtfGIgfcTA==",
+      "path": "microsoft.aspnet.webhelpers/3.2.7",
+      "hashPath": "microsoft.aspnet.webhelpers.3.2.7.nupkg.sha512"
+    },
+    "Microsoft.AspNet.WebPages/3.2.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2jwZFB7PvY+tbdz0ZP4iEo7gMrJxkCQUzoGLh6swUc6ZXl6DoKyDslmGcC/j9PFmJXCRMVIqtRorlPSMU2DuRA==",
+      "path": "microsoft.aspnet.webpages/3.2.7",
+      "hashPath": "microsoft.aspnet.webpages.3.2.7.nupkg.sha512"
+    },
+    "Microsoft.AspNet.WebPages.Data/3.2.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-wRnglowAe94/SMZpwEYKfXLe6U0yYu4bxMOBPIZyBAH0WE8m8I3wU43p7ZTOCTfOLWHalJ3cvN73Y23BBZqPbg==",
+      "path": "microsoft.aspnet.webpages.data/3.2.7",
+      "hashPath": "microsoft.aspnet.webpages.data.3.2.7.nupkg.sha512"
+    },
+    "Microsoft.AspNet.WebPages.WebData/3.2.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-AxvuTZdF1Z216x0ErUw/84QNsf42PuSFr0V3tUAzm8v0tVdg2SYTgRRxF9TgTRfkG3RA1Om5dmlyS3x3/MYotQ==",
+      "path": "microsoft.aspnet.webpages.webdata/3.2.7",
+      "hashPath": "microsoft.aspnet.webpages.webdata.3.2.7.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Authentication.JwtBearer/3.1.8": {
       "type": "package",
@@ -4650,6 +4778,13 @@
       "sha512": "sha512-W+F07AWMXek8Ed5pwNfTE6cpHMLSqlTV+5g3LUJVk2QyA7MvY+bRV5gbpgsxtQtX8MYCECOseKg8fUOXXpXPAg==",
       "path": "microsoft.visualstudio.web.codegenerators.mvc/3.1.4",
       "hashPath": "microsoft.visualstudio.web.codegenerators.mvc.3.1.4.nupkg.sha512"
+    },
+    "Microsoft.Web.Infrastructure/1.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-FNmvLn5m2LTU/Rs2KWVo0SIIh9Ek+U0ojex7xeDaSHw/zgEP77A8vY5cVWgUtBGS8MJfDGNn8rpXJWEIQaPwTg==",
+      "path": "microsoft.web.infrastructure/1.0.0",
+      "hashPath": "microsoft.web.infrastructure.1.0.0.nupkg.sha512"
     },
     "Microsoft.Win32.Primitives/4.3.0": {
       "type": "package",

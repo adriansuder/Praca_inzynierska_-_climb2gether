@@ -13,12 +13,15 @@
   <ItemGroup>
     <Compile Remove="Migrations\20201119190000_add_postLike_table.cs" />
     <Compile Remove="Migrations\20201119190000_add_postLike_table.Designer.cs" />
+    <Compile Remove="Migrations\20201202191703_add_attatchemnt_table.cs" />
+    <Compile Remove="Migrations\20201202191703_add_attatchemnt_table.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="9.2.0" />
+    <PackageReference Include="Microsoft.AspNet.WebHelpers" Version="3.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.3" />

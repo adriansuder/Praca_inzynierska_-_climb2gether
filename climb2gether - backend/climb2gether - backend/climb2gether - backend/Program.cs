@@ -19,28 +19,6 @@ namespace climb2gether___backend
         {
             var host = CreateHostBuilder(args).Build();
 
-            //using(var serviceScope = host.Services.CreateScope())
-            //{
-            //    var dbContext = serviceScope.ServiceProvider.GetRequiredService<DataContext>();
-            //    await dbContext.Database.MigrateAsync();
-            //    var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            //    if (!await roleManager.RoleExistsAsync("SuperAdmin"))
-            //    {
-            //        var newRole = new IdentityRole("SuperAdmin");
-            //        await roleManager.CreateAsync(newRole);
-            //    }
-            //    else if (!await roleManager.RoleExistsAsync("Admin"))
-            //    {
-            //        var newRole = new IdentityRole("Admin");
-            //        await roleManager.CreateAsync(newRole);
-            //    }
-            //    else if (!await roleManager.RoleExistsAsync("User"))
-            //    {
-            //        var newRole = new IdentityRole("User");
-            //        await roleManager.CreateAsync(newRole);
-            //    }
-            //}
-
             await host.RunAsync();
         }
 

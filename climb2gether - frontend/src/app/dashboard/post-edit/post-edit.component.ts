@@ -12,7 +12,7 @@ import { PostsService } from '../../services/posts.service';
   styleUrls: ['./post-edit.component.scss']
 })
 export class PostEditComponent implements OnInit, OnDestroy {
-
+  url: any;
   inEditMode = false;
   editModeSubscription: Subscription;
   postId: string;
@@ -41,7 +41,22 @@ export class PostEditComponent implements OnInit, OnDestroy {
       this.createForm();
     });
   }
+  clearImg(){
+    this.postForm.reset({img:''});
+    this.url = null;
+  }
 
+  readUrl(event:any) {
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+  
+      reader.onload = (event: ProgressEvent) => {
+        this.url = (<FileReader>event.target).result;
+      }
+  
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  }
 
   onSubmit(): void {
     const post: Post = {
@@ -70,6 +85,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
     let content = '';
     let userId = this.loggedUserId;
     let creationDate = new Date(Date.now());
+    let img = '';
 
     if (this.inEditMode) {
       this.loadedPost = await this.postsService.getPostById(+this.postId);
@@ -87,6 +103,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
       subtitle: new FormControl(subtitle, [Validators.required]),
       imgURL: new FormControl(imgURL, [Validators.required]),
       content: new FormControl(content, [Validators.required]),
+      img: new FormControl(img)
     });
   }
 

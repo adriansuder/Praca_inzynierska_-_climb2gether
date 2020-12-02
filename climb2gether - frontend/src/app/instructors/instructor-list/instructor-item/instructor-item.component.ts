@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { MatTableDataSource } from '@angular/material/table';
-import {MatPaginator} from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
 import { Offer } from 'src/app/_models/Offer';
 import { OfferListItem } from 'src/app/_models/OfferListItem';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -22,7 +22,7 @@ import { InstructorsService } from '../../../services/instructors.service';
   styleUrls: ['./instructor-item.component.scss'],
   viewProviders: [MatExpansionPanel]
 })
-export class InstructorItemComponent implements OnInit, OnChanges {
+export class InstructorItemComponent implements OnInit {
   @Input() offerItem: OfferListItem;
   panelOpenState = false;
   displayedColumns: string[] = ['data', 'trasa', 'iloscMiejsc', 'cena', 'typ', 'info', 'book'];
@@ -36,13 +36,9 @@ export class InstructorItemComponent implements OnInit, OnChanges {
     this.dataSource = new MatTableDataSource(this.offerItem.offers);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('changes!!');
-  }
-
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
-    
+
   }
 
   applyFilter(event: Event) {
@@ -59,22 +55,27 @@ export class InstructorItemComponent implements OnInit, OnChanges {
     this.dialog.open(ModalDetailsComponent, dialogConfig);
   }
 
-  async courseEnrollment(offerId: number){
+  async courseEnrollment(offerId: number) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.maxHeight = '70vh';
     dialogConfig.data = this.offerItem.offers.find(x => x.id === offerId);
 
     let result = await this.dialog.open(ModalConfirmEnrollmentComponent, dialogConfig).afterClosed().toPromise();
-    if(result === 'OK'){
+    if (result === 'OK') {
       let isAddedOrDeleted;
-      if(!dialogConfig.data.isUserAlreadyEnrolled){
+      if (!dialogConfig.data.isUserAlreadyEnrolled) {
         isAddedOrDeleted = await this.instructorsService.addCourseEnrollment(offerId);
-      }else{
+        this.instructorsService.openSnackBar('Super! Twoje zgłoszenie zostało przesłane prawidłowo. :)');
+        this.offerItem.offers.find(x => x.id = offerId).isUserAlreadyEnrolled  =true;
+      } else {
         isAddedOrDeleted = await this.instructorsService.deleteCourseEnrollment(offerId);
+        if (!isAddedOrDeleted) { this.instructorsService.openSnackBar('Coś poszło nie tak!'); }
+        this.instructorsService.openSnackBar('Twoje zgłoszenie zostało usunięte.');
+        this.offerItem.offers.find(x => x.id = offerId).isUserAlreadyEnrolled  =false;
       }
 
-      if(isAddedOrDeleted){
+      if (isAddedOrDeleted) {
         this.instructorsService.getOffers();
       }
     }
