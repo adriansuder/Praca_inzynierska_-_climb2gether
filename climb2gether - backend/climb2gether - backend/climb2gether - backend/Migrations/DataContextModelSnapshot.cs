@@ -184,8 +184,8 @@ namespace climb2gether___backend.Migrations
                     b.Property<string>("ObjectTypeName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ObjectTypeNumber")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ObjectTypeNumber")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

@@ -5,7 +5,8 @@ export class Post {
     userId: number;
     userNameSurname?: string;
     content: string;
-    imgURL: string;
+    img?: File;
+    imgURL?: string;
     subtitle: string;
     title: string;
     creationDate: Date;

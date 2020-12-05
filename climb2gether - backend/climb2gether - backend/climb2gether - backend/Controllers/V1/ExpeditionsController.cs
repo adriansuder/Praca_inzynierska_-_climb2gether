@@ -8,10 +8,13 @@ using climb2gether___backend.Contracts.V1.Requests;
 using climb2gether___backend.Contracts.V1.Responses;
 using climb2gether___backend.Domain;
 using climb2gether___backend.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace climb2gether___backend.Controllers.V1
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ExpeditionsController : Controller
     {
         private readonly IExpeditionsService _expeditionsService;

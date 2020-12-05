@@ -11,21 +11,25 @@ using climb2gether___backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace climb2gether___backend.Controllers.V1
 {
+ 
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PostController : Controller
     {
         private readonly IPostService _postService;
         private readonly IIdentityService _identityService;
         private readonly IMapper _mapper;
+        private readonly IFileService _fileService;
 
-        public PostController(IPostService postService, IMapper mapper, IIdentityService identityService)
+        public PostController(IPostService postService, IMapper mapper, IIdentityService identityService, IFileService fileService)
         {
             _postService = postService;
             _mapper = mapper;
             _identityService = identityService;
+            _fileService = fileService;
         }
         [HttpGet(ApiRoutes.Posts.GetAll)]
         public async Task<IActionResult> GetAll()
@@ -33,6 +37,7 @@ namespace climb2gether___backend.Controllers.V1
             var token = Request.Headers["Authorization"][0].ToString();
             token = token.Substring(token.IndexOf(" ")+1);
             var userId = _identityService.GetUserIdFromJWT(token);
+
             var posts = await _postService.GetPostsAsync(userId);
     
 
@@ -106,18 +111,23 @@ namespace climb2gether___backend.Controllers.V1
         }
 
         [HttpPost(ApiRoutes.Posts.Create)]
-        public async Task<IActionResult> Create([FromBody] CreatePostRequest postRequest)
+        public async Task<IActionResult> Create([FromForm] CreatePostRequest postRequest)
         {
-            var post = new Post {
-                Title = postRequest.Title,
+            var httpRequestForm = HttpContext.Request.Form;
+            var postedFile = httpRequestForm.Files["Img"];
+            List<IFormFile> files =  postRequest.Img ;
+
+            var post = new Post(){
+            Title = postRequest.Title,
                 Subtitle = postRequest.Subtitle,
-                ImgUrl = postRequest.ImgUrl,
+                //ImgU = postRequest.ImgUrl,
                 Content = postRequest.Content,
                 UserId = postRequest.UserId,
-                CreationDate = postRequest.CreationDate
+                CreationDate = DateTime.UtcNow
             };
 
-            await _postService.CreatePostAsync(post);
+            var postId = await _postService.CreatePostAsync(post);
+            await _fileService.AddAttatchments(files, "post", postId);
 
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
             var locationUri = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.Id.ToString());

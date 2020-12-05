@@ -13,9 +13,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Web.Helpers;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace climb2gether___backend.Controllers.V1
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class OfferController : Controller
     {
         private readonly IOfferService _offerService;

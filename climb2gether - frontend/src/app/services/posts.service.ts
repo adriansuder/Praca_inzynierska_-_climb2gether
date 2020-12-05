@@ -45,10 +45,20 @@ export class PostsService {
     })).toPromise();
   }
 
-  addPost(post: Post) {
+  addPost(post: Post, files: FileList) {
+    const headers = new HttpHeaders().append('Content-Disposition', 'multipart/form-data');
+    var formData = new FormData();
+    formData.append('title', post.title);
+    formData.append('subtitle', post.subtitle);
+    formData.append('content', post.content);
+    formData.append('userId', post.userId.toString());
+    Array.from(files).forEach(file => { 
+      formData.append('img', file);
+    });
     this.http.post(
       `${environment.apiUrl}/posts`,
-      post
+      formData,
+      {headers: headers}
     ).subscribe(response => {
       console.log(response);
     })

@@ -11,7 +11,7 @@ import { PostsService } from '../../../services/posts.service';
   styleUrls: ['./post-item.component.scss']
 })
 export class PostItemComponent implements OnInit, OnDestroy {
-
+  imgPath: string = 'D:\\Repositories\\climb2gether_INZYNIERKA\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend\\Upload\\3b907b6e-5002-4753-82cf-4a168a94e9cc\\20200722_130926.jpg'
   @Input() postItem: Post;
   loggedUserId: number = null;
   loggedUserSub: Subscription;

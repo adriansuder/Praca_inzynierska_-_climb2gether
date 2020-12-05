@@ -22,15 +22,6 @@
                       formControlName="subtitle"
                       >
                 </div>
-                <div class="form-group ">
-                    <label for="imgURL">URL zdjęcia</label>
-                    <input
-                      type="text"
-                      id="imgURL"
-                      class="form-control"
-                      formControlName="imgURL"
-                      #imgURL>
-                </div>
 
                 <div class="form-group">
                     <label class="hoverable d-flex justify-content-center" for="fileInput">
@@ -40,13 +31,10 @@
                         <div class="background"></div>
                     </label>
 
-                    <input id="fileInput" type='file' formControlName="img" #file (change)="readUrl($event)">
+                    <input id="fileInput" type="file" formControlName="img" #file (change)="readFiles($event)">
                     <button mat-button *ngIf="file.value" (click)="clearImg()">X</button>
                 </div>
 
-                <!-- <div class="col-xs-12 d-flex justify-content-center">
-                    <img [src]="imgURL.value" class="img-responsive">
-                </div> -->
                 <div class="form-group ">
                     <label for="content">Treść wpisu</label>
                     <textarea

@@ -1,6 +1,9 @@
 ﻿using climb2gether___backend.Contracts.V1.Requests;
 using climb2gether___backend.Data;
+using climb2gether___backend.Domain;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Swashbuckle.SwaggerUi;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,30 +23,36 @@ namespace climb2gether___backend.Services
             _webHostEnviorment = webHostEnvironment;
         }
 
-        public async Task<bool> AddAttatchment(FileUploadRequest objectFile)
+        public async Task<bool> AddAttatchments(List<IFormFile> objectFile, string objectTypeName, int objectTypeNumber)
         {
+            var assetsPath = "D:\\Repositories\\climb2gether_INZYNIERKA\\climb2gether - frontend\\src\\assets";
             var created = 0;
             try
             {
-                if (objectFile.files.Length > 0)
+                if (objectFile.Count > 0)
                 {
-                    if (!Directory.Exists(_webHostEnviorment.ContentRootPath + "\\Upload\\"))
+                    if (!Directory.Exists(assetsPath + "\\Upload\\"))
                     {
-                        Directory.CreateDirectory(_webHostEnviorment.ContentRootPath + "\\Upload\\");
+                        Directory.CreateDirectory(assetsPath + "\\Upload\\");
                     }
-                    foreach (var file in objectFile.files)
+                    foreach (var file in objectFile)
                     {
                         var guid = Guid.NewGuid();
-                        Directory.CreateDirectory(_webHostEnviorment.ContentRootPath + $"\\Upload\\{guid}\\");
-                        using (FileStream fileStream = System.IO.File.Create(_webHostEnviorment.ContentRootPath + $"\\Upload\\{guid}\\" + file.FileName))
+                        Directory.CreateDirectory(assetsPath + $"\\Upload\\{guid}\\");
+                        using (FileStream fileStream = File.Create(assetsPath + $"\\Upload\\{guid}\\" + file.FileName))
                         {
-
                             file.CopyTo(fileStream);
                             fileStream.Flush();
                         }
-                        created++;
+                        var attatchment = new Attatchment
+                        {
+                            FilePath = $"\\Upload\\{guid}\\" + file.FileName,
+                            ObjectTypeName = objectTypeName,
+                            ObjectTypeNumber = objectTypeNumber
+                        };
+                        _dataContext.Attatchments.Add(attatchment);
                     }
-
+                    created = await _dataContext.SaveChangesAsync();
                 }
             }
             catch (Exception ex)
@@ -51,7 +60,7 @@ namespace climb2gether___backend.Services
                 
             }
 
-            return objectFile.files.Length == created;
+            return objectFile.Count == created;
         }
     }
 }

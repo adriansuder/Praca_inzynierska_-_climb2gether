@@ -1,5 +1,6 @@
+import { NullTemplateVisitor } from '@angular/compiler';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormControl, FormGroup, NgForm, Validators, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -12,6 +13,7 @@ import { PostsService } from '../../services/posts.service';
   styleUrls: ['./post-edit.component.scss']
 })
 export class PostEditComponent implements OnInit, OnDestroy {
+  files: FileList
   url: any;
   inEditMode = false;
   editModeSubscription: Subscription;
@@ -46,7 +48,9 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.url = null;
   }
 
-  readUrl(event:any) {
+ 
+
+  readFiles(event:any) {
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
   
@@ -55,14 +59,15 @@ export class PostEditComponent implements OnInit, OnDestroy {
       }
   
       reader.readAsDataURL(event.target.files[0]);
+      this.files = <FileList>event.target.files;
     }
   }
 
   onSubmit(): void {
+    const files: FileList = this.files;
     const post: Post = {
       title: this.postForm.value.title,
       subtitle: this.postForm.value.subtitle,
-      imgURL: this.postForm.value.imgURL,
       content: this.postForm.value.content,
       userId: this.loggedUserId,
       creationDate: new Date(Date.now())
@@ -71,7 +76,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
       this.postsService.updatePost(this.postId, post);
     }
     else{
-      this.postsService.addPost(post);
+      this.postsService.addPost(post, this.files);
     }
     this.inEditMode = false;
     this.router.navigate(['dashboard/posts']);
@@ -81,7 +86,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   private async createForm() {
     let title = '';
     let subtitle = '';
-    let imgURL = '';
+    //let imgURL = '';
     let content = '';
     let userId = this.loggedUserId;
     let creationDate = new Date(Date.now());
@@ -91,7 +96,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
       this.loadedPost = await this.postsService.getPostById(+this.postId);
       title = this.loadedPost.title;
       subtitle = this.loadedPost.subtitle;
-      imgURL = this.loadedPost.imgURL;
+      //imgURL = this.loadedPost.imgURL;
       content = this.loadedPost.content;
       userId = this.loadedPost.userId;
       creationDate = this.loadedPost.creationDate;
@@ -101,9 +106,9 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.postForm = new FormGroup({
       title: new FormControl(title, [Validators.required]),
       subtitle: new FormControl(subtitle, [Validators.required]),
-      imgURL: new FormControl(imgURL, [Validators.required]),
+      //imgURL: new FormControl(imgURL, [Validators.required]),
       content: new FormControl(content, [Validators.required]),
-      img: new FormControl(img)
+      img: new FormControl()
     });
   }
 

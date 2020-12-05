@@ -4,6 +4,6 @@ namespace climb2gether___backend.Contracts.V1.Requests
 {
     public class FileUploadRequest
     {
-        public IFormFile[] files { get; set; }
+        public IFormFile file { get; set; }
     }
 }

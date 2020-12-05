@@ -32,7 +32,7 @@ namespace climb2gether___backend.Services
                                    Id = post.Id,
                                    Title = post.Title,
                                    Subtitle = post.Subtitle,
-                                   ImgURL = post.ImgUrl,
+                                   ImgURL = (from Attatchment in _dataContext.Attatchments where Attatchment.ObjectTypeNumber == post.Id && Attatchment.ObjectTypeName == "post" select Attatchment.FilePath).FirstOrDefault(),
                                    Content = post.Content,
                                    UserId = post.UserId,
                                    UserNameSurname = (post.User.FirstName + " " + post.User.Surname),
@@ -86,12 +86,16 @@ namespace climb2gether___backend.Services
         /// </summary>
         /// <param name="post">Obiekt Post (domain)</param>
         /// <returns>Funkcja zwraca wartość boolean - true, jeżeli post został dodany</returns>
-        public async Task<bool> CreatePostAsync(Post post)
+        public async Task<int> CreatePostAsync(Post post)
         {
             //var result = post;
             await _dataContext.Posts.AddAsync(post);
             var created = await _dataContext.SaveChangesAsync();
-            return created > 0;
+            if(created <= 0)
+            {
+                return 0; 
+            }
+            return post.Id;
         }
         /// <summary>
         ///  Funkcja sprawdza czy użytkownik jest właścicielem wskazanego posta.

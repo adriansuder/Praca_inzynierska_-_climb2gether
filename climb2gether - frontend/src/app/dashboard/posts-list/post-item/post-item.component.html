@@ -3,7 +3,7 @@
         <mat-card-title>{{ postItem.title }}</mat-card-title>
         <mat-card-subtitle>{{ postItem.subtitle}}</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image [src]="postItem.imgURL" [alt]="postItem.imgURL" >
+    <img mat-card-image [src]="'.\\assets\\'+postItem.imgURL" alt="Obraz posta" >
     <mat-card-content>
         <p>{{ postItem.content | cutString:355 }}</p>
     </mat-card-content>
