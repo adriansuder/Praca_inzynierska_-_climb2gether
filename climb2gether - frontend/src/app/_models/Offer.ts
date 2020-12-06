@@ -9,4 +9,10 @@ export class Offer {
     OfferOwnerUserId?: number;
     isUserAlreadyEnrolled?: boolean;
     userEnrollmentId?: number;
+    attatchments?: {
+      id: number;
+      filePath: string;
+      objectTypeName: string;
+      objectTypeNubmer: string;
+  }
   }

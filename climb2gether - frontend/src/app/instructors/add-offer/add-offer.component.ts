@@ -11,7 +11,8 @@ import { InstructorsService } from '../../services/instructors.service';
   styleUrls: ['./add-offer.component.scss']
 })
 export class AddOfferComponent implements OnInit {
-
+  files: FileList
+  url: any;
   inEditMode = false;
   editModeSubscription: Subscription;
   offerId: number;
@@ -29,12 +30,28 @@ export class AddOfferComponent implements OnInit {
       this.inEditMode = params['offerId'] != null;
       this.createForm();
     });
-
-
-
-    //this.instructorsService.inAddingOfferMode.next(true);
-
   }
+
+  clearImg(){
+    this.addOfferFormGroup.reset({img:''});
+    this.url = null;
+  }
+
+ 
+
+  readFiles(event:any) {
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+  
+      reader.onload = (event: ProgressEvent) => {
+        this.url = (<FileReader>event.target).result;
+      }
+  
+      reader.readAsDataURL(event.target.files[0]);
+      this.files = <FileList>event.target.files;
+    }
+  }
+
 
   get form() { return this.addOfferFormGroup.controls; }
 
@@ -52,7 +69,7 @@ export class AddOfferComponent implements OnInit {
     if(this.inEditMode){
       result = await this.instructorsService.updateOffer(offer);
     }else{
-      result = await this.instructorsService.addOffer(offer);
+      result = await this.instructorsService.addOffer(offer, this.files);
     }
     if (result) {
       this.instructorsService.getInstructorOffers();
@@ -91,7 +108,7 @@ export class AddOfferComponent implements OnInit {
       maxQty: new FormControl({value: maxQty, disabled: this.inEditMode}, [Validators.required]),
       price: new FormControl(price, [Validators.required]),
       describe: new FormControl(describe, [Validators.required]),
-      fileControl: new FormControl(fileControl),
+      img: new FormControl(fileControl),
     });
   }
 }

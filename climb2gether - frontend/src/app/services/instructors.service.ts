@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { Observable, Subject, interval, Subscription } from 'rxjs';
@@ -70,10 +70,23 @@ export class InstructorsService {
     });
   }
 
-  addOffer(offer: Offer) {
+  addOffer(offer: Offer, files: FileList) {
+    const headers = new HttpHeaders().append('Content-Disposition', 'multipart/form-data');
+    var formData = new FormData();
+    //formData.append('date', offer.date.toString());
+    formData.append('location', offer.location);
+    formData.append('maxParticipants', offer.maxParticipants.toString());
+    formData.append('price', offer.price.toString());
+    formData.append('describe', offer.describe);
+    formData.append('offerType', offer.offerType);
+    formData.append('offerOwnerUserId', this.authService.loggedUser.userId.toString());
+    Array.from(files).forEach(file => { 
+      formData.append('img', file);
+    });
     return this.http.post(
       `${environment.apiUrl}/offers`,
-      offer
+      formData,
+      {headers: headers}
     ).toPromise();
   }
 
@@ -85,11 +98,9 @@ export class InstructorsService {
   }
 
   getOfferDetails(offerId: number) {
-    this.http.get(
+    return this.http.get(
       `${environment.apiUrl}/offers/details?offerId=${offerId}`
-    ).subscribe(resData => {
-      this.offerDetailsSubject.next(JSON.parse(JSON.stringify(resData)));
-    });
+    ).toPromise();
   }
 
   deleteOffer(offerId: number) {

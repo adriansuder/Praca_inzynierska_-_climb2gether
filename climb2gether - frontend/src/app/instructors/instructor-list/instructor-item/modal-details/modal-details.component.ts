@@ -1,7 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 import { InstructorsService } from 'src/app/services/instructors.service';
+import { Offer } from 'src/app/_models/Offer';
 import { OfferDetails } from 'src/app/_models/OfferDetails';
+import { OfferListItem } from 'src/app/_models/OfferListItem';
 
 @Component({
   selector: 'app-modal-details',
@@ -9,17 +12,15 @@ import { OfferDetails } from 'src/app/_models/OfferDetails';
   styleUrls: ['./modal-details.component.scss']
 })
 export class ModalDetailsComponent implements OnInit {
-  offerDetails: OfferDetails = null;
+  attatchments: any = this.data.attatchments;
+
   constructor(
     private instructorsService: InstructorsService,
-    @Inject(MAT_DIALOG_DATA) public data: any //offerId
+    @Inject(MAT_DIALOG_DATA) public data: Offer 
     ) { }
 
-  ngOnInit(): void {
-    this.instructorsService.getOfferDetails(this.data);
-    this.instructorsService.offerDetailsSubject.subscribe( data => {
-      this.offerDetails = data;
-    });
-  }
+    ngOnInit() {
+      console.log(this.attatchments)
+    }
 
 }

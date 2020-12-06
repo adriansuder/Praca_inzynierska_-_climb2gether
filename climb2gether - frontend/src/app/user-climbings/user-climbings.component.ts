@@ -6,10 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-climbings.component.scss']
 })
 export class UserClimbingsComponent implements OnInit {
-
-  constructor() { }
+  
+  constructor() { 
+  }
 
   ngOnInit(): void {
   }
+
 
 }

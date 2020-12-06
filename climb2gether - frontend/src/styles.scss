@@ -49,3 +49,14 @@ body {
     color: rgb(0, 123, 255);
   }
 
+  
+@media only screen and (max-width: 500px) {
+  .buttons{
+      flex-direction: row!important;
+      //buttony w img-draw
+  }
+  .toolbar {
+    justify-content: center!important;
+  }
+}
+

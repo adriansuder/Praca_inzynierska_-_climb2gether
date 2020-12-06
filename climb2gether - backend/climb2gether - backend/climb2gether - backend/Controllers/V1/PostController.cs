@@ -113,8 +113,8 @@ namespace climb2gether___backend.Controllers.V1
         [HttpPost(ApiRoutes.Posts.Create)]
         public async Task<IActionResult> Create([FromForm] CreatePostRequest postRequest)
         {
-            var httpRequestForm = HttpContext.Request.Form;
-            var postedFile = httpRequestForm.Files["Img"];
+            //var httpRequestForm = HttpContext.Request.Form;
+            //var postedFile = httpRequestForm.Files["Img"];
             List<IFormFile> files =  postRequest.Img ;
 
             var post = new Post(){

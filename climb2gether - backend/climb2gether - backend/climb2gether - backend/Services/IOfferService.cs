@@ -9,7 +9,7 @@ namespace climb2gether___backend.Services
 {
     public interface IOfferService
     {
-        Task<bool> CreateOfferAsync(Offer offer);
+        Task<int> CreateOfferAsync(Offer offer);
         Task<List<OfferResponse>> GetOffersAsync(int userId);
         Task<OfferDetailsResponse> GetOfferDetailsAsync(int offerId);
         Task<List<Offer>> GetUserOffersAsync(int userId);

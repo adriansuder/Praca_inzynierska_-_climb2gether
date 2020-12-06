@@ -61,6 +61,7 @@ import { ExpeditionEnrollmentModalComponent } from './climbing-partners/expediti
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { ImageDrawingModule } from 'ngx-image-drawing';
 import { AddClimbingSchemaComponent } from './user-climbings/add-climbing-schema/add-climbing-schema.component';
+import { ModalDetailsComponent } from './instructors/instructor-list/instructor-item/modal-details/modal-details.component';
 
 
 @NgModule({
@@ -93,7 +94,9 @@ import { AddClimbingSchemaComponent } from './user-climbings/add-climbing-schema
     ListItemComponent,
     AddPrivateOfferComponent,
     ExpeditionEnrollmentModalComponent,
-    AddClimbingSchemaComponent
+    AddClimbingSchemaComponent,
+    ModalDetailsComponent,
+    ModalConfirmEnrollmentComponent
   ],
   imports: [
     BrowserModule,

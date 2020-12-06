@@ -1,1 +1,60 @@
-<p>add-climbing-schema works!</p>
+<div class="container mt-4">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-12" id="addSchema" class="px-5 py-3 ">
+            <h1 *ngIf="!url && !savedImg">Załaduj zdjęcie do edycji</h1>
+            <h1 *ngIf="url && !savedImg">Edytuj zdjęcie, a następnie zapisz</h1>
+            <h1 *ngIf="!url && savedImg">Uzupełnij opis drogi</h1>
+            <hr>
+            <form (ngSubmit)="onSubmit()" [formGroup]="schemaForm" *ngIf="savedImg">
+                <div class="row d-flex justify-content-center">
+                    <div class="form-group col-12 col-lg-9">
+                        <label for="title">Nazwa drogi</label>
+                        <input type="text" id="routeName" class="form-control" formControlName="routeName">
+                    </div>
+                    <div class="form-group col-12 col-lg-3">
+                        <label for="title">Wycena drogi</label>
+                        <input type="text" id="scale" class="form-control" formControlName="scale">
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="form-group col-12">
+                        <label for="content">Opisz drogę</label>
+                        <textarea type="text" id="content" class="form-control" formControlName="content"
+                            rows="6"></textarea>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div *ngIf="savedImg" class="col-12 col-lg-6 ">
+                        <img [src]="savedImgURL" class="img-fluid img-thumbnail" alt="">
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <button class="btn btn-primary" type="submit">Submit</button> |
+                    <button class="btn btn-warning" type="button" (click)="onFormCancel()">Anuluj</button>
+                </div>
+            </form>
+
+
+
+            <ng-container *ngIf="(!url && !savedImg)">
+                <input id="fileInput" type="file" #file (change)="readFiles($event)">
+                <label for="fileInput" class="col-12 mt-4">
+                    <mat-icon>save_alt</mat-icon>Wybierz plik do edycji
+                </label>
+                <!-- <button mat-button *ngIf="file.value" (click)="clearImg()">X</button> -->
+            </ng-container>
+
+
+
+            <div class="row">
+                <div class="col-12 col-lg-12 draw-container">
+                    <image-drawing *ngIf="url" class="mt-1 col-12" [src]="url" outputMimeType="'image/jpeg'"
+                        outputQuality="0.8" forceSizeCanvas="false" [width]="canvasWidth" [height]="canvasHeight"
+                        (save)="save($event)" (cancel)="cancel()">
+                    </image-drawing>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

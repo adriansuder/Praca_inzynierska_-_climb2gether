@@ -19,11 +19,15 @@ namespace climb2gether___backend.Services
             _dataContext = dataContext;
         }
 
-        public async Task<bool> CreateOfferAsync(Offer offer)
+        public async Task<int> CreateOfferAsync(Offer offer)
         {
             await _dataContext.Offers.AddAsync(offer);
             var created = await _dataContext.SaveChangesAsync();
-            return created > 0;
+            if(offer.Id == null)
+            {
+                return  0;
+            }
+            return offer.Id;
         }
 
         public async Task<List<OfferResponse>> GetOffersAsync(int userId)
@@ -39,7 +43,7 @@ namespace climb2gether___backend.Services
                                    UserId = user.Id,
                                    Offers = (from userOffer in _dataContext.Offers
                                              where userOffer.OfferOwnerUserId == user.Id
-                                             select new Offer
+                                             select new OfferResponseItem
                                              {
                                                  Id = userOffer.Id,
                                                  Date = userOffer.Date,
@@ -49,14 +53,17 @@ namespace climb2gether___backend.Services
                                                  Describe = userOffer.Describe,
                                                  OfferType = userOffer.OfferType,
                                                  OfferOwnerUserId = userOffer.OfferOwnerUserId,
-                                                 IsUserAlreadyEnrolled = (from offEnr in _dataContext.OfferEnrollments 
-                                                                          where offEnr.OfferId == userOffer.Id && offEnr.ParticipantUserId == userId 
-                                                                          select offEnr.Id).Any(),
+                                                 //IsUserAlreadyEnrolled = (from offEnr in _dataContext.OfferEnrollments 
+                                                 //                         where offEnr.OfferId == userOffer.Id && offEnr.ParticipantUserId == userId 
+                                                 //                         select offEnr.Id).Any(),
                                                  UserEnrollmentId = (from offEnr in _dataContext.OfferEnrollments 
                                                                      where offEnr.OfferId == userOffer.Id && offEnr.ParticipantUserId == userId 
-                                                                     select offEnr.Id).SingleOrDefault()
+                                                                     select offEnr.Id).SingleOrDefault(),
+                                                 Attatchments = (from att in _dataContext.Attatchments
+                                                                 where att.ObjectTypeName == "oferta" && att.ObjectTypeNumber == userOffer.Id
+                                                                 select att).ToList()
                                              }
-                                             ).ToList<Offer>()
+                                             ).ToList<OfferResponseItem>()
                                }
                           ).Distinct().ToListAsync();
 

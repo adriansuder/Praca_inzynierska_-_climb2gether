@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,5 +15,6 @@ namespace climb2gether___backend.Contracts.V1.Requests
         public string Describe { get; set; }
         public string OfferType { get; set; }
         public int OfferOwnerUserId { get; set; }
+        public List<IFormFile> Img { get; set; }
     }
 }

@@ -35,13 +35,18 @@
                 </mat-form-field>
             </div>
             <div class="row">
-                <mat-form-field appearance="outline" class="col-lg-6 col-12">
-                    <ngx-mat-file-input formControlName="fileControl" [multiple]="'false'" [accept]="['.jpg']"
-                        [color]="'primary'">
-                        <mat-icon ngxMatFileInputIcon>attach_file</mat-icon>
-                        <mat-hint>Wybierz jeden plik .jpg lub .png</mat-hint>
-                    </ngx-mat-file-input>
-                </mat-form-field>
+                <div class="col-12">
+                    <p *ngFor="let file of files">{{file.name}} </p>
+                    <div class="form-group">
+                        <label class="hoverable d-flex justify-content-center" for="fileInput">
+
+                        </label>
+
+                        <input id="fileInput" type="file" formControlName="img" #file (change)="readFiles($event)"
+                            multiple="true">
+                        <button mat-button *ngIf="file.value" (click)="clearImg()">X</button>
+                    </div>
+                </div>
             </div>
             <div class="row float-right">
                 <button class="btn btn-primary  ml-1 mb-3 float-right" type="submit">Zapisz</button>

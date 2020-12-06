@@ -1,5 +1,5 @@
 <mat-accordion>
-    <div class="mt-1" *ngFor="let offer of loadedOffers; ; trackBy: trackByIndex">
+    <div class="mt-1" *ngFor="let offer of loadedOffers; trackBy: trackByIndex">
         <app-instructor-item [offerItem]="offer"></app-instructor-item>
     </div>
 </mat-accordion>

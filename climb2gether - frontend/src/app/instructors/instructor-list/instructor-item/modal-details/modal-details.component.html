@@ -1,6 +1,6 @@
 <h2>Więcej informacji: </h2>
 <hr>
-<p>{{offerDetails?.description}}</p>
+<p>{{data.describe}}</p>
 <br>
 <div id="carouselOfferDetailsIndicators" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
@@ -9,18 +9,9 @@
     <li data-target="#carouselOfferDetailsIndicators" data-slide-to="2"></li>
   </ol>
   <div class="carousel-inner">
-    <div class="carousel-item active img-fluid">
-      <img class="d-block w-100" src="https://cdn.pixabay.com/photo/2020/11/02/13/25/north-sea-oats-5706656_960_720.jpg"
-        alt="First slide">
-    </div>
-    <div class="carousel-item img-fluid">
-      <img class="d-block w-100" src="https://cdn.pixabay.com/photo/2015/04/23/22/01/tree-736888_960_720.jpg"
-        alt="Second slide">
-    </div>
-    <div class="carousel-item img-fluid">
-      <img class="d-block w-100" src="https://cdn.pixabay.com/photo/2015/03/26/09/47/sky-690293_960_720.jpg"
-        alt="Third slide">
-    </div>
+      <div class="carousel-item img-fluid" [class.active]="i == 0" *ngFor="let img of attatchments; let i = index">
+        <img class="d-block w-100" [src]="'.\\assets\\' + img.filePath" [alt]="img.filePath">
+      </div>
   </div>
   <a class="carousel-control-prev" href="#carouselOfferDetailsIndicators" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>

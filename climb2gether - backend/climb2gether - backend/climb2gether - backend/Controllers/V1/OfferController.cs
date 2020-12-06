@@ -24,22 +24,24 @@ namespace climb2gether___backend.Controllers.V1
         private readonly IOfferService _offerService;
         private readonly IIdentityService _identityService;
         private readonly IMapper _mapper;
+        private readonly IFileService _fileService;
 
 
-        public OfferController(IOfferService offerService, IMapper mapper, IIdentityService identityService)
+        public OfferController(IOfferService offerService, IMapper mapper, IIdentityService identityService, IFileService fileService)
         {
             _offerService = offerService;
             _mapper = mapper;
             _identityService = identityService;
-           
+            _fileService = fileService;
         }
 
         [HttpPost(ApiRoutes.Offers.Create)]
-        public async Task<IActionResult> Create([FromBody] CreateOfferRequest offerRequest)
+        public async Task<IActionResult> Create([FromForm] CreateOfferRequest offerRequest)
         {
-            var token = Request.Headers["Authorization"][0].ToString();
-            token = token.Substring(token.IndexOf(" ") + 1);
-            var userId = _identityService.GetUserIdFromJWT(token);
+            // var token = Request.Headers["Authorization"][0].ToString();
+            // token = token.Substring(token.IndexOf(" ") + 1);
+            //var userId = _identityService.GetUserIdFromJWT(token);
+            List<IFormFile> files = offerRequest.Img;
             var offer = new Offer
             {
                 Date = offerRequest.Date,
@@ -49,16 +51,17 @@ namespace climb2gether___backend.Controllers.V1
                 Describe = offerRequest.Describe,
                 OfferType = offerRequest.OfferType,
                 CreationDate = DateTime.UtcNow,
-                OfferOwnerUserId = userId
+                OfferOwnerUserId = offerRequest.OfferOwnerUserId
             };
 
-            var response = await _offerService.CreateOfferAsync(offer);
+            var addedOfferId = await _offerService.CreateOfferAsync(offer);
+            await _fileService.AddAttatchments(files, "oferta", addedOfferId);
 
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
             var locationUri = baseUrl + "/" + ApiRoutes.Offers.Get.Replace("{postId}", offer.Id.ToString());
             //var response = _mapper.Map<PostResponse>(post);
 
-            return Created(locationUri, response);
+            return Created(locationUri, addedOfferId);
         }
 
         [HttpGet(ApiRoutes.Offers.GetAll)]
@@ -67,6 +70,7 @@ namespace climb2gether___backend.Controllers.V1
             var token = Request.Headers["Authorization"][0].ToString();
             token = token.Substring(token.IndexOf(" ") + 1);
             var userId = _identityService.GetUserIdFromJWT(token);
+
             var offers = await _offerService.GetOffersAsync(userId);
 
             return Ok(offers);
