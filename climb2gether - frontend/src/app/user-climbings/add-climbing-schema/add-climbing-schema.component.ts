@@ -18,6 +18,7 @@ export class AddClimbingSchemaComponent implements OnInit {
   schemaForm: FormGroup;
   canvas: ElementRef<HTMLCanvasElement>;
   savedImg;
+  savedImgTODataUrl;
   checkIsPublic: boolean;
   savedImgURL : SafeUrl;
 
@@ -96,7 +97,7 @@ export class AddClimbingSchemaComponent implements OnInit {
     this.url = null;
   }
 
-  save(event: any){
+  save(event: Blob){
     this.url = null;
     this.savedImg = event;
     this.importPhotoFromBlob(event);

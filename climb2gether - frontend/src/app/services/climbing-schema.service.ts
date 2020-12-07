@@ -1,7 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { HexBase64BinaryEncoding } from 'crypto';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { RockSchema } from '../_models/RockSchema';
@@ -25,7 +23,7 @@ export class ClimbingSchemaService {
     formData.append('routeLocation', schema.routeLocation);
     formData.append('routeName', schema.routeName);
     formData.append('routeScale', schema.routeScale);
-    formData.append('img', img);
+    formData.append('img', img, `${schema.routeName}.jpeg`);
     console.log(formData);
     return this.http.post<any>(
       `${environment.apiUrl}/rockSchemas`,
