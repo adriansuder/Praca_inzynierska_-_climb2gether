@@ -55,11 +55,11 @@ export class PostEditComponent implements OnInit, OnDestroy {
       var reader = new FileReader();
   
       reader.onload = (event: ProgressEvent) => {
-        this.url = (<FileReader>event.target).result;
+        this.url = (event.target as FileReader).result;
       }
   
       reader.readAsDataURL(event.target.files[0]);
-      this.files = <FileList>event.target.files;
+      this.files = event.target.files as FileList;
     }
   }
 

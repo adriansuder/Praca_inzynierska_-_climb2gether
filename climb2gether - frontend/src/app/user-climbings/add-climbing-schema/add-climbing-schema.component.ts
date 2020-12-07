@@ -3,6 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ImageDrawingModule } from 'ngx-image-drawing';
+import { ClimbingSchemaService } from 'src/app/services/climbing-schema.service';
+import { RockSchema } from 'src/app/_models/RockSchema';
 
 @Component({
   selector: 'app-add-climbing-schema',
@@ -16,18 +18,42 @@ export class AddClimbingSchemaComponent implements OnInit {
   schemaForm: FormGroup;
   canvas: ElementRef<HTMLCanvasElement>;
   savedImg;
+  checkIsPublic: boolean;
   savedImgURL : SafeUrl;
 
-  constructor(private sanitizer:DomSanitizer, private router: Router) { }
+  constructor(
+    private sanitizer: DomSanitizer,
+    private router: Router,
+    private schemaService: ClimbingSchemaService
+    ) 
+    { }
 
   ngOnInit(): void {
     this.schemaForm = new FormGroup({
       routeName: new FormControl('', [Validators.required]),
       scale: new FormControl('', [Validators.required]),
       content: new FormControl('', [Validators.required]),
+      location: new FormControl('', [Validators.required]),
+      checkIsPublic: new FormControl(this.checkIsPublic)
     });
   }
 
+  check(event: any){
+    this.checkIsPublic = event.checked;
+  }
+
+  async onSubmit(){
+    var schema: RockSchema = {
+      routeName: this.schemaForm.value.routeName,
+      routeScale: this.schemaForm.value.scale,
+      routeDescription: this.schemaForm.value.content,
+      isPublic: this.schemaForm.value.checkIsPublic,
+      routeLocation: this.schemaForm.value.location
+
+    }
+
+    let result = await this.schemaService.createSchema(schema, this.savedImg);
+  }
 
   readFiles(event: any) {
     if (event.target.files && event.target.files[0]) {
@@ -61,7 +87,9 @@ export class AddClimbingSchemaComponent implements OnInit {
 
   onFormCancel(){
     this.schemaForm.reset();
-    this.router.navigate(['/userClimbings']);
+    this.url = null;
+    this.savedImg = null;
+    this.savedImgURL = null;
   }
 
   cancel(){
@@ -79,8 +107,7 @@ export class AddClimbingSchemaComponent implements OnInit {
     reader.readAsDataURL(file);
     reader.onload = (evtReader: any) => {
         if (evtReader.target.readyState == FileReader.DONE) {
-            console.log(evtReader.target.result);
-            let unsafeURL = (evtReader.target.result);
+            const unsafeURL = (evtReader.target.result);
             this.savedImgURL = this.sanitizer.bypassSecurityTrustUrl(unsafeURL);
         }
     };

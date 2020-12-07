@@ -403,6 +403,41 @@ namespace climb2gether___backend.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
+            modelBuilder.Entity("climb2gether___backend.Domain.RockSchema", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RouteDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RouteLocation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RouteName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RouteScale")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RockSchemas");
+                });
+
             modelBuilder.Entity("climb2gether___backend.Domain.User", b =>
                 {
                     b.Property<int>("Id")
@@ -617,6 +652,15 @@ namespace climb2gether___backend.Migrations
                 });
 
             modelBuilder.Entity("climb2gether___backend.Domain.RefreshToken", b =>
+                {
+                    b.HasOne("climb2gether___backend.Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("climb2gether___backend.Domain.RockSchema", b =>
                 {
                     b.HasOne("climb2gether___backend.Domain.User", "User")
                         .WithMany()

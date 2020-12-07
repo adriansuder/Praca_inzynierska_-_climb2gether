@@ -62,6 +62,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { ImageDrawingModule } from 'ngx-image-drawing';
 import { AddClimbingSchemaComponent } from './user-climbings/add-climbing-schema/add-climbing-schema.component';
 import { ModalDetailsComponent } from './instructors/instructor-list/instructor-item/modal-details/modal-details.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -126,6 +127,7 @@ import { ModalDetailsComponent } from './instructors/instructor-list/instructor-
     NgxMatFileInputModule,
     MatSnackBarModule,
     ImageDrawingModule,
+    MatCheckboxModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [

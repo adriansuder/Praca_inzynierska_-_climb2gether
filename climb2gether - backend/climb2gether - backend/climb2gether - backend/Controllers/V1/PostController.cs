@@ -17,7 +17,7 @@ namespace climb2gether___backend.Controllers.V1
 {
  
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class PostController : Controller
+    public class PostController : BaseController
     {
         private readonly IPostService _postService;
         private readonly IIdentityService _identityService;

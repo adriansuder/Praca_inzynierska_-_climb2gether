@@ -56,5 +56,10 @@ namespace climb2gether___backend.Contracts
             public const string GetAll = Base + "/expeditions";
             public const string CreateEnrollment = Base + "/expeditions/addEnrollment";
         }
+
+        public static class RockSchema
+        {
+            public const string Create = Base + "/rockSchemas";
+        }
     }
 }

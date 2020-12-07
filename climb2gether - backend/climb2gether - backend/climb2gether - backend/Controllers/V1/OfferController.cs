@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 namespace climb2gether___backend.Controllers.V1
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class OfferController : Controller
+    public class OfferController : BaseController
     {
         private readonly IOfferService _offerService;
         private readonly IIdentityService _identityService;
