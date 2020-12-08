@@ -63,7 +63,8 @@ import { ImageDrawingModule } from 'ngx-image-drawing';
 import { AddClimbingSchemaComponent } from './user-climbings/add-climbing-schema/add-climbing-schema.component';
 import { ModalDetailsComponent } from './instructors/instructor-list/instructor-item/modal-details/modal-details.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-
+import { SchemaListComponent } from './user-climbings/schema-list/schema-list.component';
+import { DialogSchemaDetailsComponent } from './user-climbings/dialog-schema-details/dialog-schema-details.component';
 
 @NgModule({
   declarations: [
@@ -97,7 +98,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     ExpeditionEnrollmentModalComponent,
     AddClimbingSchemaComponent,
     ModalDetailsComponent,
-    ModalConfirmEnrollmentComponent
+    ModalConfirmEnrollmentComponent,
+    SchemaListComponent,
+    DialogSchemaDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -128,6 +131,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatSnackBarModule,
     ImageDrawingModule,
     MatCheckboxModule,
+    ReactiveFormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [

@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, OnDestroy } from '@angular/core';
-import { MatSnackBar, MatSnackBarConfig, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { Observable, Subject, interval, Subscription } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Subject, interval, Subscription } from 'rxjs';
 import { map, repeatWhen, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
@@ -11,12 +10,12 @@ import { OfferListItem } from '../_models/OfferListItem';
 import { Participant } from '../_models/Participant';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
-export class InstructorsService {
-  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+export class InstructorsService{
+
   inAddingOfferMode = new Subject<boolean>();
   offersChanged = new Subject<OfferListItem[]>();
   userOffersChanged = new Subject<Offer[]>();
@@ -26,16 +25,7 @@ export class InstructorsService {
   fetchedOffers: OfferListItem[] = [];
   fetchedUserOffers: Offer[] = [];
 
-  constructor(private http: HttpClient, private authService: AuthService, private snackBar: MatSnackBar) { }
-
-  openSnackBar(message: string) {
-    const config = new MatSnackBarConfig();
-    config.panelClass = ['snackBarStyle'];
-    config.horizontalPosition = this.horizontalPosition;
-    config.verticalPosition = this.verticalPosition;
-    config.duration = 3000;
-    this.snackBar.open(message, 'X', config);
-  }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   async getOffers() {
     await this.http

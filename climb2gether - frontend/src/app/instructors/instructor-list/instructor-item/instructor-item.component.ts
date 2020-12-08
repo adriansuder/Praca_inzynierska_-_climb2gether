@@ -9,6 +9,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ModalDetailsComponent } from './modal-details/modal-details.component';
 import { ModalConfirmEnrollmentComponent } from './modal-confirm-enrollment/modal-confirm-enrollment.component';
 import { InstructorsService } from '../../../services/instructors.service';
+import { BaseService } from 'src/app/services/base.service';
 
 // const ELEMENT_DATA: Offer[] = [
 //   {data: '2020-09-20', trasa: 'Hydrogen', iloscMiejsc: 1.0079, cena: 500},
@@ -28,7 +29,11 @@ export class InstructorItemComponent implements OnInit {
   displayedColumns: string[] = ['data', 'trasa', 'iloscMiejsc', 'cena', 'typ', 'info', 'book'];
   dataSource = new MatTableDataSource();
 
-  constructor(public dialog: MatDialog, private instructorsService: InstructorsService) { }
+  constructor(
+    public dialog: MatDialog,
+    private instructorsService: InstructorsService,
+    private baseSerive: BaseService
+    ) { }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -66,12 +71,12 @@ export class InstructorItemComponent implements OnInit {
       let isAddedOrDeleted;
       if (!dialogConfig.data.isUserAlreadyEnrolled) {
         isAddedOrDeleted = await this.instructorsService.addCourseEnrollment(offerId);
-        this.instructorsService.openSnackBar('Super! Twoje zgłoszenie zostało przesłane prawidłowo. :)');
-        this.offerItem.offers.find(x => x.id = offerId).isUserAlreadyEnrolled  =true;
+        this.baseSerive.openSnackBar('Super! Twoje zgłoszenie zostało przesłane prawidłowo. :)');
+        this.offerItem.offers.find(x => x.id = offerId).isUserAlreadyEnrolled = true;
       } else {
         isAddedOrDeleted = await this.instructorsService.deleteCourseEnrollment(offerId);
-        if (!isAddedOrDeleted) { this.instructorsService.openSnackBar('Coś poszło nie tak!'); }
-        this.instructorsService.openSnackBar('Twoje zgłoszenie zostało usunięte.');
+        if (!isAddedOrDeleted) { this.baseSerive.openSnackBar('Coś poszło nie tak!'); }
+        this.baseSerive.openSnackBar('Twoje zgłoszenie zostało usunięte.');
         this.offerItem.offers.find(x => x.id = offerId).isUserAlreadyEnrolled  =false;
       }
 

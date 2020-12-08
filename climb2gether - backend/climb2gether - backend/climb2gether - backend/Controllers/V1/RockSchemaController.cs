@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using climb2gether___backend.Contracts;
 using climb2gether___backend.Contracts.V1.Requests;
+using climb2gether___backend.Contracts.V1.Responses;
 using climb2gether___backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace climb2gether___backend.Controllers.V1
 {
-   // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class RockSchemaController : BaseController
     {
         
@@ -29,7 +30,7 @@ namespace climb2gether___backend.Controllers.V1
             _identityService = identityService;
             _fileService = fileService;
         }
-        [DisableRequestSizeLimit]
+
         [HttpPost(ApiRoutes.RockSchema.Create)]
         public async Task<IActionResult> Create([FromForm] CreateRockSchemaRequest request)
         {
@@ -42,6 +43,18 @@ namespace climb2gether___backend.Controllers.V1
             //var locationUri = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.Id.ToString());
 
             return Ok(rockSchemaId);
+        }
+
+        [HttpGet(ApiRoutes.RockSchema.GetAllUsersSchemas)]
+        public async Task<IActionResult> GetAllUsersSchemas([FromRoute] int userId)
+        {
+            List<UserSchemasResponse> schemasList = await _rockSchemaService.GetAllUserSchemas(userId);
+            if(schemasList.Count() <= 0)
+            {
+                return BadRequest("Brak pobranych schematow");
+            }
+
+            return Ok(schemasList);
         }
     }
 }

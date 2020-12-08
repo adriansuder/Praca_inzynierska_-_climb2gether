@@ -1,8 +1,7 @@
-import { Component, ElementRef, OnInit, Sanitizer, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { ImageDrawingModule } from 'ngx-image-drawing';
+import { BaseService } from 'src/app/services/base.service';
 import { ClimbingSchemaService } from 'src/app/services/climbing-schema.service';
 import { RockSchema } from 'src/app/_models/RockSchema';
 
@@ -17,15 +16,14 @@ export class AddClimbingSchemaComponent implements OnInit {
   canvasHeight: number;
   schemaForm: FormGroup;
   canvas: ElementRef<HTMLCanvasElement>;
-  savedImg;
-  savedImgTODataUrl;
-  checkIsPublic: boolean;
+  savedImg: Blob;
+  checkIsPublic: boolean = false;
   savedImgURL : SafeUrl;
 
   constructor(
     private sanitizer: DomSanitizer,
-    private router: Router,
-    private schemaService: ClimbingSchemaService
+    private schemaService: ClimbingSchemaService,
+    private baseService: BaseService
     ) 
     { }
 
@@ -54,6 +52,16 @@ export class AddClimbingSchemaComponent implements OnInit {
     }
 
     let result = await this.schemaService.createSchema(schema, this.savedImg);
+    if(result > 0){
+      this.url = null;
+      this.savedImg = null;
+      this.savedImgURL = null;
+      this.baseService.openSnackBar('Twój schemat został zapisany.');
+    }
+    else{
+      this.baseService.openSnackBar('Coś poszło nie tak. Spróbuj jeszcze raz');
+    }
+
   }
 
   readFiles(event: any) {

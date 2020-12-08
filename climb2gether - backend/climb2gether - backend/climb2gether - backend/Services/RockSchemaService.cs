@@ -1,6 +1,8 @@
 ﻿using climb2gether___backend.Contracts.V1.Requests;
+using climb2gether___backend.Contracts.V1.Responses;
 using climb2gether___backend.Data;
 using climb2gether___backend.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +37,26 @@ namespace climb2gether___backend.Services
 
             return schema.Id;
             
+        }
+
+        public async Task<List<UserSchemasResponse>> GetAllUserSchemas(int userId)
+        {
+            var query = await (from schema in _dataContext.RockSchemas
+                               where schema.UserId == userId
+                               select new UserSchemasResponse
+                               {
+                                   Id = schema.Id,
+                                   UserId = schema.UserId,
+                                   RouteName = schema.RouteName,
+                                   RouteScale = schema.RouteScale,
+                                   RouteDescription = schema.RouteDescription,
+                                   RouteLocation = schema.RouteLocation,
+                                   CreationDate = schema.CreationDate,
+                                   IsPublic = schema.IsPublic,
+                                   ImgURL = (from Attatchment in _dataContext.Attatchments where Attatchment.ObjectTypeNumber == schema.Id && Attatchment.ObjectTypeName == "schemat" select Attatchment.FilePath).FirstOrDefault()
+                               }
+                          ).ToListAsync();
+            return query;
         }
     }
 }

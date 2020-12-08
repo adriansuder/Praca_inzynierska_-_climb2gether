@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { RockSchema } from '../_models/RockSchema';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +31,15 @@ export class ClimbingSchemaService {
       formData,
       {headers}
     ).toPromise();
+  }
+
+  getUserSchemas(){
+    const userId = this.authService.loggedUser.userId;
+    return this.http.get<RockSchema[]>(
+      `${environment.apiUrl}/rockSchemas/${userId}`
+    ).pipe(tap( res => {
+      
+    }))
+    .toPromise();
   }
 }

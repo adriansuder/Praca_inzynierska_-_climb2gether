@@ -1,0 +1,19 @@
+<div id="listWrapper" class="col-12 pt-3">
+    <h1>Tytuł listy</h1>
+    <mat-list>
+        <mat-divider></mat-divider>
+        <div mat-subheader>Schematy wspinaczkowe</div>
+        <div class="row ">
+            <div class="col-12 col-md-6 col-lg-4 " *ngFor="let schema of fetchedSchemas">
+                <mat-list-item class="list-item" (click)="openDetailsDialog(schema.id)">
+                    <mat-icon mat-list-icon>note</mat-icon>
+                    <div mat-line>{{ schema.routeName }}</div>
+                    <div mat-line> {{ schema.routeLocation }} </div>
+                </mat-list-item>
+            </div>
+        </div>
+
+    </mat-list>
+    <mat-paginator [length]="100" [pageSize]="6" [pageSizeOptions]="[6, 12, 24, 48]">
+    </mat-paginator>
+</div>

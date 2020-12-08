@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:5001/api/v1'
+  apiUrl: 'https://localhost:5001/api/v1',
+  attatchmentAssets: 'D:\\Repositories\\climb2gether_INZYNIERKA\\climb2gether - frontend\\dist\\climb2gether\\assets'
 };
 
 /*

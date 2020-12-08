@@ -25,7 +25,7 @@ namespace climb2gether___backend.Services
 
         public async Task<bool> AddAttatchments(List<IFormFile> objectFile, string objectTypeName, int objectTypeNumber)
         {
-            var assetsPath = "D:\\Repositories\\climb2gether_INZYNIERKA\\climb2gether - frontend\\src\\assets";
+            var assetsPath = "D:\\Repositories\\climb2gether_INZYNIERKA\\climb2gether - frontend\\dist\\climb2gether\\assets";
             var created = 0;
             try
             {

@@ -60,6 +60,7 @@ namespace climb2gether___backend.Contracts
         public static class RockSchema
         {
             public const string Create = Base + "/rockSchemas";
+            public const string GetAllUsersSchemas = Base + "/rockSchemas/{userId}";
         }
     }
 }
