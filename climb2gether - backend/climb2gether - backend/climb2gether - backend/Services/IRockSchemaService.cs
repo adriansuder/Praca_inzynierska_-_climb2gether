@@ -10,6 +10,6 @@ namespace climb2gether___backend.Services
     public interface IRockSchemaService
     {
         Task<int> Create(CreateRockSchemaRequest request);
-        Task<List<UserSchemasResponse>> GetAllUserSchemas(int userId);
+        Task<List<UserSchemasResponse>> GetAllUserSchemas(int userId, string routeName, string routeLocation, bool isPublic);
     }
 }

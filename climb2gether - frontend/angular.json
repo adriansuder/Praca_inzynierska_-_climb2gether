@@ -99,9 +99,7 @@
               "src/favicon.ico",
               "src/assets",
               "src/manifest.webmanifest",
-              "assets",
-              "../dist/climb2gether/assets/Upload"
-              
+              "assets"             
 
             ],
             "styles": [

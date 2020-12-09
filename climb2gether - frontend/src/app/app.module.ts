@@ -65,6 +65,7 @@ import { ModalDetailsComponent } from './instructors/instructor-list/instructor-
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { SchemaListComponent } from './user-climbings/schema-list/schema-list.component';
 import { DialogSchemaDetailsComponent } from './user-climbings/dialog-schema-details/dialog-schema-details.component';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -132,6 +133,7 @@ import { DialogSchemaDetailsComponent } from './user-climbings/dialog-schema-det
     ImageDrawingModule,
     MatCheckboxModule,
     ReactiveFormsModule,
+    NgxPaginationModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [

@@ -3,12 +3,15 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { RockSchema } from '../_models/RockSchema';
-import { tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClimbingSchemaService {
+  
+  schemasChanged: Subject<RockSchema[]>;
 
   constructor(
     private http: HttpClient,
@@ -33,13 +36,16 @@ export class ClimbingSchemaService {
     ).toPromise();
   }
 
-  getUserSchemas(){
+  getUserSchemas(routeName?: string, routeLocation?: string, isPublic?: boolean){
+    let name = routeName ? routeName : '';
+    let location = routeLocation ? routeLocation : '';
+    let publicSchema = isPublic ? isPublic : false;
     const userId = this.authService.loggedUser.userId;
     return this.http.get<RockSchema[]>(
-      `${environment.apiUrl}/rockSchemas/${userId}`
-    ).pipe(tap( res => {
-      
-    }))
-    .toPromise();
+      `${environment.apiUrl}/rockSchemas/${userId}?routeName=${name}&routeLocation=${location}&isPublic=${publicSchema}`
+    ).pipe(
+      map( res => { return res;}, err => {return err.error})
+    ).toPromise();
+
   }
 }

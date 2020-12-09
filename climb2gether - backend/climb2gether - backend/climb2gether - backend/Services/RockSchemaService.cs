@@ -39,10 +39,12 @@ namespace climb2gether___backend.Services
             
         }
 
-        public async Task<List<UserSchemasResponse>> GetAllUserSchemas(int userId)
+        public async Task<List<UserSchemasResponse>> GetAllUserSchemas(int userId, string routeName = "", string routeLocation = "", bool isPublic = false)
         {
             var query = await (from schema in _dataContext.RockSchemas
-                               where schema.UserId == userId
+                               where schema.UserId == userId && schema.IsPublic == isPublic
+                                    && (routeName == "" || schema.RouteName.Contains(routeName))
+                                    && (routeLocation == "" || schema.RouteName.Contains(routeLocation))
                                select new UserSchemasResponse
                                {
                                    Id = schema.Id,

@@ -1,14 +1,14 @@
-﻿using climb2gether___backend.Contracts.V1.Requests;
+﻿using AutoMapper.Configuration;
 using climb2gether___backend.Data;
 using climb2gether___backend.Domain;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Swashbuckle.SwaggerUi;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace climb2gether___backend.Services
 {
@@ -16,16 +16,18 @@ namespace climb2gether___backend.Services
     {
         private readonly DataContext _dataContext;
         private static IWebHostEnvironment _webHostEnviorment;
+        private readonly Microsoft.Extensions.Configuration.IConfiguration _configuration;
 
-        public FileService(DataContext dataContext, IWebHostEnvironment webHostEnvironment)
+        public FileService(DataContext dataContext, IWebHostEnvironment webHostEnvironment, Microsoft.Extensions.Configuration.IConfiguration configuration)
         {
             _dataContext = dataContext;
             _webHostEnviorment = webHostEnvironment;
+            _configuration = configuration;
         }
 
         public async Task<bool> AddAttatchments(List<IFormFile> objectFile, string objectTypeName, int objectTypeNumber)
         {
-            var assetsPath = "D:\\Repositories\\climb2gether_INZYNIERKA\\climb2gether - frontend\\dist\\climb2gether\\assets";
+            var assetsPath = _configuration.GetValue<string>("Attatchments:FrontendAssetsPath");
             var created = 0;
             try
             {
@@ -46,7 +48,7 @@ namespace climb2gether___backend.Services
                         }
                         var attatchment = new Attatchment
                         {
-                            FilePath = $"\\Upload\\{guid}\\" + file.FileName,
+                            FilePath = $"assets\\Upload\\{guid}\\" + file.FileName,
                             ObjectTypeName = objectTypeName,
                             ObjectTypeNumber = objectTypeNumber
                         };
@@ -57,7 +59,7 @@ namespace climb2gether___backend.Services
             }
             catch (Exception ex)
             {
-                
+                 
             }
 
             return objectFile.Count == created;

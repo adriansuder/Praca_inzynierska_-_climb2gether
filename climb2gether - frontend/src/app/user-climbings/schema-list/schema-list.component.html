@@ -1,10 +1,41 @@
 <div id="listWrapper" class="col-12 pt-3">
-    <h1>Tytuł listy</h1>
+    <h4>Filtry</h4>
+    <div class="">
+        <div class="col-12 d-flex justify-content-around">
+            <!-- <div class="col-12"> -->
+                <mat-form-field >
+                    <mat-label>Nazwa drogi</mat-label>
+                    <input matInput type="text" [(ngModel)]="name">
+                    <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear"
+                        (click)="name=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <mat-form-field >
+                    <mat-label>Rejon drogi</mat-label>
+                    <input matInput type="text" [(ngModel)]="location">
+                    <button mat-button *ngIf="location" matSuffix mat-icon-button aria-label="Clear"
+                        (click)="location=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+                <div style="display: flex; align-items: center!important;">
+                    <mat-checkbox color="primary"  (change)="check($event)">
+                        <mat-icon inline="true">public</mat-icon>{{checkIsPublic ? 'Publiczne schematy' : 'Moje schematy'}}
+                      </mat-checkbox>
+                </div>
+                
+                <button mat-raised-button color="primary" (click)="search()">Wyszukaj</button>
+            <!-- </div> -->
+        </div>
+    </div>
     <mat-list>
         <mat-divider></mat-divider>
         <div mat-subheader>Schematy wspinaczkowe</div>
         <div class="row ">
-            <div class="col-12 col-md-6 col-lg-4 " *ngFor="let schema of fetchedSchemas">
+            <div class="col-12 col-md-6 col-lg-4 "
+                *ngFor="let schema of fetchedSchemas | paginate: { itemsPerPage: 15, currentPage: p }">
                 <mat-list-item class="list-item" (click)="openDetailsDialog(schema.id)">
                     <mat-icon mat-list-icon>note</mat-icon>
                     <div mat-line>{{ schema.routeName }}</div>
@@ -14,6 +45,7 @@
         </div>
 
     </mat-list>
-    <mat-paginator [length]="100" [pageSize]="6" [pageSizeOptions]="[6, 12, 24, 48]">
-    </mat-paginator>
+    <div class="row">
+        <pagination-controls (pageChange)="p = $event" class="mt-1 mb-2"></pagination-controls>
+    </div>
 </div>

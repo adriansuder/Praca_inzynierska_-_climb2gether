@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+import { BaseService } from 'src/app/services/base.service';
 import { ClimbingSchemaService } from 'src/app/services/climbing-schema.service';
 import { RockSchema } from 'src/app/_models/RockSchema';
 import { DialogSchemaDetailsComponent } from '../dialog-schema-details/dialog-schema-details.component';
@@ -9,17 +11,42 @@ import { DialogSchemaDetailsComponent } from '../dialog-schema-details/dialog-sc
   templateUrl: './schema-list.component.html',
   styleUrls: ['./schema-list.component.scss']
 })
-export class SchemaListComponent implements OnInit {
+export class SchemaListComponent implements OnInit, OnDestroy {
+  name: string = '';
+  location: string = '';
+  checkIsPublic: boolean = false;
+  p: any; //strona paginatora
   fetchedSchemas: RockSchema[] = [];
   pageOfItems: Array<any>;
+  schemaSubscription: Subscription;
+
+
   constructor(
     private schemaService: ClimbingSchemaService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private baseService: BaseService
   ) { }
 
   async ngOnInit() {
     this.fetchedSchemas = await this.schemaService.getUserSchemas();
-    console.log(this.fetchedSchemas);
+    this.schemaSubscription = this.schemaService.schemasChanged.subscribe( res => {
+      this.fetchedSchemas = res;
+    })
+  }
+
+  async search() {
+    await this.schemaService.getUserSchemas(this.name, this.location, this.checkIsPublic)
+    .then( res => {
+      this.fetchedSchemas = res;
+    })
+    .catch( err => {
+      this.baseService.openSnackBar('Brak wyników wyszukiwania');
+      this.fetchedSchemas = [];
+    });
+  }
+
+  check(event: any) {
+    this.checkIsPublic = event.checked;
   }
 
   onChangePage(pageOfItems: Array<any>) {
@@ -30,9 +57,13 @@ export class SchemaListComponent implements OnInit {
   openDetailsDialog(schemaId: number) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
-    dialogConfig.maxHeight = '70vh';
+    dialogConfig.maxHeight = '85vh';
     dialogConfig.data = this.fetchedSchemas.find(x => x.id == schemaId);
     this.dialog.open(DialogSchemaDetailsComponent, dialogConfig);
+  }
+
+  ngOnDestroy(){
+    this.schemaSubscription.unsubscribe();
   }
 
 }

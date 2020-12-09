@@ -57,6 +57,8 @@ export class AddClimbingSchemaComponent implements OnInit {
       this.savedImg = null;
       this.savedImgURL = null;
       this.baseService.openSnackBar('Twój schemat został zapisany.');
+      let fetchedSchemas = await this.schemaService.getUserSchemas();
+      this.schemaService.schemasChanged.next(fetchedSchemas);
     }
     else{
       this.baseService.openSnackBar('Coś poszło nie tak. Spróbuj jeszcze raz');

@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AuthService } from 'src/app/auth/auth.service';
 import { RockSchema } from 'src/app/_models/RockSchema';
 import { environment } from 'src/environments/environment';
 
@@ -10,15 +11,15 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./dialog-schema-details.component.scss']
 })
 export class DialogSchemaDetailsComponent implements OnInit {
-
-  path: string = environment.attatchmentAssets;
+  actualUserId;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: RockSchema,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
-
+    this.actualUserId = this.authService.loggedUser.userId;
   }
   
   getURL(URL: string){

@@ -46,9 +46,9 @@ namespace climb2gether___backend.Controllers.V1
         }
 
         [HttpGet(ApiRoutes.RockSchema.GetAllUsersSchemas)]
-        public async Task<IActionResult> GetAllUsersSchemas([FromRoute] int userId)
-        {
-            List<UserSchemasResponse> schemasList = await _rockSchemaService.GetAllUserSchemas(userId);
+        public async Task<IActionResult> GetAllUsersSchemas([FromRoute] int userId, [FromQuery] string routeName, [FromQuery] string routeLocation, [FromQuery] bool isPublic)
+        {   
+            List<UserSchemasResponse> schemasList = await _rockSchemaService.GetAllUserSchemas(userId, routeName??="", routeLocation??="", isPublic);
             if(schemasList.Count() <= 0)
             {
                 return BadRequest("Brak pobranych schematow");
@@ -56,5 +56,6 @@ namespace climb2gether___backend.Controllers.V1
 
             return Ok(schemasList);
         }
+
     }
 }
