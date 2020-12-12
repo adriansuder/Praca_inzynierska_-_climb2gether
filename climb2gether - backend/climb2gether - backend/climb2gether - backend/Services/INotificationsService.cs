@@ -12,5 +12,6 @@ namespace climb2gether___backend.Services
     {
         Task<bool> AddNotification(Notification notification);
         Task<List<UserNotificationsResponse>> GetNotifications(int userId);
+        Task<bool> SetReaded(int userId);
     }
 }

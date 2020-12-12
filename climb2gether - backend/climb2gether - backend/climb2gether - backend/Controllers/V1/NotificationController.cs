@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace climb2gether___backend.Controllers.V1
 {
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class NotificationController : Controller
     {
         private readonly INotificationsService _notificationsService;
@@ -32,8 +32,8 @@ namespace climb2gether___backend.Controllers.V1
         [HttpGet(ApiRoutes.Notifications.GetAll)]
         public async Task<IActionResult> GetAll()
         {
-            //var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
-            var result = await _notificationsService.GetNotifications(1);
+            var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
+            var result = await _notificationsService.GetNotifications(userId);
             if (result.Count <= 0)
             {
                 return NoContent();
@@ -41,6 +41,20 @@ namespace climb2gether___backend.Controllers.V1
 
             return Ok(result);
 
+        }
+
+        [HttpPost(ApiRoutes.Notifications.Readed)]
+        public async Task<IActionResult> SetReaded()
+        {
+            var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
+            var result = await _notificationsService.SetReaded(userId);
+
+            if (!result)
+            {
+                return BadRequest("Coś poszło nie tak");
+            }
+
+            return Ok(result);
         }
     }
 }

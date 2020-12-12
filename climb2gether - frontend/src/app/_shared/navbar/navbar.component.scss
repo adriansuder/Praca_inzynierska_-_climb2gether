@@ -16,3 +16,25 @@ button.mat-menu-item, .matLoginButton, .mobileNavBarButton{
     margin-right: 5vw;
 
 }
+
+::ng-deep.mat-menu-panel {
+    max-width: initial!important;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
+
+  ::ng-deep .mat-list-item{
+    word-wrap: break-word !important;
+    white-space: pre-wrap !important;
+    line-height: 24px!important;
+  }
+
+  ::ng-deep  .mat-menu .mat-list-item{
+    height:initial!important;
+  }
+
+  hr {
+    margin: 8px 0!important;
+  }
+

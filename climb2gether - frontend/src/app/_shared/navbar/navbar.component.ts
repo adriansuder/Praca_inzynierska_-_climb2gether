@@ -27,21 +27,22 @@ export class NavbarComponent implements OnInit {
 
 
   constructor(
-    private dialog: MatDialog, 
+    private dialog: MatDialog,
     private router: Router,
     private authService: AuthService,
     private baseService: BaseService
     ) {}
 
   ngOnInit() {
-    this.baseService.getUserNotifications();
     this.loggedUserSubscription = this.authService.user.subscribe( user => {
       this.isAuthenticated = !!user;
     });
     this.notificationSubscription = this.baseService.newNotifications.subscribe( x => {
       this.notifications = x;
-      this.newNotificationsNumber = this.notifications.filter(x => x.isReaded == false).length;
+      this.newNotificationsNumber = this.notifications.filter( x => x.isReaded === false).length;
+      console.log(this.notifications)
     });
+    this.baseService.getUserNotifications();
   }
 
   openLoginDialog() {
@@ -60,6 +61,9 @@ export class NavbarComponent implements OnInit {
   }
 
   checkIfUserIsLoggedIn():boolean{
+    if(!this.authService.loggedUser){
+      return false;
+    };
     return true;
   }
 
@@ -67,6 +71,23 @@ export class NavbarComponent implements OnInit {
      this.authService.logout().subscribe( resData => {
        console.log(resData)
      });
+    }
+
+    async onSetNotificationsReaded(){
+      let unreadedMessages = this.notifications.filter(x => x.isReaded == false);
+      if(unreadedMessages.length <= 0){
+        return;
+      }
+
+      let result = await this.baseService.setNotificationsReaded();
+
+      if(!result){
+        return;
+      }
+      unreadedMessages.forEach(x => {
+        x.isReaded = true;
+      })
+      this.newNotificationsNumber = 0;
     }
 
 }

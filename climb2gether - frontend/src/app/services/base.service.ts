@@ -37,4 +37,11 @@ export class BaseService {
       this.newNotifications.next(res);
     })
   }
+
+  setNotificationsReaded(){
+    return this.http.post<any>(
+      `${environment.apiUrl}/notifications/readed`,
+      {readed: true}
+    ).toPromise();
+  }
 }

@@ -67,6 +67,7 @@ namespace climb2gether___backend.Contracts
         public static class Notifications
         {
             public const string GetAll = Base + "/notifications";
+            public const string Readed = Base + "/notifications/readed";
         }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 
 namespace climb2gether___backend.Services
@@ -35,6 +36,19 @@ namespace climb2gether___backend.Services
         {
             var notifications = await _dataContext.Notifications.Where(x => x.UserId == userId).ToListAsync();
             return _mapper.Map<List<Notification>, List<UserNotificationsResponse>>(notifications);
+        }
+
+        public async Task<bool> SetReaded(int userId)
+        {
+            var notificationsToUpdate = _dataContext.Notifications.Where(x => x.UserId == userId && x.IsReaded == false);
+            foreach(var element in notificationsToUpdate)
+            {
+                element.IsReaded = true;
+                _dataContext.Notifications.Update(element);
+            }
+            var result = await _dataContext.SaveChangesAsync();
+
+            return result > 0;
         }
     }
 }

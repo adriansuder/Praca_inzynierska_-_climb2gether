@@ -4,5 +4,4 @@ export class Notification{
     isReaded: boolean;
     userId: number;
     creationDate: Date;
-
 }
