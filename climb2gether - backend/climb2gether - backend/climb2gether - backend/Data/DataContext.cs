@@ -25,5 +25,6 @@ namespace climb2gether___backend.Data
         public DbSet<ExpeditionEnrollment> ExpeditionEnrollments { get; set; }
         public DbSet<Attatchment> Attatchments { get; set; }
         public DbSet<RockSchema> RockSchemas { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
     }
 }

@@ -18,6 +18,7 @@ namespace climb2gether___backend.Domain
         public DateTime DateOfBirth { get; set; }
         public string Phone { get; set; }
         public string City { get; set; }
+        public ICollection<Notification> Notifications { get; set; }
 
     }
 }

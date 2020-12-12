@@ -50,7 +50,7 @@ namespace climb2gether___backend.Services
                         }
                         var attatchment = new Attatchment
                         {
-                            FilePath = $"assets\\Upload\\{guid}\\" + file.FileName,
+                            FilePath = $"\\Upload\\{guid}\\" + file.FileName,
                             ObjectTypeName = objectTypeName,
                             ObjectTypeNumber = objectTypeNumber
                         };
@@ -78,8 +78,9 @@ namespace climb2gether___backend.Services
             {
                 File.Delete(assetsPath + filePathToDelete);
             }
-            catch
+            catch(Exception ex)
             {
+                Console.WriteLine(ex);
                 return false;
             }
             return result > 0;

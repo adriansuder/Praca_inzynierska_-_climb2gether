@@ -42,24 +42,54 @@ namespace climb2gether___backend.Services
 
         public async Task<List<UserSchemasResponse>> GetAllUserSchemas(int userId, string routeName = "", string routeLocation = "", bool isPublic = false)
         {
-            var query = await (from schema in _dataContext.RockSchemas
-                               where schema.UserId == userId && schema.IsPublic == isPublic
-                                    && (routeName == "" || schema.RouteName.Contains(routeName))
-                                    && (routeLocation == "" || schema.RouteName.Contains(routeLocation))
-                               select new UserSchemasResponse
-                               {
-                                   Id = schema.Id,
-                                   UserId = schema.UserId,
-                                   RouteName = schema.RouteName,
-                                   RouteScale = schema.RouteScale,
-                                   RouteDescription = schema.RouteDescription,
-                                   RouteLocation = schema.RouteLocation,
-                                   CreationDate = schema.CreationDate,
-                                   IsPublic = schema.IsPublic,
-                                   ImgURL = (from Attatchment in _dataContext.Attatchments where Attatchment.ObjectTypeNumber == schema.Id && Attatchment.ObjectTypeName == "schemat" select Attatchment.FilePath).FirstOrDefault()
-                               }
-                          ).ToListAsync();
-            return query;
+
+            if (!isPublic)
+            {
+                var query = await (from schema in _dataContext.RockSchemas
+                                   where schema.UserId == userId
+                                        && (routeName == "" || schema.RouteName.Contains(routeName))
+                                        && (routeLocation == "" || schema.RouteName.Contains(routeLocation))
+                                   select new UserSchemasResponse
+                                   {
+                                       Id = schema.Id,
+                                       UserId = schema.UserId,
+                                       RouteName = schema.RouteName,
+                                       RouteScale = schema.RouteScale,
+                                       RouteDescription = schema.RouteDescription,
+                                       RouteLocation = schema.RouteLocation,
+                                       CreationDate = schema.CreationDate,
+                                       IsPublic = schema.IsPublic,
+                                       ImgURL = (from Attatchment in _dataContext.Attatchments where Attatchment.ObjectTypeNumber == schema.Id && Attatchment.ObjectTypeName == "schemat" select Attatchment.FilePath).FirstOrDefault()
+                                   }
+              ).ToListAsync();
+
+
+                return query;
+            }
+            else 
+            {
+                var query = await (from schema in _dataContext.RockSchemas
+                                   where schema.IsPublic == true
+                                        && (routeName == "" || schema.RouteName.Contains(routeName))
+                                        && (routeLocation == "" || schema.RouteName.Contains(routeLocation))
+                                   select new UserSchemasResponse
+                                   {
+                                       Id = schema.Id,
+                                       UserId = schema.UserId,
+                                       RouteName = schema.RouteName,
+                                       RouteScale = schema.RouteScale,
+                                       RouteDescription = schema.RouteDescription,
+                                       RouteLocation = schema.RouteLocation,
+                                       CreationDate = schema.CreationDate,
+                                       IsPublic = schema.IsPublic,
+                                       ImgURL = (from Attatchment in _dataContext.Attatchments where Attatchment.ObjectTypeNumber == schema.Id && Attatchment.ObjectTypeName == "schemat" select Attatchment.FilePath).FirstOrDefault()
+                                   }
+              ).ToListAsync();
+
+
+                return query;
+            }
+
         }
 
         public async Task<bool> IsOwner(int userId, int schemaId)

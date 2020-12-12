@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Subject, interval, Subscription } from 'rxjs';
 import { map, repeatWhen, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -14,8 +14,9 @@ import { Participant } from '../_models/Participant';
 @Injectable({
   providedIn: 'root'
 })
-export class InstructorsService{
+export class InstructorsService implements OnDestroy{
 
+  subscription: Subscription;
   inAddingOfferMode = new Subject<boolean>();
   offersChanged = new Subject<OfferListItem[]>();
   userOffersChanged = new Subject<Offer[]>();
@@ -26,9 +27,12 @@ export class InstructorsService{
   fetchedUserOffers: Offer[] = [];
 
   constructor(private http: HttpClient, private authService: AuthService) { }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
-  async getOffers() {
-    await this.http
+  getOffers() {
+    this.subscription = this.http
       .get<OfferListItem[]>(
         `${environment.apiUrl}/offers`
       ).pipe(map(resData => {
@@ -36,12 +40,11 @@ export class InstructorsService{
         offerArray = JSON.parse(JSON.stringify(resData));
         return resData;
       })
-        , tap(offers => {
+        , repeatWhen(() => interval(90000))
+        ).subscribe( offers => {
           this.fetchedOffers = offers;
           this.offersChanged.next(offers);
         })
-        , repeatWhen(() => interval(90000))
-        ).toPromise();
   }
 
   getInstructorOffers() {

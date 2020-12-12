@@ -6,11 +6,11 @@
         </a>
         <div class="pr-3" *ngIf="checkIfUserIsLoggedIn() == true">
             <button mat-icon-button color="primary" class=" navbar-toggler mobileNavBarButton">
-                <mat-icon inline="true" matBadge="8">notifications</mat-icon>
+                <mat-icon inline="true" [matBadge]="newNotificationsNumber">notifications</mat-icon>
             </button>
             <button mat-icon-button color="accent" class="navbar-toggler mobileNavBarButton" routerLink="/chat"
                 routerLinkActive="active">
-                <mat-icon inline="true" matBadge="8">chat</mat-icon>
+                <mat-icon inline="true" matBadge="10">chat</mat-icon>
             </button>
         </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -132,10 +132,10 @@
         </form>
         <button mat-icon-button class="btn-link matLoginButton d-none d-md-none d-lg-block"
             [matMenuTriggerFor]="notifications" aria-label="Notifications button">
-            <mat-icon matBadge="8">notifications</mat-icon>
+            <mat-icon [matBadge]="newNotificationsNumber">notifications</mat-icon>
         </button>
         <mat-menu #notifications="matMenu">
-            <li mat-menu-item *ngFor="let elem of notificationsMock">{{elem}}</li>
+            <li mat-menu-item *ngFor="let elem of notifications">{{elem}}</li>
         </mat-menu>
 
         <button mat-icon-button class="btn-link matLoginButton d-none d-md-none d-lg-block" aria-label="Messages button"

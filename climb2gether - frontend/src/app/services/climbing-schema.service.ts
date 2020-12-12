@@ -11,7 +11,7 @@ import { Subject } from 'rxjs';
 })
 export class ClimbingSchemaService {
   
-  schemasChanged: Subject<RockSchema[]>;
+  schemasChanged = new Subject<RockSchema[]>();
 
   constructor(
     private http: HttpClient,

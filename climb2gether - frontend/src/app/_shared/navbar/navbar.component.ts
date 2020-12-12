@@ -5,6 +5,8 @@ import { RegisterDialogComponent } from '../register-dialog/register-dialog.comp
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Subscription } from 'rxjs';
+import { BaseService } from 'src/app/services/base.service';
+import { Notification } from 'src/app/_models/Notification';
 
 
 
@@ -16,21 +18,30 @@ import { Subscription } from 'rxjs';
 
 export class NavbarComponent implements OnInit {
 
+  notifications: Notification[] = [];
+  newNotificationsNumber: number = 0;
   notificationsMock: string[] = ['Użytkownik XYZ obserwuje Cie', 'Użytkownik XYZ zareagował na Twój wpis' , 'Użytkownik XYZ zareagował na Twój wpis',  'Użytkownik XYZ zareagował na Twój wpis',  'Użytkownik XYZ zareagował na Twój wpis'];
   isAuthenticated: boolean;
   loggedUserSubscription: Subscription;
+  notificationSubscription: Subscription;
 
 
   constructor(
     private dialog: MatDialog, 
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private baseService: BaseService
     ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.baseService.getUserNotifications();
     this.loggedUserSubscription = this.authService.user.subscribe( user => {
       this.isAuthenticated = !!user;
-    })
+    });
+    this.notificationSubscription = this.baseService.newNotifications.subscribe( x => {
+      this.notifications = x;
+      this.newNotificationsNumber = this.notifications.filter(x => x.isReaded == false).length;
+    });
   }
 
   openLoginDialog() {

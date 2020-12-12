@@ -28,21 +28,27 @@ export class SchemaListComponent implements OnInit, OnDestroy {
   ) { }
 
   async ngOnInit() {
-    this.fetchedSchemas = await this.schemaService.getUserSchemas();
     this.schemaSubscription = this.schemaService.schemasChanged.subscribe( res => {
       this.fetchedSchemas = res;
     })
+    this.fetchedSchemas = await this.schemaService.getUserSchemas();
   }
 
   async search() {
-    await this.schemaService.getUserSchemas(this.name, this.location, this.checkIsPublic)
-    .then( res => {
-      this.fetchedSchemas = res;
-    })
-    .catch( err => {
+    let result = await this.schemaService.getUserSchemas(this.name, this.location, this.checkIsPublic);
+    if(!result){
       this.baseService.openSnackBar('Brak wyników wyszukiwania');
       this.fetchedSchemas = [];
-    });
+      return;
+    }
+    this.fetchedSchemas = result;
+    // .then( res => {
+    //   this.fetchedSchemas = res;
+    // })
+    // .catch( err => {
+    //   this.baseService.openSnackBar('Brak wyników wyszukiwania');
+    //   this.fetchedSchemas = [];
+    // });
   }
 
   check(event: any) {

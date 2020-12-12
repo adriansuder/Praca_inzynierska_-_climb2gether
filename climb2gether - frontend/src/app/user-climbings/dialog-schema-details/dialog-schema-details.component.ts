@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AuthService } from 'src/app/auth/auth.service';
 import { BaseService } from 'src/app/services/base.service';
@@ -19,7 +19,8 @@ export class DialogSchemaDetailsComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private authService: AuthService,
     private schemaService: ClimbingSchemaService,
-    private baseService: BaseService
+    private baseService: BaseService,
+    public dialogRef: MatDialogRef<DialogSchemaDetailsComponent>
   ) { }
 
   ngOnInit() {
@@ -32,10 +33,13 @@ export class DialogSchemaDetailsComponent implements OnInit {
 
   async deleteSchema(schemaId: number){
     var result = await this.schemaService.deleteSchema(schemaId);
-    if(result){
-      this.baseService.openSnackBar(result.error);
+    if(!result){
+      this.baseService.openSnackBar("Coś poszło nie tak, spróbuj ponownie.");
       return;
     }
+    let schemas = await this.schemaService.getUserSchemas();
+    this.schemaService.schemasChanged.next(schemas);
+    this.dialogRef.close();
     this.baseService.openSnackBar("Schemat został usunięty.");
   }
 }

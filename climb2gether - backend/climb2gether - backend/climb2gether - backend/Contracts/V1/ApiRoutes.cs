@@ -63,5 +63,10 @@ namespace climb2gether___backend.Contracts
             public const string GetAllUsersSchemas = Base + "/rockSchemas/{userId}";
             public const string Delete = Base + "/rockSchemas/{schemaId}";
         }
+
+        public static class Notifications
+        {
+            public const string GetAll = Base + "/notifications";
+        }
     }
 }

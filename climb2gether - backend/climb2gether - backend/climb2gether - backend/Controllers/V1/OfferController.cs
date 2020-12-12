@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
 using climb2gether___backend.Contracts;
@@ -9,13 +7,10 @@ using climb2gether___backend.Contracts.V1.Requests;
 using climb2gether___backend.Domain;
 using climb2gether___backend.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Web.Helpers;
 using Microsoft.AspNetCore.Http;
-using System.IO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
+
 
 namespace climb2gether___backend.Controllers.V1
 {

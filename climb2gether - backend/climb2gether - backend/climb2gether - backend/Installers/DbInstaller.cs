@@ -28,6 +28,7 @@ namespace climb2gether___backend.Installers
             services.AddScoped<IExpeditionsService, ExpeditionsService>();
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<IRockSchemaService, RockSchemaService>();
+            services.AddScoped<INotificationsService, NotificationsService>();
 
 
         }

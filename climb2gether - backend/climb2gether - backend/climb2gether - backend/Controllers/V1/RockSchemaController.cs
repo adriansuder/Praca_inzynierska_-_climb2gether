@@ -55,7 +55,7 @@ namespace climb2gether___backend.Controllers.V1
             List<UserSchemasResponse> schemasList = await _rockSchemaService.GetAllUserSchemas(userId, routeName??="", routeLocation??="", isPublic);
             if(schemasList.Count() <= 0)
             {
-                return BadRequest("Brak pobranych schematow");
+                return NoContent();
             }
 
             return Ok(schemasList);
