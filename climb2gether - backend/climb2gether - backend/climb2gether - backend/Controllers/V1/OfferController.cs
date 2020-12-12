@@ -15,11 +15,12 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 
 namespace climb2gether___backend.Controllers.V1
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class OfferController : BaseController
+    public class OfferController : Controller
     {
         private readonly IOfferService _offerService;
         private readonly IIdentityService _identityService;
@@ -34,6 +35,7 @@ namespace climb2gether___backend.Controllers.V1
             _identityService = identityService;
             _fileService = fileService;
         }
+
 
         [HttpPost(ApiRoutes.Offers.Create)]
         public async Task<IActionResult> Create([FromForm] CreateOfferRequest offerRequest)

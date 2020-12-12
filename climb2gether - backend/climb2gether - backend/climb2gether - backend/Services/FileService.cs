@@ -9,6 +9,8 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace climb2gether___backend.Services
 {
@@ -63,6 +65,24 @@ namespace climb2gether___backend.Services
             }
 
             return objectFile.Count == created;
+        }
+
+        public async Task<bool> DeleteAttatchment(string objectTypeName, int objectTypeNumber)
+        {
+            var assetsPath = _configuration.GetValue<string>("Attatchments:FrontendAssetsPath");
+            var attatchment = await _dataContext.Attatchments.Where(x => x.ObjectTypeName == objectTypeName && x.ObjectTypeNumber == objectTypeNumber).SingleOrDefaultAsync();
+            var filePathToDelete = attatchment.FilePath;
+            _dataContext.Attatchments.Remove(attatchment);
+            var result = await _dataContext.SaveChangesAsync();
+            try
+            {
+                File.Delete(assetsPath + filePathToDelete);
+            }
+            catch
+            {
+                return false;
+            }
+            return result > 0;
         }
     }
 }

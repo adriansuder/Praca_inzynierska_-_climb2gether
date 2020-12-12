@@ -48,4 +48,10 @@ export class ClimbingSchemaService {
     ).toPromise();
 
   }
+
+  deleteSchema(schemaId: number){
+    return this.http.delete<any>(
+      `${environment.apiUrl}/rockSchemas/${schemaId}`
+    ).toPromise();
+  }
 }

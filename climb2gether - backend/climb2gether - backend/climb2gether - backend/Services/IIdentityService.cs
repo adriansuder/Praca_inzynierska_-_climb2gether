@@ -1,5 +1,6 @@
 ﻿using climb2gether___backend.Contracts.V1.Requests;
 using climb2gether___backend.Domain;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace climb2gether___backend.Services
         Task<List<User>> GetUsersAsync();
         Task<List<ApplicationUserRole>> GetAllRolesAsync();
         int GetUserIdFromJWT(string token);
+        int GetUserIdFromRequest(HttpContext ctx);
 
     }   
 }

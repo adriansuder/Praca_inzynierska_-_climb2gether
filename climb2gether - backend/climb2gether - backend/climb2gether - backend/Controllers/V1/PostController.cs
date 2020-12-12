@@ -17,7 +17,7 @@ namespace climb2gether___backend.Controllers.V1
 {
  
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class PostController : BaseController
+    public class PostController : Controller
     {
         private readonly IPostService _postService;
         private readonly IIdentityService _identityService;
@@ -156,7 +156,7 @@ namespace climb2gether___backend.Controllers.V1
         }
         [HttpPut(ApiRoutes.Posts.Unlike)]
         public async Task<IActionResult> DislikePost([FromQuery] int likeId)
-        {
+        {   
             var result = await _postService.DislikePost(likeId);
             if (!result)
             {

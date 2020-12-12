@@ -14,6 +14,6 @@
   </div>
 </div>
 <div mat-dialog-actions class="float-right">
-  <button mat-raised-button color="warn" (click)="deleteSchema()" *ngIf="data.userId === actualUserId">Usuń schemat</button>
+  <button mat-raised-button color="warn" (click)="deleteSchema(data.id)" *ngIf="data.userId === actualUserId">Usuń schemat</button>
   <button mat-raised-button mat-dialog-close>Zamknij</button>
 </div>

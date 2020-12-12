@@ -3,6 +3,7 @@ using climb2gether___backend.Contracts.V1.Responses;
 using climb2gether___backend.Data;
 using climb2gether___backend.Domain;
 using Microsoft.EntityFrameworkCore;
+using Swashbuckle.Swagger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,6 +60,18 @@ namespace climb2gether___backend.Services
                                }
                           ).ToListAsync();
             return query;
+        }
+
+        public async Task<bool> IsOwner(int userId, int schemaId)
+        {
+            return await _dataContext.RockSchemas.Where(x => x.UserId == userId && x.Id == schemaId).AnyAsync();
+        }
+
+        public async Task<bool> Delete(int schemaId)
+        {
+            _dataContext.RockSchemas.Remove(await _dataContext.RockSchemas.Where(x => x.Id == schemaId).SingleOrDefaultAsync());
+            var result = await _dataContext.SaveChangesAsync();
+            return result > 0;
         }
     }
 }

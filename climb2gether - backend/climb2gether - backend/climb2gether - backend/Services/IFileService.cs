@@ -10,5 +10,6 @@ namespace climb2gether___backend.Services
     public interface IFileService
     {
         Task<bool> AddAttatchments(List<IFormFile> objectFile, string objectTypeName, int objectTypeNumber);
+        Task<bool> DeleteAttatchment(string objectTypeName, int objectTypeNumber);
     }
 }

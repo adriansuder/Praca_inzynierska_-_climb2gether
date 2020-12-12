@@ -10,25 +10,29 @@ using climb2gether___backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.Swagger;
 
 namespace climb2gether___backend.Controllers.V1
 {
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class RockSchemaController : BaseController
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public class RockSchemaController : Controller
     {
         
         private readonly IRockSchemaService _rockSchemaService;
         private readonly IIdentityService _identityService;
         private readonly IMapper _mapper;
         private readonly IFileService _fileService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public RockSchemaController(IRockSchemaService rockSchemaService, IMapper mapper, IIdentityService identityService, IFileService fileService)
+        public RockSchemaController(IRockSchemaService rockSchemaService, IMapper mapper, IIdentityService identityService, IFileService fileService, IHttpContextAccessor httpContextAccessor)
         {
             _rockSchemaService = rockSchemaService;
             _mapper = mapper;
             _identityService = identityService;
             _fileService = fileService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost(ApiRoutes.RockSchema.Create)]
@@ -55,6 +59,25 @@ namespace climb2gether___backend.Controllers.V1
             }
 
             return Ok(schemasList);
+        }
+
+        [HttpDelete(ApiRoutes.RockSchema.Delete)]
+        public async Task<IActionResult> DeleteSchema([FromRoute] int schemaId)
+        {
+            var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
+            var isOwner = await _rockSchemaService.IsOwner(1, schemaId);
+            if (!isOwner)
+            {
+                return BadRequest("Użytkownik nie jest właścicielem schematu!");
+            }
+            await _fileService.DeleteAttatchment("schemat", schemaId);
+            var result = await _rockSchemaService.Delete(schemaId);
+            if (!result)
+            {
+                return BadRequest("Coś poszło nie tak!");
+            }
+
+            return Ok(result);
         }
 
     }

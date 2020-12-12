@@ -61,6 +61,7 @@ namespace climb2gether___backend.Contracts
         {
             public const string Create = Base + "/rockSchemas";
             public const string GetAllUsersSchemas = Base + "/rockSchemas/{userId}";
+            public const string Delete = Base + "/rockSchemas/{schemaId}";
         }
     }
 }

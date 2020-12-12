@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace climb2gether___backend.Controllers.V1
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class ExpeditionsController : BaseController
+    public class ExpeditionsController : Controller
     {
         private readonly IExpeditionsService _expeditionsService;
         private readonly IIdentityService _identityService;

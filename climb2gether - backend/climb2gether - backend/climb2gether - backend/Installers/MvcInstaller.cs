@@ -77,6 +77,8 @@ namespace climb2gether___backend.Installers
                 builder.WithOrigins("http://127.0.0.1:8080").AllowAnyMethod().AllowAnyHeader();
             }));
 
+            services.AddHttpContextAccessor();
+
             services.AddSwaggerGen(x =>
             {
                 x.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "climb2gether - backend", Version = "v1" });

@@ -2,6 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AuthService } from 'src/app/auth/auth.service';
+import { BaseService } from 'src/app/services/base.service';
+import { ClimbingSchemaService } from 'src/app/services/climbing-schema.service';
 import { RockSchema } from 'src/app/_models/RockSchema';
 import { environment } from 'src/environments/environment';
 
@@ -15,7 +17,9 @@ export class DialogSchemaDetailsComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: RockSchema,
     private sanitizer: DomSanitizer,
-    private authService: AuthService
+    private authService: AuthService,
+    private schemaService: ClimbingSchemaService,
+    private baseService: BaseService
   ) { }
 
   ngOnInit() {
@@ -24,5 +28,14 @@ export class DialogSchemaDetailsComponent implements OnInit {
   
   getURL(URL: string){
     return URL.replace('\\','/');
+  }
+
+  async deleteSchema(schemaId: number){
+    var result = await this.schemaService.deleteSchema(schemaId);
+    if(result){
+      this.baseService.openSnackBar(result.error);
+      return;
+    }
+    this.baseService.openSnackBar("Schemat został usunięty.");
   }
 }

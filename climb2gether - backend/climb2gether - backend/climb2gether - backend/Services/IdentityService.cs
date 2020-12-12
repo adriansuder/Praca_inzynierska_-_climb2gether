@@ -2,6 +2,7 @@
 using climb2gether___backend.Data;
 using climb2gether___backend.Domain;
 using climb2gether___backend.Options;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -244,6 +245,12 @@ namespace climb2gether___backend.Services
         public async Task<List<ApplicationUserRole>> GetAllRolesAsync()
         {
             return await _dataContext.ApplicationUserRoles.ToListAsync();
+        }
+
+        public int GetUserIdFromRequest(HttpContext ctx)
+        {
+            var userId = ctx.User.Claims.Single( x => x.Type == "id").Value;
+            return Int32.Parse(userId);
         }
 
 
