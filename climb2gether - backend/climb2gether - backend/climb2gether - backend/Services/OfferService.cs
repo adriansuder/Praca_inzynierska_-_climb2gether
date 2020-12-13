@@ -13,10 +13,12 @@ namespace climb2gether___backend.Services
     public class OfferService : IOfferService
     {
         private readonly DataContext _dataContext;
+        private readonly INotificationsService _notificationsService;
 
-        public OfferService(DataContext dataContext)
+        public OfferService(DataContext dataContext, INotificationsService notificationsService)
         {
             _dataContext = dataContext;
+            _notificationsService = notificationsService;
         }
 
         public async Task<int> CreateOfferAsync(Offer offer)
@@ -116,6 +118,15 @@ namespace climb2gether___backend.Services
         public async Task<bool> CreateEnrollmentAsync(OfferEnrollment offerEnrollment)
         {
             _dataContext.OfferEnrollments.Add(offerEnrollment);
+            var InstructorOffer = await _dataContext.Offers.Where(x => x.Id == offerEnrollment.OfferId).FirstOrDefaultAsync();
+            var notification = new Notification
+            {
+                Message = "Nowy użytkownik zapisał się na kurs w terminie: " + InstructorOffer.Date,
+                IsReaded = false,
+                UserId = InstructorOffer.OfferOwnerUserId,
+                CreationDate = DateTime.UtcNow
+            };
+            await _notificationsService.AddNotification(notification);
             var result = await _dataContext.SaveChangesAsync();
 
             return result > 0;

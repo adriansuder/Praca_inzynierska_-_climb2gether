@@ -1,6 +1,4 @@
-.viewportMessages{
-    height: 80vh;
-}
+
 .viewportList{
     height: 76vh;
 }
@@ -65,4 +63,43 @@
     margin:0px 0 5px 0!important;
 }
 
+.wrapper{
+  display: flex!important;
+  justify-content: center!important;
+  background-color: whitesmoke!important;
+  // margin-left: 2vw;
+  // width: 96vw;
+  // height: 90vh;
+  // overflow: hidden!important;
+}
 
+@media only screen and (min-width: 600px) {
+  .wrapper{
+    display: flex!important;
+    justify-content: center!important;
+    background-color: whitesmoke!important;
+    margin-left: 2vw;
+    width: 96vw;
+    height: 90vh;
+    overflow: hidden!important;
+  }
+
+  .viewportMessages{
+    height: 80vh;
+}
+
+}
+
+@media only screen and (max-width: 600px) {
+  .viewportList{
+    max-height: 20vh!important;
+  }
+  
+  .listItem{
+    font-size: 0.8em!important;
+  }
+  .newConversation{
+    font-size: 0.8em;
+  }
+
+}
