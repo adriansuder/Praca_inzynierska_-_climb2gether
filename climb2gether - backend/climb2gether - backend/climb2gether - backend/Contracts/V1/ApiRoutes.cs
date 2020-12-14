@@ -69,5 +69,13 @@ namespace climb2gether___backend.Contracts
             public const string GetAll = Base + "/notifications";
             public const string Readed = Base + "/notifications/readed";
         }
+
+        public static class Chat
+        {
+            public const string CreateOrFind = Base + "/conversations";
+            public const string DeleteConversation = Base + "/conversation";
+            public const string SendMessage = Base + "/sendMessage"; 
+            public const string GetConversations = Base + "/conversations";
+        }
     }
 }

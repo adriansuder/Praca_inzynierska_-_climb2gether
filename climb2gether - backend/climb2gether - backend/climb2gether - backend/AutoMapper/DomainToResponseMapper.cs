@@ -19,6 +19,7 @@ namespace climb2gether___backend.AutoMapper
             CreateMap<ApplicationUserRole, UserRoleResponse>();
             CreateMap<Expedition, ExpeditionResponse>();
             CreateMap<Notification, UserNotificationsResponse>();
+            CreateMap<Conversation, ConversationResponse>();
         }
     }
 }

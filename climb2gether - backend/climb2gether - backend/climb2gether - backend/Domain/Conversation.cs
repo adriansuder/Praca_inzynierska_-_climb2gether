@@ -18,5 +18,6 @@ namespace climb2gether___backend.Domain
         public virtual User User2 { get; set; }
         public DateTime CreationDate { get; set; }
         public ICollection<Message> Messages { get; set; }
+        public DateTime LastEventDate { get; set; }
     }
 }

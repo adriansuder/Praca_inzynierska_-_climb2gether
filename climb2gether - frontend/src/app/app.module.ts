@@ -32,9 +32,6 @@ import { ChatComponent } from './chat/chat.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatListModule} from '@angular/material/list';
 import {ScrollingModule} from '@angular/cdk/scrolling';
-import { MobileChatComponent } from './mobile-chat/mobile-chat.component';
-import { MobileMessagesListComponent } from './mobile-chat/mobile-messages-list/mobile-messages-list.component';
-import { MobileConversationComponent } from './mobile-chat/mobile-conversation/mobile-conversation.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuard } from './guards/auth.guard';
 import { AuthService } from './auth/auth.service';
@@ -66,6 +63,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { SchemaListComponent } from './user-climbings/schema-list/schema-list.component';
 import { DialogSchemaDetailsComponent } from './user-climbings/dialog-schema-details/dialog-schema-details.component';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { ConversationsComponent } from './chat/conversations/conversations.component';
+import { MessagesComponent } from './chat/messages/messages.component';
 
 @NgModule({
   declarations: [
@@ -80,9 +79,6 @@ import {NgxPaginationModule} from 'ngx-pagination';
     UserClimbingsComponent,
     UserSettingsComponent,
     ChatComponent,
-    MobileChatComponent,
-    MobileMessagesListComponent,
-    MobileConversationComponent,
     PostsListComponent,
     PostItemComponent,
     PostsDetailsComponent,
@@ -101,7 +97,9 @@ import {NgxPaginationModule} from 'ngx-pagination';
     ModalDetailsComponent,
     ModalConfirmEnrollmentComponent,
     SchemaListComponent,
-    DialogSchemaDetailsComponent
+    DialogSchemaDetailsComponent,
+    ConversationsComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,

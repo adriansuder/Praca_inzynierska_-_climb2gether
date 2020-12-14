@@ -16,5 +16,8 @@ namespace climb2gether___backend.Domain
         public DateTime CreationDate { get; set; }
         public bool IsReaded { get; set; }
         public Conversation Conversation { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
+    
     }
 }
