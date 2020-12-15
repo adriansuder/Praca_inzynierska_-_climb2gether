@@ -1,24 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace climb2gether___backend.Domain
+namespace climb2gether___backend.Contracts.V1.Responses
 {
-    public class Message
+    public class MessageResponse
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Text { get; set; }
         public DateTime CreationDate { get; set; }
         public bool IsReaded { get; set; }
         public int ConversationId { get; set; }
-        public Conversation Conversation { get; set; }
         public int UserId { get; set; }
-        public User User { get; set; }
-    
+        public string UserName { get; set; }
     }
 }

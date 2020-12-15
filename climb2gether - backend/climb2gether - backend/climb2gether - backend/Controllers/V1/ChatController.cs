@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace climb2gether___backend.Controllers.V1
 {
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ChatController : Controller
     {
         private readonly IChatService _chatService;
@@ -34,11 +34,16 @@ namespace climb2gether___backend.Controllers.V1
         public async Task<IActionResult> CreateOrFind([FromBody] NewConversationRequest request)
         {
             var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
-            if (userId == request.User2Id)
+            var user2Id = await _identityService.GetUserIdByEmail(request.User2Email);
+            if(user2Id == 0)
+            {
+                return BadRequest("Błędny email");
+            }
+            if (userId == user2Id)
             {
                 return BadRequest("Nie można utworzyć konwersacji z samym sobą");
             }
-            var isConversationExists = await _chatService.checkIfConversationExists(userId, request.User2Id);
+            var isConversationExists = await _chatService.CheckIfConversationExists(userId, user2Id);
             if(isConversationExists > 0)
             {
                 return Ok(new NewConversationResponse { 
@@ -47,7 +52,7 @@ namespace climb2gether___backend.Controllers.V1
                 });
             }
 
-            var conversationId = await _chatService.createNewConversation(userId, request.User2Id);
+            var conversationId = await _chatService.CreateNewConversation(userId, user2Id);
 
             if(conversationId == 0)
             {
@@ -74,6 +79,30 @@ namespace climb2gether___backend.Controllers.V1
             return Ok(conversations);
         }
 
+        [HttpPost(ApiRoutes.Chat.SendMessage)]
+        public async Task<IActionResult> SendMessage([FromBody] SendMessageRequest request)
+        {
+            await _chatService.UpdateLastModificationDate(request.ConversationId);
+            var addedMessage = await _chatService.SendMessage(request);
+            if (!addedMessage) { return BadRequest("Coś poszło nie tak, spróbuj jeszcze raz"); }
+
+            return Ok(addedMessage);
+        }
+
+        [HttpGet(ApiRoutes.Chat.GetMessages)]
+        public async Task<IActionResult> GetMessages([FromRoute] int conversationId)
+        {
+            var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
+            var isUserInConversation = await _chatService.CheckIfUserIsInConversation(userId, conversationId);
+            if (!isUserInConversation)
+            {
+                return BadRequest("Użytkownik nie ma praw do tej konwersacji!");
+            }
+
+            var messages = await _chatService.GetMessages(conversationId);
+
+            return Ok(messages);
+        }
 
     }
 }

@@ -1,17 +1,19 @@
 <div class="row">
-    <div class="newConversation col-12">
+    <form (ngSubmit)="onSubmit()" #conversationForm="ngForm" class="newConversation col-12">
         <mat-form-field appearance="outline" class="col-lg-10 col-10">
-            <mat-label>Dodaj lub znajdź konwersację</mat-label>
-            <input autocomplete="off" matInput>
+            <mat-label>Dodaj rozmowę podając email użytkownika</mat-label>
+            <input autocomplete="off" type="text" name="conversation" ngModel matInput>
         </mat-form-field>
-        <button mat-icon-button color="primary" class="navbar-toggler sendIcon col-lg-2 col-2">
+        <button mat-icon-button color="primary" class="navbar-toggler sendIcon col-lg-2 col-2" type="submit">
             <mat-icon inline="true">add</mat-icon>
         </button>
-    </div>
+    </form>
 </div>
-<cdk-virtual-scroll-viewport class="viewportList leftList" itemSize="conversations.length" *ngIf="conversations.length >= 1">
-    <mat-selection-list #messages [multiple]="false">
-        <mat-list-option class="mat-elevation-z2" *ngFor="let conversation of conversartions" [value]="1" class="liOnList">
+<cdk-virtual-scroll-viewport class="viewportList leftList" itemSize="conversations.length"
+    *ngIf="conversations?.length > 0">
+    <mat-selection-list #messages [multiple]="false" [(ngModel)]="selectedOptions" >
+        <mat-list-option class="mat-elevation-z2" *ngFor="let conversation of conversations" [value]="conversation.id" [selected]="conversation.id == selectedOptions[0]"
+            class="liOnList" (click)="activeSelected(conversation.id)">
             <ul class=" d-flex justify-content-center">
                 <li class=" col-lg-12 listItem"><span style="font-weight: bold;">{{conversation.id}}:
                     </span>...</li>
@@ -19,13 +21,14 @@
         </mat-list-option>
     </mat-selection-list>
 </cdk-virtual-scroll-viewport>
-<cdk-virtual-scroll-viewport class="viewportList leftList" itemSize="1" *ngIf="conversations.length == 0">
-        <mat-selection-list #messages [multiple]="false">
-            <mat-list-option class="mat-elevation-z2" [value]="1" class="liOnList">
-                <ul class=" d-flex justify-content-center">
-                    <li class=" col-lg-12 listItem"><span style="font-weight: bold;">Brak konwersacji
-                        </span></li>
-                </ul>
-            </mat-list-option>
-        </mat-selection-list>
+<cdk-virtual-scroll-viewport class="viewportList leftList" itemSize="1"
+    *ngIf="!conversations || conversations.length == 0">
+    <mat-selection-list #message [multiple]="false">
+        <mat-list-option class="mat-elevation-z2" [value]="1" class="liOnList">
+            <ul class=" d-flex justify-content-center">
+                <li class=" col-lg-12 listItem"><span style="font-weight: bold;">Brak konwersacji
+                    </span></li>
+            </ul>
+        </mat-list-option>
+    </mat-selection-list>
 </cdk-virtual-scroll-viewport>

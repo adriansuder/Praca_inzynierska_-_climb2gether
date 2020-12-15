@@ -13,7 +13,7 @@ import { AuthService } from '../auth/auth.service';
 
 export class ChatComponent implements OnInit {
    date = new Date();
-   conversations: Conversation[] = [];
+   conversations: Conversation[];
    activeConversationId: number;
    messages: Message[] = [];
  
@@ -23,7 +23,8 @@ export class ChatComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.conversations = await this.chatService.fetchConversations();
+    //this.conversations = await this.chatService.fetchConversations();
+    //this.chatService.conversationsChanged.next(this.conversations);
   }
 
   createConversation(){

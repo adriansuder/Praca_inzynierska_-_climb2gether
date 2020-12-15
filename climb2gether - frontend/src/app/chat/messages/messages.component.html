@@ -1,26 +1,130 @@
-<cdk-virtual-scroll-viewport class="viewportMessages" itemSize="messages.lenght == 0 ? 1 : messages.length" >
+<cdk-virtual-scroll-viewport class="viewportMessages" [itemSize]="messages.length == 0 ? 1 : messages.length" #scrollMe>
     <ng-container *ngIf="messages">
-        <div class="messageList mat-elevation-z3" *ngFor="let message of messages">
+        <div class="messageList " *ngFor="let message of messages" [class.right-text]="message.userId != userId">
             <dt class="break-word">{{message.userName || 'Loading...'}}</dt>
-            <dd class="break-word">{{message.message || 'Loading...'}}</dd>
+            <dd class="break-word">{{message.text || 'Loading...'}}</dd>
             <mat-divider class=""></mat-divider>
         </div>
     </ng-container>
-    <ng-container *ngIf="messages.length == 0">
-        <div class="messageList mat-elevation-z3" >
+    <ng-container *ngIf="messages.length == 0 && !activeConversation">
+        <div class="messageList mat-elevation-z3">
             <dt class="break-word">Wybierz konwersację,</dt>
             <dd class="break-word">aby wczytać wiadomości</dd>
             <mat-divider class=""></mat-divider>
         </div>
     </ng-container>
+    <ng-container *ngIf="messages.length == 0 && activeConversation">
+        <div class="messageList mat-elevation-z3">
+            <dt class="break-word">Brak wiadomości</dt>
+            <dd class="break-word">rozpocznij rozmowę z użytkownikiem :)</dd>
+            <mat-divider class=""></mat-divider>
+        </div>
+    </ng-container>
 </cdk-virtual-scroll-viewport>
-<div class="col-lg-12 col-12 d-flex justify-content-center mt-2">
-    <mat-form-field appearance="outline" class="col-lg-11 col-11">
-        <mat-label>Treść wiadomości</mat-label>
-        <input autocomplete="off" matInput>
-        <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
-    </mat-form-field>
-    <button mat-icon-button color="primary" class="navbar-toggler sendIcon col-lg-1 col-1">
-        <mat-icon inline="true">send</mat-icon>
-    </button>
-</div>
+
+    <form (ngSubmit)="onSubmit()" #messageForm="ngForm" class="col-lg-12 col-12 d-flex justify-content-center mt-2" *ngIf="activeConversation">
+        <mat-form-field appearance="outline" class="col-lg-11 col-11">
+            <mat-label>Treść wiadomości</mat-label>
+            <input autocomplete="off" matInput
+            type="text"
+              name="message"
+              ngModel>
+        </mat-form-field>
+        <button mat-icon-button color="primary" class="navbar-toggler sendIcon col-lg-1 col-1" type="submit">
+            <mat-icon inline="true">send</mat-icon>
+        </button>
+    </form>
+
+
+
+
+<!-- 
+@ViewChild('f', { static: false }) signupForm: NgForm;
+
+
+onSubmit() {
+    this.submitted = true;
+    this.user.username = this.signupForm.value.userData.username;
+    this.user.email = this.signupForm.value.userData.email;
+    this.user.secretQuestion = this.signupForm.value.secret;
+    this.user.answer = this.signupForm.value.questionAnswer;
+    this.user.gender = this.signupForm.value.gender;
+
+    this.signupForm.reset();
+  }
+
+
+
+
+<form (ngSubmit)="onSubmit()" #f="ngForm">
+        <div
+          id="user-data"
+          ngModelGroup="userData"
+          #userData="ngModelGroup">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              class="form-control"
+              ngModel
+              name="username"
+              required>
+          </div>
+          <button
+            class="btn btn-default"
+            type="button"
+            (click)="suggestUserName()">Suggest an Username</button>
+          <div class="form-group">
+            <label for="email">Mail</label>
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              ngModel
+              name="email"
+              required
+              email
+              #email="ngModel">
+            <span class="help-block" *ngIf="!email.valid && email.touched">Please enter a valid email!</span>
+          </div>
+        </div>
+        <p *ngIf="!userData.valid && userData.touched">User Data is invalid!</p>
+        <div class="form-group">
+          <label for="secret">Secret Questions</label>
+          <select
+            id="secret"
+            class="form-control"
+            [ngModel]="defaultQuestion"
+            name="secret">
+            <option value="pet">Your first Pet?</option>
+            <option value="teacher">Your first teacher?</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <textarea
+            name="questionAnswer"
+            rows="3"
+            class="form-control"
+            [(ngModel)]="answer"></textarea>
+        </div>
+        <p>Your reply: {{ answer }}</p>
+        <div class="radio" *ngFor="let gender of genders">
+          <label>
+            <input
+              type="radio"
+              name="gender"
+              ngModel
+              [value]="gender"
+              required>
+            {{ gender }}
+          </label>
+        </div>
+        <button
+          class="btn btn-primary"
+          type="submit"
+          [disabled]="!f.valid">Submit</button>
+      </form>
+
+
+-->

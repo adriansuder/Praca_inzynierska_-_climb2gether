@@ -16,6 +16,7 @@ namespace climb2gether___backend.AutoMapper
         {
             CreateMap<CreateExpeditionRequest, Expedition>();
             CreateMap<AddExpeditionEnrollmentRequest, ExpeditionEnrollment>();
+            CreateMap<SendMessageRequest, Message>();
         }
     }
 }

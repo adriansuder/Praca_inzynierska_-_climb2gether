@@ -76,6 +76,7 @@ namespace climb2gether___backend.Contracts
             public const string DeleteConversation = Base + "/conversation";
             public const string SendMessage = Base + "/sendMessage"; 
             public const string GetConversations = Base + "/conversations";
+            public const string GetMessages = Base + "/messages/{conversationId}";
         }
     }
 }

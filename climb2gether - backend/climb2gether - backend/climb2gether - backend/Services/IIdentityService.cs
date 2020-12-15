@@ -19,6 +19,7 @@ namespace climb2gether___backend.Services
         Task<List<ApplicationUserRole>> GetAllRolesAsync();
         int GetUserIdFromJWT(string token);
         int GetUserIdFromRequest(HttpContext ctx);
+        Task<int> GetUserIdByEmail(string email);
 
     }   
 }

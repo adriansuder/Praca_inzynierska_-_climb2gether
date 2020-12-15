@@ -1,4 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { interval, Subscription } from 'rxjs';
+import { repeatWhen } from 'rxjs/operators';
+import { AuthService } from 'src/app/auth/auth.service';
+import { BaseService } from 'src/app/services/base.service';
+import { ChatService } from 'src/app/services/chat.service';
 import { Message } from 'src/app/_models/Message';
 
 @Component({
@@ -6,13 +13,83 @@ import { Message } from 'src/app/_models/Message';
   templateUrl: './messages.component.html',
   styleUrls: ['./messages.component.scss']
 })
-export class MessagesComponent implements OnInit {
+export class MessagesComponent implements OnInit, OnDestroy {
+  @ViewChild('messageForm', { static: false }) messageForm: NgForm;
+  @ViewChild(CdkVirtualScrollViewport) public virtualScroll?: CdkVirtualScrollViewport;
 
-  @Input() messages: Message[];
+  messages: Message[] = [];
+  activeConversationSub: Subscription;
+  messagesChanged: Subscription;
+  activeConversation: number;
+  userId: number;
+  constructor(
+    private chatService: ChatService,
+    private authService: AuthService,
+    private baseService: BaseService
+  ) { }
 
-  constructor() { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.userId = this.authService.loggedUser.userId;
+    this.activeConversationSub = await this.chatService.activeConversationChanged.subscribe(x => {
+      if (x) {
+        this.activeConversation = x;
+        this.scrollToBottom();
+        this.chatService.unsubscribeMessages();
+        this.chatService.fetchMessages(x);
+      }
+    });
+    this.messagesChanged = this.chatService.messagesChanged.subscribe(res => {
+      this.messages = res;
+    })
   }
 
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom() {
+    try {
+      this.virtualScroll.scrollTo({bottom: 0});
+    } catch (e) {
+      // IE Sucks
+      
+    }
+  }
+
+  // async fetchMessages(conversationId: number) {
+  //   this.messages = await this.chatService.fetchMessages(conversationId);
+  //   console.log('yyyyy')
+  //   console.log(this.messages)
+  // }
+
+  ngOnDestroy() {
+    this.activeConversationSub.unsubscribe();
+    this.chatService.unsubscribeMessages();
+    this.messagesChanged.unsubscribe();
+    this.activeConversation = null;
+  }
+
+  async onSubmit() {
+    let message = this.messageForm.value.message;
+    if (message != null || message !== '') {
+      var requestMessage: Message = {
+        text: message,
+        userId: this.authService.loggedUser.userId,
+        conversationId: this.activeConversation
+      }
+
+      var result = await this.chatService.sendMessage(requestMessage);
+      if (!result) {
+        this.baseService.openSnackBar('Nie udało się wysłać wiadomości, spróbuj jeszcze raz.');
+        return;
+      }
+
+      //this.fetchMessages(this.activeConversation);
+
+      this.messageForm.reset();
+    }
+
+  }
 }

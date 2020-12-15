@@ -1,8 +1,9 @@
 export class Message{
-    id: number;
+    id?: number;
     text: string;
-    creationDate: Date;
-    isReaded: boolean;
+    creationDate?: Date;
+    isReaded?: boolean;
     conversationId: number;
     userId: number;
+    userName?: string;
 }

@@ -253,6 +253,15 @@ namespace climb2gether___backend.Services
             return Int32.Parse(userId);
         }
 
+        public async Task<int> GetUserIdByEmail(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if(user == null)
+            {
+                return 0;
+            }
+            return user.Id;
+        }
 
     }
 }
