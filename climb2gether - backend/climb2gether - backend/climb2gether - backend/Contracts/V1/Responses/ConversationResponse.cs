@@ -12,5 +12,8 @@ namespace climb2gether___backend.Contracts.V1.Responses
         public int User2Id { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime LastEventDate { get; set; }
+        public string User2Email { get; set; }
+        public string lastMessageText { get; set; }
+        public bool haveUnreadedMessages { get; set; }
     }
 }

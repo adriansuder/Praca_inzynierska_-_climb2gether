@@ -22,9 +22,11 @@ export class ChatService {
   messages: Message[];
 
   messagesSubscription: Subscription;
+  conversationsSubscription: Subscription;
 
   conversationsChanged = new BehaviorSubject<Conversation[]>([]);
   messagesChanged = new BehaviorSubject<Message[]>([]);
+  countOfUnreadedMessages = new BehaviorSubject<number>(0);
 
   constructor(
     private snackBar: MatSnackBar,
@@ -41,17 +43,20 @@ export class ChatService {
   }
 
   fetchConversations(){
-    return this.http.get(
+    this.conversationsSubscription = this.http.get<Conversation[]>(
       `${environment.apiUrl}/conversations`
-    ).pipe(
-      map(
-        res => {
-          return JSON.parse(JSON.stringify(res)) as Conversation[];
-        }
-      ), tap(res => {
-        this.conversationsChanged.next(res);
-      })
-    ).toPromise();
+    ).pipe(repeatWhen(() => interval(10000)))
+    .subscribe(res => {
+      this.conversationsChanged.next(res);
+      let unreadedConversations = res.filter(x => x.haveUnreadedMessages == true).length;
+      this.countOfUnreadedMessages.next(unreadedConversations);
+    });
+  }
+
+  unsubscribeConverstions(){
+    if(this.conversationsChanged){
+      this.conversationsChanged.unsubscribe();
+    }
   }
 
   fetchMessages(conversationId: number){

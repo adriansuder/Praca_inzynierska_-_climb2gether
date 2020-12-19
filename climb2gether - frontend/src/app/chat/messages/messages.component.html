@@ -1,6 +1,6 @@
 <cdk-virtual-scroll-viewport class="viewportMessages" [itemSize]="messages.length == 0 ? 1 : messages.length" #scrollMe>
     <ng-container *ngIf="messages">
-        <div class="messageList " *ngFor="let message of messages" [class.right-text]="message.userId != userId">
+        <div class="messageList " *ngFor="let message of messages; trackBy: trackBy" [class.right-text]="message.userId != userId">
             <dt class="break-word">{{message.userName || 'Loading...'}}</dt>
             <dd class="break-word">{{message.text || 'Loading...'}}</dd>
             <mat-divider class=""></mat-divider>

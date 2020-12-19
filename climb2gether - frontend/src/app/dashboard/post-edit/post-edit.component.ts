@@ -1,9 +1,11 @@
 import { NullTemplateVisitor } from '@angular/compiler';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators, AbstractControl } from '@angular/forms';
+import { SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
+import { BaseService } from 'src/app/services/base.service';
 import { Post } from 'src/app/_models/Post';
 import { PostsService } from '../../services/posts.service';
 
@@ -12,8 +14,8 @@ import { PostsService } from '../../services/posts.service';
   templateUrl: './post-edit.component.html',
   styleUrls: ['./post-edit.component.scss']
 })
-export class PostEditComponent implements OnInit, OnDestroy {
-  files: FileList
+export class PostEditComponent implements OnInit {
+  files: FileList;
   url: any;
   inEditMode = false;
   editModeSubscription: Subscription;
@@ -21,22 +23,20 @@ export class PostEditComponent implements OnInit, OnDestroy {
   loggedUserId: number = null;
   loadedPost: Post;
   userSubscription: Subscription;
-  //@ViewChild('form', { static: false }) postForm: NgForm;
   postForm: FormGroup;
 
   constructor(
     private postsService: PostsService,
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private baseService: BaseService
   ) { }
 
   ngOnInit() {
     this.createForm();
+    this.loggedUserId = this.authService.loggedUser.userId;
 
-    this.userSubscription = this.authService.user.subscribe(user => {
-      this.loggedUserId = user.userId;
-    });
     this.route.params.subscribe((params: Params) => {
       this.postId = params['postId'];
       this.inEditMode = params['postId'] != null;
@@ -73,7 +73,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
       creationDate: new Date(Date.now())
     }
     if(this.inEditMode){
-      this.postsService.updatePost(this.postId, post);
+        this.postsService.updatePost(this.postId, post, this.files);
     }
     else{
       this.postsService.addPost(post, this.files);
@@ -86,7 +86,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   private async createForm() {
     let title = '';
     let subtitle = '';
-    //let imgURL = '';
+    //let imgURL: any;
     let content = '';
     let userId = this.loggedUserId;
     let creationDate = new Date(Date.now());
@@ -96,10 +96,15 @@ export class PostEditComponent implements OnInit, OnDestroy {
       this.loadedPost = await this.postsService.getPostById(+this.postId);
       title = this.loadedPost.title;
       subtitle = this.loadedPost.subtitle;
-      //imgURL = this.loadedPost.imgURL;
+      //imgURL = await this.baseService.getAttatchment(this.loadedPost.imgURL);
       content = this.loadedPost.content;
       userId = this.loadedPost.userId;
       creationDate = this.loadedPost.creationDate;
+      if(this.loadedPost.imgURL){
+        this.url = await this.baseService.getAttatchment(this.loadedPost.imgURL);
+      }
+      img = this.url;
+
     }
 
 
@@ -125,9 +130,5 @@ export class PostEditComponent implements OnInit, OnDestroy {
   }
   
 
-  ngOnDestroy() {
-    this.userSubscription.unsubscribe();
-
-  }
 
 }

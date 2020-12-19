@@ -13,10 +13,10 @@
     *ngIf="conversations?.length > 0">
     <mat-selection-list #messages [multiple]="false" [(ngModel)]="selectedOptions" >
         <mat-list-option class="mat-elevation-z2" *ngFor="let conversation of conversations" [value]="conversation.id" [selected]="conversation.id == selectedOptions[0]"
-            class="liOnList" (click)="activeSelected(conversation.id)">
+            class="liOnList" [class.unreadedMessages]="conversation.haveUnreadedMessages == true" (click)="activeSelected(conversation.id)">
             <ul class=" d-flex justify-content-center">
-                <li class=" col-lg-12 listItem"><span style="font-weight: bold;">{{conversation.id}}:
-                    </span>...</li>
+                <li class=" col-lg-12 listItem"><span style="font-weight: bold;">{{conversation.user2Email}}:
+                    </span>{{conversation.lastMessageText | cutString: 25}}</li>
             </ul>
         </mat-list-option>
     </mat-selection-list>

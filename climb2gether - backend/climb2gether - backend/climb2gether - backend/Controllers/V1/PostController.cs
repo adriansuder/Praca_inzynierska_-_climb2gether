@@ -46,19 +46,24 @@ namespace climb2gether___backend.Controllers.V1
         }
 
         [HttpPut(ApiRoutes.Posts.Update)]
-        public async Task<IActionResult> Update([FromRoute] int postId, [FromBody] UpdatePostRequest request)
+        public async Task<IActionResult> Update([FromRoute] int postId, [FromForm] UpdatePostRequest request)
         {
             var userOwnsPost = await _postService.UserOwnsPost(postId, request.UserId);
-
+            List<IFormFile> files = request.Img;
             if (!userOwnsPost)
             {
                 return BadRequest(new { error = "You do not own this post" });
             }
 
+            if(files != null)
+            {
+                await _fileService.UpdateAttatchments(files, "post", postId);
+            }
+
+
             var post = await _postService.GetPostByIdAsync(postId);
             post.Title = request.Title;
             post.Subtitle = request.Subtitle;
-            post.ImgUrl = request.ImgUrl;
             post.Content = request.Content;
 
 

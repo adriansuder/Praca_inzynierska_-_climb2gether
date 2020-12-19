@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using climb2gether___backend.Data;
@@ -20,6 +21,7 @@ namespace climb2gether___backend
             var host = CreateHostBuilder(args).Build();
 
             await host.RunAsync();
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -27,6 +29,7 @@ namespace climb2gether___backend
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+
                 });
     }
 }

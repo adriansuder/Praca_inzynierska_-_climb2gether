@@ -48,7 +48,7 @@ namespace climb2gether___backend.Contracts
             public const string CreateEnrollment = Base + "/offers/addEnrollment";
             public const string DeleteEnrollment = Base + "/offers/deleteEnrollment";
             public const string ParticipantsList = Base + "/offers/ParticipantsList";
-            public const string zal = Base + "/zal";
+            public const string GetUserOfferById = Base + "/offer/{offerId}";
         }
         public static class Expeditions
         {
@@ -78,5 +78,11 @@ namespace climb2gether___backend.Contracts
             public const string GetConversations = Base + "/conversations";
             public const string GetMessages = Base + "/messages/{conversationId}";
         }
+
+        public static class File
+        {
+            public const string GetAttatchment = Base + "/attatchment/{id}";
+        }
     }
+    
 }

@@ -27,6 +27,13 @@ namespace climb2gether___backend.Services
             _configuration = configuration;
         }
 
+        public async Task<bool> UpdateAttatchments(List<IFormFile> objectFile, string objectTypeName, int objectTypeNumber)
+        {
+            await DeleteAttatchment(objectTypeName, objectTypeNumber);
+            var result = await AddAttatchments(objectFile, objectTypeName, objectTypeNumber);
+            return result;
+        }
+
         public async Task<bool> AddAttatchments(List<IFormFile> objectFile, string objectTypeName, int objectTypeNumber)
         {
             var assetsPath = _configuration.GetValue<string>("Attatchments:FrontendAssetsPath");
@@ -67,6 +74,8 @@ namespace climb2gether___backend.Services
             return objectFile.Count == created;
         }
 
+
+
         public async Task<bool> DeleteAttatchment(string objectTypeName, int objectTypeNumber)
         {
             var assetsPath = _configuration.GetValue<string>("Attatchments:FrontendAssetsPath");
@@ -84,6 +93,14 @@ namespace climb2gether___backend.Services
                 return false;
             }
             return result > 0;
+        }
+
+        public async Task<string> GetAttatchment(int attatchmentId)
+        {
+            var assetsPath = _configuration.GetValue<string>("Attatchments:FrontendAssetsPath");
+            var file = await _dataContext.Attatchments.Where(x => x.Id == attatchmentId).Select(x => x.FilePath).SingleOrDefaultAsync();
+            var path = Path.Combine(assetsPath + file);
+            return path;
         }
     }
 }

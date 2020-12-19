@@ -100,6 +100,10 @@ namespace climb2gether___backend.Controllers.V1
             }
 
             var messages = await _chatService.GetMessages(conversationId);
+            if (messages.FindAll(m => m.IsReaded == false && m.UserId != userId).Count > 0)
+            {
+                await _chatService.SetMessagesReaded(conversationId, userId);
+            }
 
             return Ok(messages);
         }

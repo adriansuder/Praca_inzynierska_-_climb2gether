@@ -9,7 +9,6 @@ dist/
 tmp/
 app/**/*.js
 app/**/*.js.map
-
 # dependencies
 node_modules/
 bower_components/

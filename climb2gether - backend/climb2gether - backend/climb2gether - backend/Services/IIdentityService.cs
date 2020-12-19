@@ -20,6 +20,7 @@ namespace climb2gether___backend.Services
         int GetUserIdFromJWT(string token);
         int GetUserIdFromRequest(HttpContext ctx);
         Task<int> GetUserIdByEmail(string email);
+        Task<string> GetUserEmailById(int userId);
 
     }   
 }

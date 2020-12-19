@@ -40,7 +40,7 @@ export class PostsService {
   getPostById(postId: number): Promise<Post> {
     return this.http.get<Post>(
       `${environment.apiUrl}/posts/${postId}`
-    ).pipe(map(resData => {
+    ).pipe(tap(resData => {console.log(resData)}),map(resData => {
       return JSON.parse(JSON.stringify(resData));
     })).toPromise();
   }
@@ -64,10 +64,22 @@ export class PostsService {
     })
   }
 
-  updatePost(postId: string, post: Post) {
+  updatePost(postId: string, post: Post, files: FileList) {
+    const headers = new HttpHeaders().append('Content-Disposition', 'multipart/form-data');
+    var formData = new FormData();
+    formData.append('title', post.title);
+    formData.append('subtitle', post.subtitle);
+    formData.append('content', post.content);
+    formData.append('userId', post.userId.toString());
+    if(files){
+      Array.from(files).forEach(file => { 
+        formData.append('img', file);
+      });
+    }
     this.http.put(
       `${environment.apiUrl}/posts/` + postId,
-      post
+      formData,
+      {headers: headers}
     ).subscribe(response => {
       this.getPosts();
     });

@@ -10,7 +10,7 @@
             </button>
             <button mat-icon-button color="accent" class="navbar-toggler mobileNavBarButton" routerLink="/chat"
                 routerLinkActive="active">
-                <mat-icon inline="true" matBadge="10">chat</mat-icon>
+                <mat-icon inline="true" [matBadge]="unreadedConversations">chat</mat-icon>
             </button>
         </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -142,7 +142,7 @@
 
         <button mat-icon-button class="btn-link matLoginButton d-none d-md-none d-lg-block" aria-label="Messages button"
             routerLink="/chat" routerLinkActive="active">
-            <mat-icon matBadge="2" matBadgeColor="primary">chat</mat-icon>
+            <mat-icon [matBadge]="unreadedConversations" matBadgeColor="primary">chat</mat-icon>
         </button>
         <button mat-icon-button class="btn-link matLoginButton d-none d-md-none d-lg-block" [matMenuTriggerFor]="menu"
             aria-label="Account button">

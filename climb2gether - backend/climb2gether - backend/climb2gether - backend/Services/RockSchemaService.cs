@@ -59,7 +59,7 @@ namespace climb2gether___backend.Services
                                        RouteLocation = schema.RouteLocation,
                                        CreationDate = schema.CreationDate,
                                        IsPublic = schema.IsPublic,
-                                       ImgURL = (from Attatchment in _dataContext.Attatchments where Attatchment.ObjectTypeNumber == schema.Id && Attatchment.ObjectTypeName == "schemat" select Attatchment.FilePath).FirstOrDefault()
+                                       ImgURL = (from Attatchment in _dataContext.Attatchments where Attatchment.ObjectTypeNumber == schema.Id && Attatchment.ObjectTypeName == "schemat" select Attatchment.Id.ToString()).FirstOrDefault()
                                    }
               ).ToListAsync();
 

@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 })
 export class DialogSchemaDetailsComponent implements OnInit {
   actualUserId;
+  imgURL: any;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: RockSchema,
     private sanitizer: DomSanitizer,
@@ -23,8 +24,10 @@ export class DialogSchemaDetailsComponent implements OnInit {
     public dialogRef: MatDialogRef<DialogSchemaDetailsComponent>
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.actualUserId = this.authService.loggedUser.userId;
+    console.log(this.data.imgURL)
+    this.imgURL = await this.baseService.getAttatchment(this.data.imgURL);
   }
   
   getURL(URL: string){
@@ -42,4 +45,6 @@ export class DialogSchemaDetailsComponent implements OnInit {
     this.dialogRef.close();
     this.baseService.openSnackBar("Schemat został usunięty.");
   }
+
+
 }

@@ -1,5 +1,5 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { interval, Subscription } from 'rxjs';
 import { repeatWhen } from 'rxjs/operators';
@@ -22,6 +22,9 @@ export class MessagesComponent implements OnInit, OnDestroy {
   messagesChanged: Subscription;
   activeConversation: number;
   userId: number;
+
+  scrollDownCounter: number = 0;
+
   constructor(
     private chatService: ChatService,
     private authService: AuthService,
@@ -34,26 +37,31 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.activeConversationSub = await this.chatService.activeConversationChanged.subscribe(x => {
       if (x) {
         this.activeConversation = x;
-        this.scrollToBottom();
         this.chatService.unsubscribeMessages();
         this.chatService.fetchMessages(x);
       }
+      this.messagesChanged = this.chatService.messagesChanged.subscribe(res => {
+        this.messages = res;
+        if(this.virtualScroll?.measureScrollOffset('bottom') < 150 || this.virtualScroll?.measureScrollOffset('top') == 0 ){
+          
+          this.scrollToBottom();
+        }
+        console.log(this.virtualScroll?.measureScrollOffset('bottom'))
+      });
     });
-    this.messagesChanged = this.chatService.messagesChanged.subscribe(res => {
-      this.messages = res;
-    })
+   
   }
 
 
-  ngAfterViewChecked() {
-    this.scrollToBottom();
+  trackBy(index, item){
+    return index;
   }
 
   scrollToBottom() {
     try {
       this.virtualScroll.scrollTo({bottom: 0});
     } catch (e) {
-      // IE Sucks
+      console.log(e)
       
     }
   }
@@ -86,7 +94,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
         return;
       }
 
-      //this.fetchMessages(this.activeConversation);
+      this.scrollToBottom();
 
       this.messageForm.reset();
     }

@@ -8,6 +8,9 @@ using climb2gether___backend.Options;
 using climb2gether___backend.Installers;
 using Microsoft.IdentityModel.Logging;
 using AutoMapper;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using climb2gether___backend.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace climb2gether___backend
 {
@@ -28,8 +31,11 @@ namespace climb2gether___backend
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext _dataContext)
         {
+           // _dataContext.Database.EnsureCreated();
+           // _dataContext.Database.Migrate();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -37,6 +43,7 @@ namespace climb2gether___backend
             else
             {
                 app.UseHsts();
+               // _dataContext.Database.Migrate();
             }
 
             IdentityModelEventSource.ShowPII = true;

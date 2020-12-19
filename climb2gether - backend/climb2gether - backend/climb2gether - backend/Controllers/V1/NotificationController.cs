@@ -56,5 +56,6 @@ namespace climb2gether___backend.Controllers.V1
 
             return Ok(result);
         }
+
     }
 }

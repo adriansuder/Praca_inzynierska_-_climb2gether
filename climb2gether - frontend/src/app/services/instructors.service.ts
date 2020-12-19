@@ -47,6 +47,12 @@ export class InstructorsService implements OnDestroy{
         })
   }
 
+  getUserOfferById(offerId: number){
+    return this.http.get<Offer>(
+      `${environment.apiUrl}/offer/${offerId}`
+    ).toPromise();
+  }
+
   getInstructorOffers() {
     let userId = this.authService.loggedUser.userId;
     this.http.get<Offer[]>(

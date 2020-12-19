@@ -21,14 +21,16 @@ namespace climb2gether___backend.Controllers.V1
         private readonly IIdentityService _identityService;
         private readonly IMapper _mapper;
         private readonly IFileService _fileService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-        public OfferController(IOfferService offerService, IMapper mapper, IIdentityService identityService, IFileService fileService)
+        public OfferController(IOfferService offerService, IMapper mapper, IIdentityService identityService, IFileService fileService, IHttpContextAccessor httpContextAccessor)
         {
             _offerService = offerService;
             _mapper = mapper;
             _identityService = identityService;
             _fileService = fileService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
 
@@ -64,9 +66,7 @@ namespace climb2gether___backend.Controllers.V1
         [HttpGet(ApiRoutes.Offers.GetAll)]
         public async Task<IActionResult> GetAll()
         {
-            var token = Request.Headers["Authorization"][0].ToString();
-            token = token.Substring(token.IndexOf(" ") + 1);
-            var userId = _identityService.GetUserIdFromJWT(token);
+            var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
 
             var offers = await _offerService.GetOffersAsync(userId);
 
@@ -76,21 +76,28 @@ namespace climb2gether___backend.Controllers.V1
         [HttpGet(ApiRoutes.Offers.GetUserOffers)]
         public async Task<IActionResult> GetUserOffers()
         {
-            var token = Request.Headers["Authorization"][0].ToString();
-            token = token.Substring(token.IndexOf(" ") + 1);
-            var userId = _identityService.GetUserIdFromJWT(token);
+            var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
 
             var offers = await _offerService.GetUserOffersAsync(userId);
 
             return Ok(offers);
         }
 
+        [HttpGet(ApiRoutes.Offers.GetUserOfferById)]
+        public async Task<IActionResult> GetUserOfferById([FromRoute] int offerId)
+        {
+            var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
+
+            var offers = await _offerService.GetUserOfferById(userId, offerId);
+
+            return Ok(offers);
+        }
+
+
         [HttpGet(ApiRoutes.Offers.GetOfferDetails)]
         public async Task<IActionResult> GetOfferDetails(int offerId)
         {
-            //var token = Request.Headers["Authorization"][0].ToString();
-            //token = token.Substring(token.IndexOf(" ") + 1);
-            //var userId = _identityService.GetUserIdFromJWT(token);
+
             var details = await _offerService.GetOfferDetailsAsync(offerId);
 
             return Ok(details);

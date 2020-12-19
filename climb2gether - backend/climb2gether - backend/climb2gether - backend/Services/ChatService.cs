@@ -15,11 +15,13 @@ namespace climb2gether___backend.Services
     {
         private readonly DataContext _dataContext;
         private readonly IMapper _mapper;
+        private readonly IIdentityService _identityService;
 
-        public ChatService(DataContext dataContext, IMapper mapper)
+        public ChatService(DataContext dataContext, IMapper mapper, IIdentityService identityService)
         {
             _dataContext = dataContext;
             _mapper = mapper;
+            _identityService = identityService;
         }
         public async Task<int> CheckIfConversationExists(int user1Id, int user2Id)
         {
@@ -62,8 +64,27 @@ namespace climb2gether___backend.Services
         {
             var conversations = await _dataContext.Conversations
                                                     .Where(x => (x.User1Id == userId || x.User2Id == userId))
+                                                    .Include(x => x.Messages)
+                                                    .Select( x => new ConversationResponse
+                                                    {
+                                                          Id = x.Id,
+                                                          User1Id = userId,
+                                                          User2Id = x.User2Id == userId ? x.User1Id : x.User2Id,
+                                                          CreationDate = x.CreationDate,
+                                                          LastEventDate = x.LastEventDate,
+                                                          User2Email = null,
+                                                          lastMessageText = x.Messages.Where( m => m.ConversationId == x.Id).OrderByDescending(m => m.Id).Select(m => m.Text).FirstOrDefault(),
+                                                          haveUnreadedMessages = x.Messages.Where(m => m.ConversationId == x.Id && ((m.UserId == (x.User2Id == userId ? x.User1Id : x.User2Id))&& m.IsReaded == false )  )
+                                                                                            .OrderByDescending(m => m.CreationDate)
+                                                                                            .Select(m => m.Text).Any()
+                                                    })
                                                     .ToListAsync();
-            return _mapper.Map<List<ConversationResponse>>(conversations);
+
+            foreach(var obj in conversations)
+            {
+                obj.User2Email = await _identityService.GetUserEmailById(obj.User2Id);
+            }
+            return conversations;
         }
 
         public Task<List<MessageResponse>> GetMessages(int conversationId)
@@ -88,6 +109,20 @@ namespace climb2gether___backend.Services
         {
             var message = _mapper.Map<Message>(request);
             _dataContext.Messages.Add(message);
+            var result = await _dataContext.SaveChangesAsync();
+
+            return result > 0;
+        }
+
+        public async Task<bool> SetMessagesReaded(int conversationId, int userId)
+        {
+            var messagesToUpdate = await _dataContext.Messages.Where(m => m.ConversationId == conversationId && m.UserId != userId).ToListAsync();
+            foreach(var msg in messagesToUpdate)
+            {
+                msg.IsReaded = true;
+                _dataContext.Messages.Update(msg);
+            }
+
             var result = await _dataContext.SaveChangesAsync();
 
             return result > 0;

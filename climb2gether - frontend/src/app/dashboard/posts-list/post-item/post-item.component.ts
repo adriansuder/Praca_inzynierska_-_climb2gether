@@ -1,7 +1,9 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, Sanitizer } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
+import { BaseService } from 'src/app/services/base.service';
 import { Post } from 'src/app/_models/Post';
 import { PostsService } from '../../../services/posts.service';
 
@@ -17,13 +19,25 @@ export class PostItemComponent implements OnInit, OnDestroy {
   loggedUserSub: Subscription;
   likeSub: Subscription;
   unlikeSub: Subscription;
+  imgURI: any;
 
-  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute, private postsService: PostsService) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private postsService: PostsService,
+    private baseService: BaseService
+  ) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.loggedUserSub = this.authService.user.subscribe(user => {
       this.loggedUserId = user?.userId;
     });
+
+    if (this.postItem.imgURL) {
+      this.imgURI = await this.getAttatchment(this.postItem.imgURL);
+    }
+
   }
 
   async onLikeClick() {
@@ -34,7 +48,7 @@ export class PostItemComponent implements OnInit, OnDestroy {
         this.postItem.likeCounter--;
       }
     }
-    else{
+    else {
       let res = await this.postsService.likePost(this.postItem.id, this.authService.loggedUser.userId);
       if (res) {
         this.postItem.postLikedByLoggedUser = true;
@@ -45,7 +59,10 @@ export class PostItemComponent implements OnInit, OnDestroy {
 
   }
 
-
+  async getAttatchment(id: string) {
+    let img: any = await this.baseService.getAttatchment(id);
+    return img;
+  }
 
   ngOnDestroy() {
     this.loggedUserSub.unsubscribe();

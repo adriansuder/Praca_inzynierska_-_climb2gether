@@ -32,7 +32,7 @@ namespace climb2gether___backend.Services
                                    Id = post.Id,
                                    Title = post.Title,
                                    Subtitle = post.Subtitle,
-                                   ImgURL = (from Attatchment in _dataContext.Attatchments where Attatchment.ObjectTypeNumber == post.Id && Attatchment.ObjectTypeName == "post" select Attatchment.FilePath).FirstOrDefault(),
+                                   ImgURL = (from Attatchment in _dataContext.Attatchments where Attatchment.ObjectTypeNumber == post.Id && Attatchment.ObjectTypeName == "post" select Attatchment.Id.ToString()).FirstOrDefault(),
                                    Content = post.Content,
                                    UserId = post.UserId,
                                    UserNameSurname = (post.User.FirstName + " " + post.User.Surname),
@@ -67,7 +67,9 @@ namespace climb2gether___backend.Services
         /// <returns>Funkcja zwraca obiekt Post</returns>
         public async Task<Post> GetPostByIdAsync(int postId)
         {
-            return await _dataContext.Posts.Include(p => p.User).SingleOrDefaultAsync(x => x.Id == postId);
+            var post = await _dataContext.Posts.Include(p => p.User).SingleOrDefaultAsync(x => x.Id == postId);
+            post.ImgUrl = (from Attatchment in _dataContext.Attatchments where Attatchment.ObjectTypeNumber == post.Id && Attatchment.ObjectTypeName == "post" select Attatchment.Id.ToString()).FirstOrDefault();
+            return post;
         }
         /// <summary>
         ///  Funkcja jako parametr przyjmuje obiekt Post, który zostanie zaktualizowany.

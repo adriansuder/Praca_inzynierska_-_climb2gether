@@ -23,13 +23,16 @@ export class ConversationsComponent implements OnInit, OnDestroy {
   ) { }
 
   async ngOnInit() {
-    this.conversations = await this.chatService.fetchConversations();
+    this.chatService.conversationsChanged.subscribe( res => {
+      this.conversations = res;
+    })
     this.conversationSubscription = this.chatService.conversationsChanged.subscribe(res => {
       this.conversations = res;
     });
   }
 
   private activeSelected(conversationId: number) {
+    this.conversations.find(c => c.id == conversationId).haveUnreadedMessages = false;
     this.chatService.activeConversationChanged.next(conversationId);
   }
 
@@ -46,7 +49,6 @@ export class ConversationsComponent implements OnInit, OnDestroy {
           return;
         });
       if(result){
-        this.conversations = await this.chatService.fetchConversations();
         this.activeSelected(result.id);
         this.selectedOptions = [result.id.toString()];
       }

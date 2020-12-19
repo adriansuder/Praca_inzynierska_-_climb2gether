@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { Subscription } from 'rxjs';
 import { BaseService } from 'src/app/services/base.service';
 import { Notification } from 'src/app/_models/Notification';
+import { ChatService } from 'src/app/services/chat.service';
 
 
 
@@ -24,13 +25,15 @@ export class NavbarComponent implements OnInit {
   isAuthenticated: boolean;
   loggedUserSubscription: Subscription;
   notificationSubscription: Subscription;
+  unreadedConversations: number = 0;
 
 
   constructor(
     private dialog: MatDialog,
     private router: Router,
     private authService: AuthService,
-    private baseService: BaseService
+    private baseService: BaseService,
+    private chatService: ChatService
     ) {}
 
   ngOnInit() {
@@ -39,10 +42,17 @@ export class NavbarComponent implements OnInit {
     });
     this.notificationSubscription = this.baseService.newNotifications.subscribe( x => {
       this.notifications = x;
-      this.newNotificationsNumber = this.notifications.filter( x => x.isReaded === false).length;
+      if(this.notifications){
+        this.newNotificationsNumber = this.notifications.filter( x => x.isReaded === false).length;
+      }
       console.log(this.notifications)
     });
     this.baseService.getUserNotifications();
+    this.chatService.fetchConversations();
+    this.chatService.countOfUnreadedMessages.subscribe(res => {
+      this.unreadedConversations = res;
+    })
+
   }
 
   openLoginDialog() {

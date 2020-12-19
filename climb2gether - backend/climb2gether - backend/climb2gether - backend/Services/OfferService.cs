@@ -14,11 +14,13 @@ namespace climb2gether___backend.Services
     {
         private readonly DataContext _dataContext;
         private readonly INotificationsService _notificationsService;
+        private readonly IFileService _fileService;
 
-        public OfferService(DataContext dataContext, INotificationsService notificationsService)
+        public OfferService(DataContext dataContext, INotificationsService notificationsService, IFileService fileService)
         {
             _dataContext = dataContext;
             _notificationsService = notificationsService;
+            _fileService = fileService;
         }
 
         public async Task<int> CreateOfferAsync(Offer offer)
@@ -80,9 +82,44 @@ namespace climb2gether___backend.Services
             return result;
         }
 
-        public async Task<List<Offer>> GetUserOffersAsync(int userId)
+        public async Task<List<UserOffersResponse>> GetUserOffersAsync(int userId)
+        {   
+            var result = await _dataContext.Offers.Where(offer => offer.OfferOwnerUserId == userId).Select( x => new UserOffersResponse
+            {
+                 Id = x.Id,
+                 Date = x.Date,
+                 Location = x.Location,
+                 MaxParticipants = x.MaxParticipants,
+                 Price = x.Price,
+                 Describe = x.Describe,
+                 OfferType = x.OfferType,
+                 CreationDate = x.CreationDate,
+                 OfferOwnerUserId = x.OfferOwnerUserId,
+                 Attatchments =  _dataContext.Attatchments.Where(y => y.ObjectTypeNumber == x.Id && y.ObjectTypeName == "oferta").ToList()
+
+            }).ToListAsync();
+
+            return result ;
+        }
+
+        public async Task<UserOffersResponse> GetUserOfferById(int userId, int offerId)
         {
-            return await _dataContext.Offers.Where(offer => offer.OfferOwnerUserId == userId).ToListAsync();
+            var result = await _dataContext.Offers.Where(offer => offer.Id == offerId && offer.OfferOwnerUserId == userId).Select(x => new UserOffersResponse
+            {
+                Id = x.Id,
+                Date = x.Date,
+                Location = x.Location,
+                MaxParticipants = x.MaxParticipants,
+                Price = x.Price,
+                Describe = x.Describe,
+                OfferType = x.OfferType,
+                CreationDate = x.CreationDate,
+                OfferOwnerUserId = x.OfferOwnerUserId,
+                Attatchments = _dataContext.Attatchments.Where(y => y.ObjectTypeNumber == x.Id && y.ObjectTypeName == "oferta").ToList()
+
+            }).FirstOrDefaultAsync();
+
+            return result;
         }
 
         public async Task<bool> UserOwnsOfferAsync(int offerId, int userId)

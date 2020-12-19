@@ -16,5 +16,6 @@ namespace climb2gether___backend.Services
         Task<bool> SendMessage(SendMessageRequest request);
         Task<bool> CheckIfUserIsInConversation(int userId, int conversationId);
         Task<List<MessageResponse>> GetMessages(int conversationId);
+        Task<bool> SetMessagesReaded(int conversationId, int userId);
     }
 }

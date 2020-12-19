@@ -39,7 +39,8 @@
                     <p *ngFor="let file of files">{{file.name}} </p>
                     <div class="form-group">
                         <label class="hoverable d-flex justify-content-center" for="fileInput">
-
+                            <img class="img-thumbnail"
+                            [src]="url">
                         </label>
 
                         <input id="fileInput" type="file" formControlName="img" #file (change)="readFiles($event)"
