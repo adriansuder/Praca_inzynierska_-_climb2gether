@@ -1,6 +1,7 @@
 import { JsonPipe } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
+import { DOC_ORIENTATION, NgxImageCompressService } from 'ngx-image-compress';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { tap, map, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -16,7 +17,7 @@ export class PostsService {
 
   private fetchedPosts: Post[] = [];
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(private http: HttpClient, private authService: AuthService, private imageCompress: NgxImageCompressService) { }
 
 
   getPosts() {
@@ -45,6 +46,7 @@ export class PostsService {
     })).toPromise();
   }
 
+
   addPost(post: Post, files: FileList) {
     const headers = new HttpHeaders().append('Content-Disposition', 'multipart/form-data');
     var formData = new FormData();
@@ -54,6 +56,7 @@ export class PostsService {
     formData.append('userId', post.userId.toString());
     Array.from(files).forEach(file => { 
       formData.append('img', file);
+
     });
     this.http.post(
       `${environment.apiUrl}/posts`,

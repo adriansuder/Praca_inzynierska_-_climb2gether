@@ -65,7 +65,7 @@ namespace climb2gether___backend.Controllers.V1
         public async Task<IActionResult> DeleteSchema([FromRoute] int schemaId)
         {
             var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
-            var isOwner = await _rockSchemaService.IsOwner(1, schemaId);
+            var isOwner = await _rockSchemaService.IsOwner(userId, schemaId);
             if (!isOwner)
             {
                 return BadRequest("Użytkownik nie jest właścicielem schematu!");
@@ -80,5 +80,14 @@ namespace climb2gether___backend.Controllers.V1
             return Ok(result);
         }
 
+        [HttpGet(ApiRoutes.RockSchema.GetSchemaDetailsById)]
+        public async Task<IActionResult> GetSchemaDetailsById([FromRoute] int schemaId)
+        {
+            var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
+            var result = await _rockSchemaService.GetSchemaDetailsById(schemaId, userId);
+
+
+            return Ok(result);
+        }
     }
 }

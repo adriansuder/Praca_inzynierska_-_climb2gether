@@ -2,14 +2,23 @@
 <mat-dialog-content class="mat-typography">
   <div class="">
     <form [formGroup]="registerForm" (ngSubmit)="register()">
+      
       <mat-form-field appearance="outline" class="col-lg-12">
         <mat-label>Nazwa użytkownika</mat-label>
-        <input formControlName="username" matInput type="text" class="example-right-align">
+        <input 
+              formControlName="username" 
+              type="text" 
+              class="example-right-align"
+              matInput>
       </mat-form-field>
       <br>
       <mat-form-field appearance="outline" class="col-lg-12">
         <mat-label>Email</mat-label>
-        <input formControlName="email" matInput type="email" class="example-right-align">
+        <input 
+              formControlName="email"
+              type="email" 
+              matInput
+              class="example-right-align">
       </mat-form-field>
       <br>
       <mat-form-field appearance="outline" class="col-lg-12">
@@ -47,7 +56,7 @@
       <mat-form-field appearance="outline" class="col-lg-12">
         <mat-label>Rodzaj konta</mat-label>
         <mat-select formControlName="roleId" >
-          <mat-option *ngFor="let role of UserRoles" [value]="role.id">{{role.roleName}}</mat-option>
+          <mat-option *ngFor="let role of UserRoles" [value]="role.roleId">{{role.roleName}}</mat-option>
         </mat-select>
       </mat-form-field>
       <br>

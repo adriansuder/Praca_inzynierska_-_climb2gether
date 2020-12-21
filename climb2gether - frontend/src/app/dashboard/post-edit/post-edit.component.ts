@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { BaseService } from 'src/app/services/base.service';
 import { Post } from 'src/app/_models/Post';
 import { PostsService } from '../../services/posts.service';
+import {NgxImageCompressService} from 'ngx-image-compress';
 
 @Component({
   selector: 'app-post-edit',
@@ -25,12 +26,14 @@ export class PostEditComponent implements OnInit {
   userSubscription: Subscription;
   postForm: FormGroup;
 
+
   constructor(
     private postsService: PostsService,
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private baseService: BaseService
+    private baseService: BaseService,
+    private imageCompress: NgxImageCompressService
   ) { }
 
   ngOnInit() {
@@ -61,6 +64,16 @@ export class PostEditComponent implements OnInit {
       reader.readAsDataURL(event.target.files[0]);
       this.files = event.target.files as FileList;
     }
+  }
+
+  private compressFile() {
+    this.imageCompress.uploadFile().then(({image}) => {
+      this.imageCompress.compressFile(image, 70, 70).then(
+        result => {
+          this.url = result;
+        }
+      );
+    });
   }
 
   onSubmit(): void {

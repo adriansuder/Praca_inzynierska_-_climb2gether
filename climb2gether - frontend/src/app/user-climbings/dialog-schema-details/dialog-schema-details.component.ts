@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { BaseService } from 'src/app/services/base.service';
 import { ClimbingSchemaService } from 'src/app/services/climbing-schema.service';
 import { RockSchema } from 'src/app/_models/RockSchema';
+import { SchemaDetails } from 'src/app/_models/SchemaDetails';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -16,8 +17,7 @@ export class DialogSchemaDetailsComponent implements OnInit {
   actualUserId;
   imgURL: any;
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: RockSchema,
-    private sanitizer: DomSanitizer,
+    @Inject(MAT_DIALOG_DATA) public data: SchemaDetails,
     private authService: AuthService,
     private schemaService: ClimbingSchemaService,
     private baseService: BaseService,
@@ -26,13 +26,13 @@ export class DialogSchemaDetailsComponent implements OnInit {
 
   async ngOnInit() {
     this.actualUserId = this.authService.loggedUser.userId;
-    console.log(this.data.imgURL)
-    this.imgURL = await this.baseService.getAttatchment(this.data.imgURL);
+    console.log(this.data)
+    console.log(this.data.imgID.toString())
+    if(this.data.imgID != 0){
+      this.imgURL = await this.baseService.getAttatchment(this.data.imgID.toString());
+    }
   }
   
-  getURL(URL: string){
-    return URL.replace('\\','/');
-  }
 
   async deleteSchema(schemaId: number){
     var result = await this.schemaService.deleteSchema(schemaId);

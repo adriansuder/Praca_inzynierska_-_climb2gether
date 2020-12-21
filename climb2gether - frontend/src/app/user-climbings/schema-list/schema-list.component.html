@@ -1,9 +1,9 @@
 <div id="listWrapper" class="col-12 pt-3">
     <h4>Filtry</h4>
     <div class="">
-        <div class="col-12 d-flex justify-content-around">
+        <div class="row d-flex justify-content-around">
             <!-- <div class="col-12"> -->
-                <mat-form-field >
+                <mat-form-field class="col-12 col-lg-3">
                     <mat-label>Nazwa drogi</mat-label>
                     <input matInput type="text" [(ngModel)]="name">
                     <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear"
@@ -12,7 +12,7 @@
                     </button>
                 </mat-form-field>
 
-                <mat-form-field >
+                <mat-form-field class="col-12 col-lg-3">
                     <mat-label>Rejon drogi</mat-label>
                     <input matInput type="text" [(ngModel)]="location">
                     <button mat-button *ngIf="location" matSuffix mat-icon-button aria-label="Clear"
@@ -20,13 +20,15 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
-                <div style="display: flex; align-items: center!important;">
+                <div style="display: flex; align-items: center!important;" class="col-6 col-lg-3">
                     <mat-checkbox color="primary"  (change)="check($event)">
                         <mat-icon inline="true">public</mat-icon>{{checkIsPublic ? 'Publiczne schematy' : 'Moje schematy'}}
                       </mat-checkbox>
                 </div>
+                <div class="col-6 col-lg-3">
+                    <button mat-raised-button color="primary" (click)="search()">Wyszukaj</button>
+                </div>
                 
-                <button mat-raised-button color="primary" (click)="search()">Wyszukaj</button>
             <!-- </div> -->
         </div>
     </div>

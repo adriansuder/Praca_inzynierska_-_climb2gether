@@ -65,6 +65,7 @@ import { DialogSchemaDetailsComponent } from './user-climbings/dialog-schema-det
 import {NgxPaginationModule} from 'ngx-pagination';
 import { ConversationsComponent } from './chat/conversations/conversations.component';
 import { MessagesComponent } from './chat/messages/messages.component';
+import { NgxImageCompressService } from 'ngx-image-compress';
 
 @NgModule({
   declarations: [
@@ -142,7 +143,8 @@ import { MessagesComponent } from './chat/messages/messages.component';
       useClass: TokenInterceptor,
       multi: true
     },
-    MatDatepickerModule
+    MatDatepickerModule,
+    NgxImageCompressService
   ],
   bootstrap: [AppComponent]
 })

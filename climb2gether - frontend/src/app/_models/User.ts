@@ -1,5 +1,5 @@
 export class User {
-    id: number;
+    id?: number;
     name: string;
     surname: string;
     username: string;
@@ -7,5 +7,9 @@ export class User {
     roleId: number;
     dateOfBirth: Date;
     phoneNumber: string;
+    city: string;
+    email: string;
+    password?: string;
+
 
 }

@@ -52,12 +52,12 @@ export class AuthService {
     this.router.navigate(['dashboard/posts']);
   }
 
-  register(newUser: { email: string, password: string, name: string, username: string, sex: string, surname: string, roleId: number, dateOfBirth: Date, phoneNumber: string, city: string }) {
+  register(newUser: User) {
     return this.http.post<AuthResponseData>(`${environment.apiUrl}/register`, newUser)
       .pipe(
         tap(authRes => this.setLoggedUser(authRes.token, authRes.refreshToken, authRes.userId, authRes.expiresIn)),
         catchError(this.handleResponseError)
-      );
+      ).toPromise();
   }
 
   logout() {
@@ -82,7 +82,9 @@ export class AuthService {
   }
 
   getUserRoles() {
-    return this.http.get<{ Id: number, RoleName: string, isAdmin: boolean }[]>(`${environment.apiUrl}/userRoles`).toPromise();
+    return this.http.get<{ roleId: number, RoleName: string, isAdmin: boolean }[]>
+    (`${environment.apiUrl}/userRoles`
+    ).toPromise();
   }
 
   private setLoggedUser(token: string, refreshToken: string, userId: number, expiresIn: Date) {

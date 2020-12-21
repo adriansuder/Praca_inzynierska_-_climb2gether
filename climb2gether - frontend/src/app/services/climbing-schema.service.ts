@@ -5,6 +5,7 @@ import { AuthService } from '../auth/auth.service';
 import { RockSchema } from '../_models/RockSchema';
 import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { SchemaDetails } from '../_models/SchemaDetails';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class ClimbingSchemaService {
     const headers = new HttpHeaders().append('Content-Disposition', 'multipart/form-data');
     let formData = new FormData();
     formData.append('userId', this.authService.loggedUser.userId.toString());
-    formData.append('isPublic', schema.isPublic.toString());
+    formData.append('isPublic', schema?.isPublic?.toString());
     formData.append('routeDescription', schema.routeDescription);
     formData.append('routeLocation', schema.routeLocation);
     formData.append('routeName', schema.routeName);
@@ -52,6 +53,12 @@ export class ClimbingSchemaService {
   deleteSchema(schemaId: number){
     return this.http.delete<any>(
       `${environment.apiUrl}/rockSchemas/${schemaId}`
+    ).toPromise();
+  }
+
+  getSchemaDetailsById(schemaId: number){
+    return this.http.get<SchemaDetails>(
+      `${environment.apiUrl}/rockSchemas/${schemaId}/details`
     ).toPromise();
   }
 }

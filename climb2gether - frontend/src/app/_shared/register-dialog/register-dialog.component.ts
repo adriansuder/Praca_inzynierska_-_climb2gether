@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
+import { User } from 'src/app/_models/user';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 
 @Component({
@@ -14,69 +15,58 @@ export class RegisterDialogComponent implements OnInit {
   registerForm: FormGroup;
   hide = true;
 
-  UserRoles : { Id: number, RoleName: string, isAdmin: boolean }[] = [];
+  UserRoles: { roleId: number, RoleName: string, isAdmin: boolean }[] = [];
 
   constructor(
-    private auth: AuthService, 
-    private formBuilder: FormBuilder, 
+    private auth: AuthService,
     private router: Router,
     private dialogRef: MatDialogRef<LoginDialogComponent>) { }
 
-  ngOnInit(): void {
-    this.registerForm = this.formBuilder.group({
-      email: [''],
-      password: [''],
-      name: [''],
-      username: [''],
-      sex: [''],
-      surname: [''],
-      roleId: [''],
-      dateOfBirth: [''],
-      phoneNumber: [''],
-      city: ['']
+  async ngOnInit() {
+    this.registerForm = new FormGroup({
+      email: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
+      name: new FormControl('', [Validators.required]),
+      username: new FormControl('', [Validators.required]),
+      sex: new FormControl('', [Validators.required]),
+      surname: new FormControl('', [Validators.required]),
+      roleId: new FormControl('', [Validators.required]),
+      dateOfBirth: new FormControl('', [Validators.required]),
+      phoneNumber: new FormControl('', [Validators.required]),
+      city: new FormControl('', [Validators.required])
     });
-
-    this.getRoles();
-
+    await this.getRoles();
+    
   }
 
-  get f() { return this.registerForm.controls;  }
+  async register() {
+    var newUser: User = {
+      email: this.registerForm.value.email,
+      password: this.registerForm.value.password,
+      name: this.registerForm.value.name,
+      username: this.registerForm.value.username,
+      sex: this.registerForm.value.sex,
+      surname: this.registerForm.value.surname,
+      roleId: +this.registerForm.value.roleId,
+      dateOfBirth: this.registerForm.value.dateOfBirth,
+      phoneNumber: this.registerForm.value.phoneNumber,
+      city: this.registerForm.value.city
+    }
 
-
-  register() {
-    console.log(this.UserRoles);
-    this.auth.register(
-      { 
-        email: this.f.email.value,
-        password: this.f.password.value,
-        name: this.f.name.value,
-        username: this.f.username.value,
-        sex: this.f.sex.value,
-        surname: this.f.surname.value,
-        roleId: +this.f.roleId.value,
-        dateOfBirth: this.f.dateOfBirth.value,
-        phoneNumber: this.f.phoneNumber.value,
-        city: this.f.city.value
-      }
-    )
-    .subscribe(success => {
-      if (success) {
-        this.router.navigate(['/dashboard']);
-        this.dialogRef.close();
-      }
-    });
+    const result = await this.auth.register(newUser);
+    if(result){
+      this.router.navigate(['/dashboard']);
+          this.dialogRef.close();
+    }
   }
 
-   async getRoles(){
+  async getRoles() {
     this.UserRoles = await this.auth.getUserRoles();
-    console.log(this.UserRoles);
   }
 
   logout() {
-    this.auth.logout().subscribe( res => {
+    this.auth.logout().subscribe(res => {
       console.log(res);
     });
-
   }
-
 }

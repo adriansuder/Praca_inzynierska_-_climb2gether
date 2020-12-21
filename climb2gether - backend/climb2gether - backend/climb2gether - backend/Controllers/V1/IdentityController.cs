@@ -23,7 +23,7 @@ namespace climb2gether___backend.Controllers.V1
             _mapper = mapper;
         }
 
-        [HttpPost(template: ApiRoutes.Identity.Register)]
+        [HttpPost(ApiRoutes.Identity.Register)]
         public async Task <IActionResult> Register([FromBody] UserRegistrationRequest request)
         {
             if (!ModelState.IsValid)
@@ -54,7 +54,7 @@ namespace climb2gether___backend.Controllers.V1
             });
         }
 
-        [HttpPost(template: ApiRoutes.Identity.Login)]
+        [HttpPost(ApiRoutes.Identity.Login)]
         public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
         {
             var authResponse = await _identitySerivce.LoginAsync(request.Username, request.Password);
@@ -77,7 +77,7 @@ namespace climb2gether___backend.Controllers.V1
             });
         }
 
-        [HttpPost(template: ApiRoutes.Identity.RefreshToken)]
+        [HttpPost(ApiRoutes.Identity.RefreshToken)]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
         {
             var authResponse = await _identitySerivce.RefreshTokenAsync(request.Token, request.RefreshToken);
@@ -99,7 +99,7 @@ namespace climb2gether___backend.Controllers.V1
             });
         }
 
-        [HttpPost(template: ApiRoutes.Identity.Logout)]
+        [HttpPost(ApiRoutes.Identity.Logout)]
         public async Task<IActionResult> Logout([FromBody] LogoutRequest request)
         {
              await _identitySerivce.LogoutAsync(request.RefreshToken);

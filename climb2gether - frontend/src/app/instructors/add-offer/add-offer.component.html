@@ -43,9 +43,9 @@
                             [src]="url">
                         </label>
 
-                        <input id="fileInput" type="file" formControlName="img" #file (change)="readFiles($event)"
-                            multiple="true">
-                        <button mat-button *ngIf="file.value" (click)="clearImg()">X</button>
+                    <button mat-stroked-button color="primary" *ngIf="!url" (click)="compressFile()" class="col-12">wybierz plik</button>
+                    <!-- <input id="fileInput" type="file" formControlName="img" #file (change)="readFiles($event)"> -->
+                    <button mat-button mat-raised-button color="warn" *ngIf="url" (click)="clearImg()" class="col-12">Usuń plik</button>
                     </div>
                 </div>
             </div>

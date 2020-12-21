@@ -84,7 +84,7 @@ export class NavbarComponent implements OnInit {
     }
 
     async onSetNotificationsReaded(){
-      let unreadedMessages = this.notifications.filter(x => x.isReaded == false);
+      let unreadedMessages = this.notifications?.filter(x => x.isReaded == false);
       if(unreadedMessages.length <= 0){
         return;
       }

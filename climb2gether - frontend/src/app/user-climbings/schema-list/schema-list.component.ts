@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { BaseService } from 'src/app/services/base.service';
 import { ClimbingSchemaService } from 'src/app/services/climbing-schema.service';
 import { RockSchema } from 'src/app/_models/RockSchema';
+import { SchemaDetails } from 'src/app/_models/SchemaDetails';
 import { DialogSchemaDetailsComponent } from '../dialog-schema-details/dialog-schema-details.component';
 
 @Component({
@@ -60,11 +61,11 @@ export class SchemaListComponent implements OnInit, OnDestroy {
     this.pageOfItems = pageOfItems;
   }
 
-  openDetailsDialog(schemaId: number) {
+  async openDetailsDialog(schemaId: number) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.maxHeight = '85vh';
-    dialogConfig.data = this.fetchedSchemas.find(x => x.id == schemaId);
+    dialogConfig.data = await this.schemaService.getSchemaDetailsById(schemaId);
     this.dialog.open(DialogSchemaDetailsComponent, dialogConfig);
   }
 

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { NgxImageCompressService } from 'ngx-image-compress';
 import { Subscription } from 'rxjs';
 import { BaseService } from 'src/app/services/base.service';
 import { Offer } from 'src/app/_models/Offer';
@@ -26,7 +27,8 @@ export class AddOfferComponent implements OnInit {
     private route: ActivatedRoute,
     private instructorsService: InstructorsService,
     private router: Router,
-    private baseService: BaseService
+    private baseService: BaseService,
+    private imageCompress: NgxImageCompressService
   ) { }
 
   async ngOnInit() {
@@ -41,10 +43,18 @@ export class AddOfferComponent implements OnInit {
   }
 
   clearImg() {
-    this.addOfferFormGroup.reset({ img: '' });
     this.url = null;
   }
 
+  private compressFile() {
+    this.imageCompress.uploadFile().then(({image}) => {
+      this.imageCompress.compressFile(image, 70, 70).then(
+        result => {
+          this.url = result;
+        }
+      );
+    });
+  }
 
 
   readFiles(event: any) {

@@ -48,8 +48,15 @@ export class ChatService {
     ).pipe(repeatWhen(() => interval(10000)))
     .subscribe(res => {
       this.conversationsChanged.next(res);
-      let unreadedConversations = res.filter(x => x.haveUnreadedMessages == true).length;
-      this.countOfUnreadedMessages.next(unreadedConversations);
+      if(res){
+        let unreadedConversations = res.filter(x => x.haveUnreadedMessages == true).length;
+        this.countOfUnreadedMessages.next(unreadedConversations);
+      }
+      else if(!res){
+        this.countOfUnreadedMessages.next(0);
+      }
+
+
     });
   }
 

@@ -73,7 +73,7 @@ namespace climb2gether___backend.Installers
 
             services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
             {
-                builder.WithOrigins("http://localhost:8080").AllowAnyMethod().AllowAnyHeader();
+                builder.WithOrigins("https://climb2gether.azurewebsites.net/").AllowAnyMethod().AllowAnyHeader();
                 builder.WithOrigins("http://127.0.0.1:8080").AllowAnyMethod().AllowAnyHeader();
                 builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
             }));

@@ -14,10 +14,12 @@ namespace climb2gether___backend.Services
     public class RockSchemaService : IRockSchemaService
     {
         private readonly DataContext _dataContext;
+        private readonly IIdentityService _identityService;
 
-        public RockSchemaService(DataContext dataContext)
+        public RockSchemaService(DataContext dataContext, IIdentityService identityService)
         {
             _dataContext = dataContext;
+            _identityService = identityService;
         }
 
         public async Task<int> Create(CreateRockSchemaRequest request)
@@ -102,6 +104,36 @@ namespace climb2gether___backend.Services
             _dataContext.RockSchemas.Remove(await _dataContext.RockSchemas.Where(x => x.Id == schemaId).SingleOrDefaultAsync());
             var result = await _dataContext.SaveChangesAsync();
             return result > 0;
+        }
+
+        public async Task<SchemaDetailsResponse> GetSchemaDetailsById(int schemaId, int userId)
+        {
+
+            var result = await _dataContext.RockSchemas.Where(x => x.Id == schemaId).Select(x => new SchemaDetailsResponse
+            {
+                Id = x.Id,
+                UserId = x.UserId,
+                RouteName = x.RouteName,
+                RouteScale = x.RouteScale,
+                RouteDescription = x.RouteDescription,
+                RouteLocation = x.RouteLocation,
+                CreationDate = x.CreationDate,
+                IsPublic = x.IsPublic,
+                ImgID = null
+            }).FirstOrDefaultAsync();
+
+            if (!result.IsPublic)
+            {
+                var isOwner = await IsOwner(userId, schemaId);
+                if (!isOwner)
+                {
+                    return null; 
+                }
+            }
+
+            result.ImgID = await _dataContext.Attatchments.Where(s => s.ObjectTypeNumber == result.Id && s.ObjectTypeName == "schemat").Select(s => s.Id).FirstOrDefaultAsync();
+
+            return result;
         }
     }
 }

@@ -34,7 +34,7 @@ namespace climb2gether___backend
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext _dataContext)
         {
            // _dataContext.Database.EnsureCreated();
-           // _dataContext.Database.Migrate();
+            _dataContext.Database.Migrate();
 
             if (env.IsDevelopment())
             {
