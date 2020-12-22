@@ -47,17 +47,18 @@ export class PostsService {
   }
 
 
-  addPost(post: Post, files: FileList) {
+  addPost(post: Post, file: Blob) {
     const headers = new HttpHeaders().append('Content-Disposition', 'multipart/form-data');
     var formData = new FormData();
     formData.append('title', post.title);
     formData.append('subtitle', post.subtitle);
     formData.append('content', post.content);
     formData.append('userId', post.userId.toString());
-    Array.from(files).forEach(file => { 
-      formData.append('img', file);
+    formData.append('img', file);
+    // Array.from(files).forEach(file => { 
+    //   formData.append('img', file);
 
-    });
+    // });
     this.http.post(
       `${environment.apiUrl}/posts`,
       formData,
@@ -67,18 +68,19 @@ export class PostsService {
     })
   }
 
-  updatePost(postId: string, post: Post, files: FileList) {
+  updatePost(postId: string, post: Post, files: Blob) {
     const headers = new HttpHeaders().append('Content-Disposition', 'multipart/form-data');
     var formData = new FormData();
     formData.append('title', post.title);
     formData.append('subtitle', post.subtitle);
     formData.append('content', post.content);
     formData.append('userId', post.userId.toString());
-    if(files){
-      Array.from(files).forEach(file => { 
-        formData.append('img', file);
-      });
-    }
+    formData.append('img', files);
+    // if(files){
+    //   Array.from(files).forEach(file => { 
+    //     formData.append('img', file);
+    //   });
+    // }
     this.http.put(
       `${environment.apiUrl}/posts/` + postId,
       formData,

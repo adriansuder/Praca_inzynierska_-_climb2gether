@@ -18,6 +18,7 @@ import { AddPrivateOfferComponent } from './climbing-partners/add-private-offer/
 import { InstructorsService } from './services/instructors.service';
 
 const routes: Routes = [
+  { path: '', component: HomeComponent },
   { path: 'login', component: LoginDialogComponent },
   {
     path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], children: [
@@ -29,7 +30,6 @@ const routes: Routes = [
       { path: 'addPost', component: PostEditComponent }
     ]
   },
-  { path: '', component: HomeComponent },
   { path: 'climbingPartners', component: ClimbingPartnersComponent, canActivate: [AuthGuard], children: [
     {path: ':offerId/edit', component: AddPrivateOfferComponent}
   ] },

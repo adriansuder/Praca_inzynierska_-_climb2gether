@@ -85,9 +85,11 @@ export class AddOfferComponent implements OnInit {
       offerType: this.form.offerType.value
     }
     if (this.inEditMode) {
+      let file = await (await fetch(this.url)).blob()
       result = await this.instructorsService.updateOffer(offer);
     } else {
-      result = await this.instructorsService.addOffer(offer, this.files);
+      let file = await (await fetch(this.url)).blob()
+      result = await this.instructorsService.addOffer(offer, file);
     }
     if (result) {
       this.instructorsService.getInstructorOffers();

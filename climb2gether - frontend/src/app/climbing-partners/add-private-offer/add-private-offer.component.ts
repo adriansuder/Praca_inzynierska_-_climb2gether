@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
+import { BaseService } from 'src/app/services/base.service';
 import { ClimbingPartnersService } from 'src/app/services/climbing-partners.service';
 import { Expedition } from 'src/app/_models/Expedition';
 
@@ -12,13 +14,19 @@ import { Expedition } from 'src/app/_models/Expedition';
 export class AddPrivateOfferComponent implements OnInit {
 
   privateOfferForm: FormGroup;
-  constructor(private climbService: ClimbingPartnersService, private authService: AuthService) { }
+  constructor(
+    private climbService: ClimbingPartnersService, 
+    private authService: AuthService,
+    private baseService: BaseService,
+    private router: Router
+    ) { }
 
   ngOnInit(): void {
     this.createForm();
   }
 
   async onSubmit() {
+    var date = new Date();
     const expedition: Expedition = {
       userId: this.authService.loggedUser.userId,
       destinationCity: this.privateOfferForm.value.celWyprawyMiasto,
@@ -26,13 +34,18 @@ export class AddPrivateOfferComponent implements OnInit {
       destinationRegion: this.privateOfferForm.value.celWyprawyRejon,
       departureCity: this.privateOfferForm.value.wyjazdZ,
       maxParticipants: this.privateOfferForm.value.maxIloscOsob,
-      creationDate: new Date(Date.now()),
+      creationDate: new Date(),
       expeditionDate:  this.privateOfferForm.value.dataWyprawy,
       descriptionTitle: this.privateOfferForm.value.tytulOpisu,
       description: this.privateOfferForm.value.opisWyprawy
     }
     const result = await this.climbService.createExpedition(expedition);
-    console.log(result);
+    if(!result){
+      this.baseService.openSnackBar("Coś poszło nie tak, spróbuj jeszcze raz.")
+      return;
+    }
+    this.baseService.openSnackBar("Twoja oferta prywatna została dodana.")
+    this.router.navigate(['/climbingPartners']);
   }
 
   private async createForm() {

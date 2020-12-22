@@ -43,6 +43,7 @@ namespace climb2gether___backend.Services
         {
             var expeditionItemList = await _dataContext.Expeditions.Include(exp => exp.User)
                                                             .ThenInclude(user => user.Role)
+                                                            .Where(x => x.ExpeditionDate >= DateTime.UtcNow)
                                                             .ToListAsync();
             return expeditionItemList;
         }

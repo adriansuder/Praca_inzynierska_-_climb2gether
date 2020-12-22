@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, mapTo, tap } from 'rxjs/operators';
+import { catchError, map, mapTo, tap } from 'rxjs/operators';
 import { Tokens } from '../_models/Tokens';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { User } from '../_models/user';
 import { LoggedUser } from '../_models/LoggedUser';
 import { Router } from '@angular/router';
+import { BaseService } from '../services/base.service';
 
 export interface AuthResponseData {
   token: string;
@@ -26,18 +27,31 @@ export class AuthService {
   loggedUser: LoggedUser;
   private jwtExpirationTimer: any;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(
+    private http: HttpClient, 
+    private router: Router,
+    private baseService: BaseService,
+    ) { }
 
   login(user: { username: string, password: string }) {
     return this.http.post<AuthResponseData>(`${environment.apiUrl}/login`, user)
       .pipe(
+        map(authRes => {
+          if(authRes){
+            return authRes;
+          }
+        }, err => {
+          return err;
+        }),
         tap(authRes => {
           this.setLoggedUser(authRes.token, authRes.refreshToken, authRes.userId, authRes.expiresIn);
           this.loggedUser = new LoggedUser(authRes.token, authRes.refreshToken, authRes.userId, authRes.expiresIn);
-        }
-        ),
-        catchError(this.handleResponseError)
-      );
+        }, err => {
+          this.baseService.openSnackBar("Podano błędne dane, spróbuj jeszcze raz.")
+        })
+        //,
+        //catchError(this.handleResponseError)
+      ).toPromise();
   }
 
   automaticLogin() {
@@ -55,8 +69,11 @@ export class AuthService {
   register(newUser: User) {
     return this.http.post<AuthResponseData>(`${environment.apiUrl}/register`, newUser)
       .pipe(
-        tap(authRes => this.setLoggedUser(authRes.token, authRes.refreshToken, authRes.userId, authRes.expiresIn)),
-        catchError(this.handleResponseError)
+        tap(authRes =>{
+          this.setLoggedUser(authRes.token, authRes.refreshToken, authRes.userId, authRes.expiresIn)
+        }, err => {
+          this.baseService.openSnackBar("Coś poszło nie tak, spróbuj jeszcze raz.")
+        }),
       ).toPromise();
   }
 
@@ -65,7 +82,7 @@ export class AuthService {
       'refreshToken': this.getRefreshToken()
     }).pipe(tap(() => {
       this.handleLogout();
-    }), catchError(this.handleResponseError))
+    }))
 
   }
 
@@ -92,18 +109,6 @@ export class AuthService {
     this.user.next(user);
     //this.autoLogout(expiresIn)
     localStorage.setItem('userData', JSON.stringify(user));
-  }
-
-  private handleResponseError(error: HttpErrorResponse) {
-    let errorMessage = 'An unknown error occurred!'
-    if (!error.error || !error.error.error) {
-      return throwError(errorMessage)
-    }
-    switch (error.error.error.message) {
-      case 'EMAIL_EXISTS':
-        errorMessage = 'This email exists already!';
-    }
-    return throwError(error.error.error.message);
   }
 
   private getRefreshToken() {

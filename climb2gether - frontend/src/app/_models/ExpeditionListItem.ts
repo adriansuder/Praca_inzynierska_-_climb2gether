@@ -3,6 +3,7 @@
 export class ExpeditionListItem {
     id: number;
     user: {
+        id: number;
         firstName: string;
         surname: string;
         city: string;

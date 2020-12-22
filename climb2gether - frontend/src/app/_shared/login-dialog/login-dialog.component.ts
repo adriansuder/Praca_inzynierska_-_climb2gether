@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
 import { MatDialogRef } from '@angular/material/dialog';
+import { BaseService } from 'src/app/services/base.service';
 
 
 
@@ -36,8 +37,7 @@ export class LoginDialogComponent implements OnInit {
         username: this.f.username.value,
         password: this.f.password.value
       }
-    ).toPromise();
-
+    )
     if (login) {
       this.router.navigate(['/dashboard/posts']);
       this.dialogRef.close();

@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { AuthService } from 'src/app/auth/auth.service';
 import { ExpeditionListItem } from 'src/app/_models/ExpeditionListItem';
 import { ExpeditionEnrollmentModalComponent } from '../expedition-enrollment-modal/expedition-enrollment-modal.component';
 
@@ -13,13 +14,18 @@ import { ExpeditionEnrollmentModalComponent } from '../expedition-enrollment-mod
 export class ListItemComponent implements OnInit {
   displayedColumns: string[] = ['data', 'trasa', 'iloscMiejsc', 'typ', 'akcje'];
   dataSource = new MatTableDataSource();
+  loggedUserId: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() expItem: ExpeditionListItem;
   
 
-  constructor(public dialog: MatDialog) { }
+  constructor(
+    public dialog: MatDialog,
+    private authService: AuthService
+    ) { }
 
   ngOnInit(): void {
+    this.loggedUserId = this.authService.loggedUser.userId;
   }
   
   applyFilter(event: Event) {

@@ -49,7 +49,7 @@ namespace climb2gether___backend.Controllers.V1
             var result = query.Select( x => new ExpeditionResponse{ 
                 Id = x.Id,
                 User = new UserPublicDetailResponse
-                {
+                {   Id = x.User.Id,
                     FirstName = x.User.FirstName,
                     Surname = x.User.Surname,
                     Sex = x.User.Sex,

@@ -56,6 +56,7 @@ export class ChatService {
         this.countOfUnreadedMessages.next(0);
       }
 
+      
 
     });
   }

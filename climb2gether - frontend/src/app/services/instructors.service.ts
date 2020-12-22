@@ -69,7 +69,7 @@ export class InstructorsService implements OnDestroy{
     });
   }
 
-  addOffer(offer: Offer, files: FileList) {
+  addOffer(offer: Offer, files: Blob) {
     const headers = new HttpHeaders().append('Content-Disposition', 'multipart/form-data');
     var formData = new FormData();
     //formData.append('date', offer.date.toString());
@@ -79,9 +79,10 @@ export class InstructorsService implements OnDestroy{
     formData.append('describe', offer.describe);
     formData.append('offerType', offer.offerType);
     formData.append('offerOwnerUserId', this.authService.loggedUser.userId.toString());
-    Array.from(files).forEach(file => { 
-      formData.append('img', file);
-    });
+    formData.append('img', files);
+    // Array.from(files).forEach(file => { 
+    //   formData.append('img', file);
+    // });
     return this.http.post(
       `${environment.apiUrl}/offers`,
       formData,

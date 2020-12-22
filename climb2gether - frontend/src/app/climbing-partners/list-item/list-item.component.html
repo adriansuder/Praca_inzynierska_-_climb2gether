@@ -55,7 +55,7 @@
                             </mat-list-item>
                             <mat-list-item class="horizontal-mat-list-item col-12 col-md-6 col-lg-3">
                                 <mat-icon mat-list-icon>event_available</mat-icon>
-                                <div mat-line>{{expItem.expeditionDate | date: 'shortDate'}}</div>
+                                <div mat-line>{{expItem.expeditionDate | date: 'shortDate': 'EST'}}</div>
                                 <div mat-line>Data wyprawy</div>
                             </mat-list-item>
                         </div>
@@ -69,7 +69,8 @@
             <hr>
             <div class="row pb-2">
                 <div class="col-12">
-                    <button class="btn btn-primary" (click)="confrimEnrollmentDialog()">Umów się!</button>
+                    <button class="btn btn-primary" (click)="confrimEnrollmentDialog()" *ngIf="expItem.user.id != loggedUserId">Umów się!</button>
+                    <button class="btn btn-warning" (click)="confrimEnrollmentDialog()" *ngIf="expItem.user.id == loggedUserId">Edytuj ofertę</button>
                 </div>
             </div>
         </div>

@@ -1,6 +1,35 @@
 .bodyHomePage {
     //background-color: #F2F3F4;
-    background: url('../../assets/img/homePageLogo.jpg');
+    overflow-x: hidden;
+    background: url('../../assets/img/homePageLogo.jpg') no-repeat;
     background-size: cover;
+    font-family: "Lato", "Roboto", "Helvetica Neue", sans-serif!important; 
+}
+.desrciptionWrapper {
+    min-height:18vh;
+    max-width: 100vw;
+    margin: 0 auto;
+}
+.card{
+    background-color: #FAFAFA;
+    border-radius: 0;
+    padding: 24px 10px;
+}
+
+.iconDiv {
+    font-size: 40px!important;
+    display: flex!important;
+    align-items: center!important;
+    justify-content: center!important;
+    color: rgb(27, 51, 63)!important;
+}
+
+.iconDiv > mat-icon {
+    font-size: 40px!important;
+    color: rgb(27, 51, 63)!important;
+}
+
+.logoBig {
+    max-height: 90vh;
 }
 

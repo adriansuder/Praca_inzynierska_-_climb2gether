@@ -16,7 +16,7 @@ import {NgxImageCompressService} from 'ngx-image-compress';
   styleUrls: ['./post-edit.component.scss']
 })
 export class PostEditComponent implements OnInit {
-  files: FileList;
+  files: any;
   url: any;
   inEditMode = false;
   editModeSubscription: Subscription;
@@ -71,13 +71,14 @@ export class PostEditComponent implements OnInit {
       this.imageCompress.compressFile(image, 70, 70).then(
         result => {
           this.url = result;
+          
         }
       );
     });
   }
 
-  onSubmit(): void {
-    const files: FileList = this.files;
+  async onSubmit() {
+    //const files: FileList = this.files;
     const post: Post = {
       title: this.postForm.value.title,
       subtitle: this.postForm.value.subtitle,
@@ -86,10 +87,12 @@ export class PostEditComponent implements OnInit {
       creationDate: new Date(Date.now())
     }
     if(this.inEditMode){
-        this.postsService.updatePost(this.postId, post, this.files);
+        let file = await (await fetch(this.url)).blob()
+        this.postsService.updatePost(this.postId, post, file);
     }
     else{
-      this.postsService.addPost(post, this.files);
+      let file = await (await fetch(this.url)).blob()
+      this.postsService.addPost(post, file);
     }
     this.inEditMode = false;
     this.router.navigate(['dashboard/posts']);

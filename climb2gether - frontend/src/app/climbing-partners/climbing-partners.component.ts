@@ -13,7 +13,8 @@ export class ClimbingPartnersComponent implements OnInit {
   constructor(private climbService: ClimbingPartnersService) { }
 
   async ngOnInit() {
-    this.fetchedOffers = await this.climbService.getAllExpeditions();
+    let temp = await this.climbService.getAllExpeditions();
+    this.fetchedOffers = temp.sort((a, b) => a.expeditionDate < b.expeditionDate ? -1 : 1);
   
   }
 
