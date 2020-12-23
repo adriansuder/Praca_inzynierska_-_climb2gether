@@ -10,6 +10,7 @@ import { ModalDetailsComponent } from './modal-details/modal-details.component';
 import { ModalConfirmEnrollmentComponent } from './modal-confirm-enrollment/modal-confirm-enrollment.component';
 import { InstructorsService } from '../../../services/instructors.service';
 import { BaseService } from 'src/app/services/base.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 // const ELEMENT_DATA: Offer[] = [
 //   {data: '2020-09-20', trasa: 'Hydrogen', iloscMiejsc: 1.0079, cena: 500},
@@ -28,17 +29,19 @@ export class InstructorItemComponent implements OnInit {
   panelOpenState = false;
   displayedColumns: string[] = ['data', 'trasa', 'iloscMiejsc', 'cena', 'typ', 'info', 'book'];
   dataSource = new MatTableDataSource();
-
+  loggedUserId: number; 
   constructor(
     public dialog: MatDialog,
     private instructorsService: InstructorsService,
-    private baseSerive: BaseService
+    private baseSerive: BaseService,
+    private authService: AuthService
     ) { }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource(this.offerItem.offers);
+    this.loggedUserId = this.authService.loggedUser.userId;
   }
 
   ngAfterViewInit(): void {

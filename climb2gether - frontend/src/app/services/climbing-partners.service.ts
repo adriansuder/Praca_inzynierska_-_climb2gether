@@ -61,4 +61,12 @@ export class ClimbingPartnersService {
     config.duration = 3000;
     this.snackBar.open(message, 'X', config);
   }
+
+  search(queryRequest: string){
+    return this.http.get<any>(
+      `${environment.apiUrl}/expeditions/search?queryRequest=${queryRequest}`
+    ).pipe(
+      //tap(res => console.log(res))
+    ).toPromise();
+  }
 }

@@ -27,26 +27,27 @@ namespace climb2gether___backend.Services
         {
             await _dataContext.Offers.AddAsync(offer);
             var created = await _dataContext.SaveChangesAsync();
-            if(offer.Id == null)
+            if (offer.Id == null)
             {
-                return  0;
+                return 0;
             }
             return offer.Id;
         }
 
         public async Task<List<OfferResponse>> GetOffersAsync(int userId)
         {
-            var query = await (//from offer in _dataContext.Offers
-                               from user in _dataContext.Users //on offer.OfferOwnerUserId equals user.Id
+            var query = await (
+                               from user in _dataContext.Users
                                join role in _dataContext.ApplicationUserRoles on user.RoleId equals role.RoleId
                                join offer in _dataContext.Offers on user.Id equals offer.OfferOwnerUserId
+                               where offer.Date >= DateTime.UtcNow
                                select new OfferResponse
                                {
                                    UserNameSurname = user.FirstName + " " + user.Surname,
                                    userRole = role.RoleName,
                                    UserId = user.Id,
                                    Offers = (from userOffer in _dataContext.Offers
-                                             where userOffer.OfferOwnerUserId == user.Id
+                                             where userOffer.OfferOwnerUserId == user.Id && userOffer.Date >= DateTime.UtcNow
                                              select new OfferResponseItem
                                              {
                                                  Id = userOffer.Id,
@@ -57,11 +58,8 @@ namespace climb2gether___backend.Services
                                                  Describe = userOffer.Describe,
                                                  OfferType = userOffer.OfferType,
                                                  OfferOwnerUserId = userOffer.OfferOwnerUserId,
-                                                 //IsUserAlreadyEnrolled = (from offEnr in _dataContext.OfferEnrollments 
-                                                 //                         where offEnr.OfferId == userOffer.Id && offEnr.ParticipantUserId == userId 
-                                                 //                         select offEnr.Id).Any(),
-                                                 UserEnrollmentId = (from offEnr in _dataContext.OfferEnrollments 
-                                                                     where offEnr.OfferId == userOffer.Id && offEnr.ParticipantUserId == userId 
+                                                 UserEnrollmentId = (from offEnr in _dataContext.OfferEnrollments
+                                                                     where offEnr.OfferId == userOffer.Id && offEnr.ParticipantUserId == userId
                                                                      select offEnr.Id).SingleOrDefault(),
                                                  Attatchments = (from att in _dataContext.Attatchments
                                                                  where att.ObjectTypeName == "oferta" && att.ObjectTypeNumber == userOffer.Id
@@ -83,23 +81,23 @@ namespace climb2gether___backend.Services
         }
 
         public async Task<List<UserOffersResponse>> GetUserOffersAsync(int userId)
-        {   
-            var result = await _dataContext.Offers.Where(offer => offer.OfferOwnerUserId == userId).Select( x => new UserOffersResponse
+        {
+            var result = await _dataContext.Offers.Where(offer => offer.OfferOwnerUserId == userId).Select(x => new UserOffersResponse
             {
-                 Id = x.Id,
-                 Date = x.Date,
-                 Location = x.Location,
-                 MaxParticipants = x.MaxParticipants,
-                 Price = x.Price,
-                 Describe = x.Describe,
-                 OfferType = x.OfferType,
-                 CreationDate = x.CreationDate,
-                 OfferOwnerUserId = x.OfferOwnerUserId,
-                 Attatchments =  _dataContext.Attatchments.Where(y => y.ObjectTypeNumber == x.Id && y.ObjectTypeName == "oferta").ToList()
+                Id = x.Id,
+                Date = x.Date,
+                Location = x.Location,
+                MaxParticipants = x.MaxParticipants,
+                Price = x.Price,
+                Describe = x.Describe,
+                OfferType = x.OfferType,
+                CreationDate = x.CreationDate,
+                OfferOwnerUserId = x.OfferOwnerUserId,
+                Attatchments = _dataContext.Attatchments.Where(y => y.ObjectTypeNumber == x.Id && y.ObjectTypeName == "oferta").ToList()
 
             }).ToListAsync();
 
-            return result ;
+            return result;
         }
 
         public async Task<UserOffersResponse> GetUserOfferById(int userId, int offerId)
@@ -131,10 +129,10 @@ namespace climb2gether___backend.Services
         public async Task<bool> DeleteOfferAsync(int offerId)
         {
             var offerToDelete = await _dataContext.Offers.SingleOrDefaultAsync(offer => offer.Id == offerId);
-             _dataContext.Offers.Remove(offerToDelete);
+            _dataContext.Offers.Remove(offerToDelete);
             var result = await _dataContext.SaveChangesAsync();
 
-                return result > 0;
+            return result > 0;
         }
         public async Task<bool> UpdateOfferAsync(Offer offer)
         {
@@ -171,7 +169,7 @@ namespace climb2gether___backend.Services
 
         public async Task<bool> IsUserAlreadyEnrolledAsync(int offerId, int userId)
         {
-            var result = await  _dataContext.OfferEnrollments
+            var result = await _dataContext.OfferEnrollments
                 .SingleOrDefaultAsync(x => x.OfferId == offerId && x.ParticipantUserId == userId);
             return result != null;
         }
@@ -191,18 +189,62 @@ namespace climb2gether___backend.Services
         public async Task<List<ParticipantResponse>> GetParticipantsListAsync(int offerId)
         {
             var query = await (from offEnr in _dataContext.OfferEnrollments
-                         join user in _dataContext.Users on offEnr.ParticipantUserId equals user.Id
-                         where offEnr.OfferId == offerId
-                         select new ParticipantResponse
-                         {
-                             Id = user.Id,
-                             FirstName = user.FirstName,
-                             Surname = user.Surname,
-                             Phone = user.Phone,
-                             Email = user.Email
-                         }
+                               join user in _dataContext.Users on offEnr.ParticipantUserId equals user.Id
+                               where offEnr.OfferId == offerId
+                               select new ParticipantResponse
+                               {
+                                   Id = user.Id,
+                                   FirstName = user.FirstName,
+                                   Surname = user.Surname,
+                                   Phone = user.Phone,
+                                   Email = user.Email
+                               }
                         ).ToListAsync();
             return query;
+        }
+
+        public async Task<List<OfferResponse>> SearchOffers(string query, int userId)
+        {
+            var queryString = query.Trim();
+            var result = await (
+                               from user in _dataContext.Users
+                               join role in _dataContext.ApplicationUserRoles on user.RoleId equals role.RoleId
+                               join offer in _dataContext.Offers on user.Id equals offer.OfferOwnerUserId
+                               where (offer.Location.Contains(queryString) || offer.OfferType.Contains(queryString) ||
+                                        offer.Describe.Contains(queryString) || offer.User.Email.Contains(queryString) ||
+                                        offer.User.Surname.Contains(queryString)) && offer.Date >= DateTime.UtcNow
+                               select new OfferResponse
+                               {
+                                   UserNameSurname = user.FirstName + " " + user.Surname,
+                                   userRole = role.RoleName,
+                                   UserId = user.Id,
+                                   Offers = (from userOffer in _dataContext.Offers
+                                             where userOffer.OfferOwnerUserId == user.Id && userOffer.Date >= DateTime.UtcNow &&
+                                             (offer.Location.Contains(queryString) || offer.OfferType.Contains(queryString) ||
+                                                offer.Describe.Contains(queryString) || offer.User.Email.Contains(queryString) ||
+                                                 offer.User.Surname.Contains(queryString))
+                                             select new OfferResponseItem
+                                             {
+                                                 Id = userOffer.Id,
+                                                 Date = userOffer.Date,
+                                                 Location = userOffer.Location,
+                                                 MaxParticipants = userOffer.MaxParticipants,
+                                                 Price = userOffer.Price,
+                                                 Describe = userOffer.Describe,
+                                                 OfferType = userOffer.OfferType,
+                                                 OfferOwnerUserId = userOffer.OfferOwnerUserId,
+                                                 UserEnrollmentId = (from offEnr in _dataContext.OfferEnrollments
+                                                                     where offEnr.OfferId == userOffer.Id && offEnr.ParticipantUserId == userId
+                                                                     select offEnr.Id).SingleOrDefault(),
+                                                 Attatchments = (from att in _dataContext.Attatchments
+                                                                 where att.ObjectTypeName == "oferta" && att.ObjectTypeNumber == userOffer.Id
+                                                                 select att).ToList()
+                                             }
+                                             ).ToList<OfferResponseItem>()
+                               }
+                          ).Distinct().ToListAsync();
+
+            return result;
         }
     }
 }

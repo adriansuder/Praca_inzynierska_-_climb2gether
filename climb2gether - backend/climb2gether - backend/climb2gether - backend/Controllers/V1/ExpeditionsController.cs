@@ -90,5 +90,14 @@ namespace climb2gether___backend.Controllers.V1
 
             return Ok(result);
         }
+
+        [HttpGet(ApiRoutes.Expeditions.ExpeditionSearch)]
+        public async Task<IActionResult> ExpeditionSearch([FromQuery] string queryRequest)
+        {   
+            var result = await _expeditionsService.SearchExpeditions(queryRequest);
+
+
+            return Ok(result);
+        }
     }
 }

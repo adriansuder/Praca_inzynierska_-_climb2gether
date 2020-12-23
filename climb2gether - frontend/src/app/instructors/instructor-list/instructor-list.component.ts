@@ -16,6 +16,7 @@ export class InstructorListComponent implements OnInit {
   async ngOnInit() {
    this.instructorsService.getOffers();
    this.instructorsService.offersChanged.subscribe( offers => {
+     console.log(offers)
      this.loadedOffers = offers;
    });
   }

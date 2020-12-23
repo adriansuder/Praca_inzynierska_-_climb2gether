@@ -1,9 +1,20 @@
-#addOfferButton{
-    position: fixed;
-    top: 12vh;
-    right: 5vw;
-    z-index:10;
-}
+
+
+@media (min-width: 721px) { 
+    #addOfferButton{
+        position: fixed;
+        top: 12vh;
+        right: 5vw;
+        z-index:10;
+    }
+ }
+ @media (max-width: 720px) { 
+    #addOfferButton{
+        position: fixed;
+        bottom: 5vh;
+        right: 5vw;
+        z-index:10;
+    }
+  }
 .listItemWrapper {
-    
 }

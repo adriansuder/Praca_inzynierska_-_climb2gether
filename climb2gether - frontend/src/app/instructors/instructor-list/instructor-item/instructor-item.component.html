@@ -1,4 +1,4 @@
-<mat-expansion-panel class="col-12 ">
+<mat-expansion-panel class="row ">
     <mat-expansion-panel-header>
         <mat-panel-title>
             {{ offerItem.userNameSurname }}
@@ -61,7 +61,7 @@
             <mat-header-cell *matHeaderCellDef class="mat-header-cell"> Rezerwuj </mat-header-cell>
             <mat-cell *matCellDef="let element" class="iconWrapper d-flex flex-center">
                 <!-- <div class="iconWrapper"> -->
-                      <button mat-button (click)="courseEnrollment(element.id)" [class.enrolled]="element.isUserAlreadyEnrolled">
+                      <button *ngIf="element.OfferOwnerUserId != loggedUserId" mat-button (click)="courseEnrollment(element.id)" [class.enrolled]="element.isUserAlreadyEnrolled">
                         <mat-icon class="icon">{{ element.isUserAlreadyEnrolled ? 'close': 'how_to_reg'}}</mat-icon>
                       </button>  
                 <!-- </div>  -->

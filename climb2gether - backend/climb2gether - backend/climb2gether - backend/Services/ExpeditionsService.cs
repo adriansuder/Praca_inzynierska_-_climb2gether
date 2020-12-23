@@ -1,4 +1,5 @@
-﻿using climb2gether___backend.Data;
+﻿using climb2gether___backend.Contracts.V1.Responses;
+using climb2gether___backend.Data;
 using climb2gether___backend.Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -46,6 +47,49 @@ namespace climb2gether___backend.Services
                                                             .Where(x => x.ExpeditionDate >= DateTime.UtcNow)
                                                             .ToListAsync();
             return expeditionItemList;
+        }
+
+        public async Task<List<ExpeditionResponse>> SearchExpeditions(string querySearch)
+        {
+            var query = querySearch.Trim();
+            var expeditionItemList = await _dataContext.Expeditions.Include(exp => exp.User)
+                                                            .ThenInclude(user => user.Role)
+                                                            .Where(x =>
+                                                                    x.ExpeditionDate >= DateTime.UtcNow &&
+                                                                        (
+                                                                            x.DestinationRegion.Contains(query) ||
+                                                                            x.DepartureCity.Contains(query) ||
+                                                                            x.DescriptionTitle.Contains(query) ||
+                                                                            x.Destination.Contains(query)
+                                                                        )
+
+                                                                    ).ToListAsync();
+            var result = expeditionItemList.Select(x => new ExpeditionResponse
+            {
+                Id = x.Id,
+                User = new UserPublicDetailResponse
+                {
+                    Id = x.User.Id,
+                    FirstName = x.User.FirstName,
+                    Surname = x.User.Surname,
+                    Sex = x.User.Sex,
+                    RoleName = x.User.Role.RoleName,
+                    Phone = x.User.Phone,
+                    Email = x.User.Email,
+                    City = x.User.City
+                },
+                DestinationCity = x.DestinationCity,
+                Destination = x.Destination,
+                DestinationRegion = x.DestinationRegion,
+                DepartureCity = x.DepartureCity,
+                MaxParticipants = x.MaxParticipants,
+                CreationDate = x.CreationDate,
+                ExpeditionDate = x.ExpeditionDate,
+                DescriptionTitle = x.DescriptionTitle,
+                Description = x.Description
+            }).ToList();
+
+            return result;
         }
     }
 }

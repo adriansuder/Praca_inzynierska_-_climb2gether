@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { BaseService } from '../services/base.service';
 import { ClimbingPartnersService } from '../services/climbing-partners.service';
 import { ExpeditionListItem } from '../_models/ExpeditionListItem';
 
@@ -8,9 +9,12 @@ import { ExpeditionListItem } from '../_models/ExpeditionListItem';
   styleUrls: ['./climbing-partners.component.scss']
 })
 export class ClimbingPartnersComponent implements OnInit {
-
+  searchString: string;
   fetchedOffers: ExpeditionListItem[];
-  constructor(private climbService: ClimbingPartnersService) { }
+  constructor(
+    private climbService: ClimbingPartnersService,
+    private baseService: BaseService
+    ) { }
 
   async ngOnInit() {
     let temp = await this.climbService.getAllExpeditions();
@@ -18,5 +22,13 @@ export class ClimbingPartnersComponent implements OnInit {
   
   }
 
+  async search(){ 
+    const result = await this.climbService.search(this.searchString);
+    if(result.length == 0){
+      this.baseService.openSnackBar('Brak dopasowań wyszukiwania.');
+      return;
+    }
+    this.fetchedOffers = result;
+  }
 
 }

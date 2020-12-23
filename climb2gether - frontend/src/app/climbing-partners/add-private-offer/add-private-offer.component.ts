@@ -9,7 +9,7 @@ import { Expedition } from 'src/app/_models/Expedition';
 @Component({
   selector: 'app-add-private-offer',
   templateUrl: './add-private-offer.component.html',
-  styleUrls: ['./add-private-offer.component.scss']
+  styleUrls: ['./add-private-offer.component.scss'],
 })
 export class AddPrivateOfferComponent implements OnInit {
 
@@ -25,6 +25,12 @@ export class AddPrivateOfferComponent implements OnInit {
     this.createForm();
   }
 
+  handleUTCTime(date:Date):Date{
+    var timeOffsetInMS:number = date.getTimezoneOffset() * 60000;
+    date.setTime(date.getTime() - timeOffsetInMS);
+    return date;
+}
+
   async onSubmit() {
     var date = new Date();
     const expedition: Expedition = {
@@ -35,7 +41,7 @@ export class AddPrivateOfferComponent implements OnInit {
       departureCity: this.privateOfferForm.value.wyjazdZ,
       maxParticipants: this.privateOfferForm.value.maxIloscOsob,
       creationDate: new Date(),
-      expeditionDate:  this.privateOfferForm.value.dataWyprawy,
+      expeditionDate: this.handleUTCTime(new Date(this.privateOfferForm.value.dataWyprawy)) ,
       descriptionTitle: this.privateOfferForm.value.tytulOpisu,
       description: this.privateOfferForm.value.opisWyprawy
     }

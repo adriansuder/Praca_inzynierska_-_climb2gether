@@ -145,6 +145,7 @@
         </button>
         <mat-menu #notification="matMenu" class="mat-menu">
             <li class="mat-list-item" mat-menu-item *ngFor="let elem of notifications">{{elem.message}} | {{ elem.creationDate | date: 'shortDate' }} <hr></li>
+            <li class="mat-list-item" mat-menu-item *ngIf="!notifications">Nie masz żadnych nowych powiadomień :) <hr></li>
         </mat-menu>
 
         <button mat-icon-button class="btn-link matLoginButton d-none d-md-none d-lg-block" aria-label="Messages button"

@@ -49,12 +49,14 @@ namespace climb2gether___backend.Contracts
             public const string DeleteEnrollment = Base + "/offers/deleteEnrollment";
             public const string ParticipantsList = Base + "/offers/ParticipantsList";
             public const string GetUserOfferById = Base + "/offer/{offerId}";
+            public const string SearchOffers = Base + "/offer/search";
         }
         public static class Expeditions
         {
             public const string Create = Base + "/expeditions";
             public const string GetAll = Base + "/expeditions";
             public const string CreateEnrollment = Base + "/expeditions/addEnrollment";
+            public const string ExpeditionSearch = Base + "/expeditions/search";
         }
 
         public static class RockSchema

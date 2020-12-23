@@ -72,7 +72,7 @@ export class InstructorsService implements OnDestroy{
   addOffer(offer: Offer, files: Blob) {
     const headers = new HttpHeaders().append('Content-Disposition', 'multipart/form-data');
     var formData = new FormData();
-    //formData.append('date', offer.date.toString());
+    formData.append('date', offer.date.toLocaleDateString('PL'));
     formData.append('location', offer.location);
     formData.append('maxParticipants', offer.maxParticipants.toString());
     formData.append('price', offer.price.toString());
@@ -130,5 +130,13 @@ export class InstructorsService implements OnDestroy{
     return this.http.get<Participant[]>(
       `${environment.apiUrl}/offers/ParticipantsList?offerId=${offerId}`
     ).pipe(tap(res => console.log(res))).toPromise();
+  }
+
+  search(queryRequest: string){
+    return this.http.get<any>(
+      `${environment.apiUrl}/offer/search?query=${queryRequest}`
+    ).pipe(
+      //tap(res => console.log(res))
+    ).toPromise();
   }
 }

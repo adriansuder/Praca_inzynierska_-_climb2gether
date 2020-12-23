@@ -183,6 +183,16 @@ namespace climb2gether___backend.Controllers.V1
             return Ok(participantsList);
         }
 
-        
+        [HttpGet(ApiRoutes.Offers.SearchOffers)]
+        public async Task<IActionResult> SearchOffers([FromQuery] string query)
+        {
+            var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
+
+            var result = await _offerService.SearchOffers(query, userId);
+
+            return Ok(result);
+        }
+
+
     }
 }

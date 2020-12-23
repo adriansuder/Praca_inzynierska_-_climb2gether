@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import { RegisterDialogComponent } from '../register-dialog/register-dialog.component';
@@ -21,7 +21,7 @@ export class NavbarComponent implements OnInit {
 
   notifications: Notification[] = [];
   newNotificationsNumber: number = 0;
-  notificationsMock: string[] = ['Użytkownik XYZ obserwuje Cie', 'Użytkownik XYZ zareagował na Twój wpis' , 'Użytkownik XYZ zareagował na Twój wpis',  'Użytkownik XYZ zareagował na Twój wpis',  'Użytkownik XYZ zareagował na Twój wpis'];
+ // notificationsMock: string[] = ['Użytkownik XYZ obserwuje Cie', 'Użytkownik XYZ zareagował na Twój wpis' , 'Użytkownik XYZ zareagował na Twój wpis',  'Użytkownik XYZ zareagował na Twój wpis',  'Użytkownik XYZ zareagował na Twój wpis'];
   isAuthenticated: boolean;
   loggedUserSubscription: Subscription;
   notificationSubscription: Subscription;
@@ -35,6 +35,7 @@ export class NavbarComponent implements OnInit {
     private baseService: BaseService,
     private chatService: ChatService
     ) {}
+
 
   ngOnInit() {
     this.loggedUserSubscription = this.authService.user.subscribe( user => {
@@ -52,7 +53,6 @@ export class NavbarComponent implements OnInit {
     this.chatService.countOfUnreadedMessages.subscribe(res => {
       this.unreadedConversations = res;
     })
-
   }
 
   openLoginDialog() {
@@ -85,7 +85,7 @@ export class NavbarComponent implements OnInit {
 
     async onSetNotificationsReaded(){
       let unreadedMessages = this.notifications?.filter(x => x.isReaded == false);
-      if(unreadedMessages.length <= 0){
+      if(unreadedMessages?.length <= 0 || !unreadedMessages){
         return;
       }
 

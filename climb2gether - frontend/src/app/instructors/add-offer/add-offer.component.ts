@@ -70,19 +70,26 @@ export class AddOfferComponent implements OnInit {
     }
   }
 
+  handleUTCTime(date:Date):Date{
+    var timeOffsetInMS:number = date.getTimezoneOffset() * 60000;
+    date.setTime(date.getTime() - timeOffsetInMS);
+    return date;
+}
+
 
   get form() { return this.addOfferFormGroup.controls; }
 
   async onSubmit() {
     let result;
+    
     const offer: Offer = {
       id: this.offerId,
-      date: this.form.date.value,
-      location: this.form.location.value,
-      maxParticipants: this.form.maxQty.value,
-      price: this.form.price.value,
-      describe: this.form.describe.value,
-      offerType: this.form.offerType.value
+      date: this.handleUTCTime(new Date(this.addOfferFormGroup.value.date)),
+      location: this.addOfferFormGroup.value.location,
+      maxParticipants: this.addOfferFormGroup.value.maxQty,
+      price: this.addOfferFormGroup.value.price,
+      describe: this.addOfferFormGroup.value.describe,
+      offerType: this.addOfferFormGroup.value.offerType
     }
     if (this.inEditMode) {
       let file = await (await fetch(this.url)).blob()
