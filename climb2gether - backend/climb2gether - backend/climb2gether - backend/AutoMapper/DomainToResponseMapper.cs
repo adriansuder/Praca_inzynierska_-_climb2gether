@@ -20,6 +20,7 @@ namespace climb2gether___backend.AutoMapper
             CreateMap<Expedition, ExpeditionResponse>();
             CreateMap<Notification, UserNotificationsResponse>();
             CreateMap<Conversation, ConversationResponse>();
+            CreateMap<User, PrivateUserInfoResponse>();
         }
     }
 }

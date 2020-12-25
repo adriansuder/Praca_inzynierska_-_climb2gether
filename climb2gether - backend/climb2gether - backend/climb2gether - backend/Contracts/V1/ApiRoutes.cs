@@ -86,6 +86,11 @@ namespace climb2gether___backend.Contracts
         {
             public const string GetAttatchment = Base + "/attatchment/{id}";
         }
+
+        public static class User
+        {
+            public const string GetPrivateUserInfo = Base + "/user/privateDetails";
+        }
     }
     
 }

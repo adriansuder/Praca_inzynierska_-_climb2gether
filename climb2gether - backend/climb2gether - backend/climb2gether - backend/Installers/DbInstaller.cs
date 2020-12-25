@@ -30,6 +30,7 @@ namespace climb2gether___backend.Installers
             services.AddScoped<IRockSchemaService, RockSchemaService>();
             services.AddScoped<INotificationsService, NotificationsService>();
             services.AddScoped<IChatService, ChatService>();
+            services.AddScoped<IUserService, UserService>();
 
         }
     }

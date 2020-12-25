@@ -268,5 +268,14 @@ namespace climb2gether___backend.Services
             var user = await _userManager.FindByIdAsync(userId.ToString());
             return user.Email;
         }
+
+        public async Task<bool> ChangeUserPassword(int userId, string currentPassword, string newPassword)
+        {
+            var user = _dataContext.Users.Where(u => u.Id == userId).SingleOrDefault();
+            var result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+            
+
+            return result.Succeeded;
+        }
     }
 }
