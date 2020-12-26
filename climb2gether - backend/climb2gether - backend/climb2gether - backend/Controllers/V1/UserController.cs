@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using climb2gether___backend.Contracts;
+using climb2gether___backend.Contracts.V1.Requests;
 using climb2gether___backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -29,10 +30,30 @@ namespace climb2gether___backend.Controllers.V1
         }
 
         [HttpGet(ApiRoutes.User.GetPrivateUserInfo)]
-        public async Task<IActionResult> GetPrivateUserInfo()
+        public async Task<IActionResult> GetPrivateUserInfo([FromQuery] string? userId)
+        {
+            var user = userId != null ? Int32.Parse(userId) : _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
+            var response = await _userService.GetPrivateUserInfo(user);
+            return Ok(response);
+        }
+
+        [HttpPut(ApiRoutes.User.UpdateUserInfo)]
+        public async Task<IActionResult> UpdateUserInfo([FromForm] UpdateUserInfoRequest request)
         {
             var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
-            var response = await _userService.GetPrivateUserInfo(userId);
+            var result = await _userService.UpdateUserInfo(request, userId);
+
+            return Ok(result);
+        }
+
+        [HttpGet(ApiRoutes.User.UsersSearch)]
+        public async Task<IActionResult> UsersSearch([FromQuery] string queryString)
+        {   
+            if(queryString == null || queryString == "" || queryString==" ")
+            {
+                return NoContent();
+            }
+            var response = await _userService.UsersSearch(queryString);
             return Ok(response);
         }
     }

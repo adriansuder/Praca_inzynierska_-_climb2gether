@@ -131,14 +131,14 @@
             <!-- /Widoczne tylko na mobile -->
         </ul>
 
-        <form class="form-inline ml-auto d-flex justify-content-center ">
+        <div class="form-inline ml-auto d-flex justify-content-center ">
             <div class="form-group no-border">
-                <input type="text" class="form-control" placeholder="Znajdź profil wspinacza" />
+                <input type="text" class="form-control" #searchInput [(ngModel)]="searchString" placeholder="Znajdź profil wspinacza" />
             </div>
-            <button type="submit" class="btn btn-link btn-icon btn-round">
+            <button type="button" (click)="usersSearch()" class="btn btn-link btn-icon btn-round" >
                 <mat-icon>search</mat-icon>
             </button>
-        </form>
+        </div>
         <button (click)="onSetNotificationsReaded()" mat-icon-button class="btn-link matLoginButton d-none d-md-none d-lg-block"
             [matMenuTriggerFor]="notification" aria-label="Notifications button">
             <mat-icon [matBadge]="newNotificationsNumber">notifications</mat-icon>

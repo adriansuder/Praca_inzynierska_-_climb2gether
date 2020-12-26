@@ -1,21 +1,64 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { Subject } from 'rxjs/internal/Subject';
 import { tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { PrivateUserInfo } from '../_models/PrivateUserInfo';
+import { PublicUserInfo } from '../_models/PublicUserInfo';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
 
+  searchResultList: PublicUserInfo[] = [];
+  usersSearchResultChanged = new Subject<PublicUserInfo[]>();
+
   constructor(
     private http: HttpClient
   ) { }
 
-  getPrivateUserInfo(){
+  getPrivateUserInfo() {
     return this.http.get<PrivateUserInfo>(
       `${environment.apiUrl}/user/privateDetails`
     ).pipe(tap(res => console.log(res))).toPromise();
+  }
+
+  getUserDetails(userId: number) {
+    return this.http.get<PrivateUserInfo>(
+      `${environment.apiUrl}/user/privateDetails?userId=${userId}`
+    ).pipe(tap(res => console.log(res))).toPromise();
+  }
+
+  usersSearch(query: string){
+    return this.http.get<PublicUserInfo[]>(
+      `${environment.apiUrl}/user/search?queryString=${query}`
+    ).pipe(tap( res => {
+      this.usersSearchResultChanged.next(res);
+    })).toPromise();
+  }
+
+  async updateUserInfo(userPhotoStatus: string, phone: string, city: string, oldPassword?: string, password?: string, userPhoto?: any) {
+    const headers = new HttpHeaders().append('Content-Disposition', 'multipart/form-data');
+    var formData = new FormData();
+    formData.append('userPhotoStatus', userPhotoStatus);
+    formData.append('phone', phone);
+    formData.append('city', city);
+    if (oldPassword) {
+      formData.append('oldPassword', oldPassword);
+      formData.append('password', password);
+    }
+    if (userPhoto) {
+      formData.append('img', await (await fetch(userPhoto)).blob());
+    }
+
+    return this.http.put(
+      `${environment.apiUrl}/user/update`,
+      formData,
+      {
+        headers
+      }
+    ).toPromise();
   }
 }

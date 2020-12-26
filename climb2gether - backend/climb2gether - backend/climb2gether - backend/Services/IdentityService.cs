@@ -277,5 +277,7 @@ namespace climb2gether___backend.Services
 
             return result.Succeeded;
         }
+
+        
     }
 }

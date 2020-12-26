@@ -14,5 +14,6 @@ namespace climb2gether___backend.Services
         Task<bool> DeleteAttatchment(string objectTypeName, int objectTypeNumber);
         Task<string> GetAttatchment(int attatchmentId);
         Task<bool> UpdateAttatchments(List<IFormFile> objectFile, string objectTypeName, int objectTypeNumber);
+        Task<bool> CheckIfAnyExists(string objectTypeName, int objectTypeNumber);
     }
 }

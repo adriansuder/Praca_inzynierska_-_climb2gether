@@ -102,5 +102,11 @@ namespace climb2gether___backend.Services
             var path = Path.Combine(assetsPath + file);
             return path;
         }
+
+        public async Task<bool> CheckIfAnyExists(string objectTypeName, int objectTypeNumber)
+        {
+            var attId = _dataContext.Attatchments.Where(a => a.ObjectTypeName == objectTypeName && a.ObjectTypeNumber == objectTypeNumber).Any();
+            return attId;
+        }
     }
 }

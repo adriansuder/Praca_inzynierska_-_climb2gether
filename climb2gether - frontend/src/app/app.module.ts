@@ -66,6 +66,8 @@ import {NgxPaginationModule} from 'ngx-pagination';
 import { ConversationsComponent } from './chat/conversations/conversations.component';
 import { MessagesComponent } from './chat/messages/messages.component';
 import { NgxImageCompressService } from 'ngx-image-compress';
+import { UserPublicProfilesComponent } from './user-public-profiles/user-public-profiles.component';
+import { ProfileDetailsComponent } from './user-public-profiles/profile-details/profile-details.component';
 
 @NgModule({
   declarations: [
@@ -100,7 +102,9 @@ import { NgxImageCompressService } from 'ngx-image-compress';
     SchemaListComponent,
     DialogSchemaDetailsComponent,
     ConversationsComponent,
-    MessagesComponent
+    MessagesComponent,
+    UserPublicProfilesComponent,
+    ProfileDetailsComponent
   ],
   imports: [
     BrowserModule,

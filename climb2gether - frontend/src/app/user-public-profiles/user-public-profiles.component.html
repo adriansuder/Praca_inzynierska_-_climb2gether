@@ -1,0 +1,16 @@
+
+
+<div class="container mt-3 mb-3">
+    <div class="row">
+        <div class="col-12" style=" border-radius: 4px;">
+            <div class="list-group">
+                <button  type="button" *ngIf="!users" class="list-group-item list-group-item-action active">Brak wyników wyszukiwania</button>
+                <button (click)="openUserDetails(user.id)" type="button" *ngFor="let user of users" class="list-group-item list-group-item-action">
+                    <p><span class="listItemTitle">Imię i nazwisko: </span>{{user.nameAndSurname}} <span class="listItemTitle">| Email: </span>{{user.email}} <span class="listItemTitle">| Nazwa użytkownika: </span>{{user.username}} <span class="listItemTitle">| Rola: </span>{{user.roleName}}</p>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<router-outlet></router-outlet>

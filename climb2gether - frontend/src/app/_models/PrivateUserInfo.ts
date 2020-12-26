@@ -8,4 +8,5 @@ export class PrivateUserInfo{
     dateOfBirth: Date;
     phone: string;
     city: string;
+    img: string;
 }

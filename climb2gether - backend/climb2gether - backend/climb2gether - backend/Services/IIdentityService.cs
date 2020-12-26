@@ -21,7 +21,9 @@ namespace climb2gether___backend.Services
         int GetUserIdFromRequest(HttpContext ctx);
         Task<int> GetUserIdByEmail(string email);
         Task<string> GetUserEmailById(int userId);
-        Task<bool> ChangeUserPassword(int userId, string password);
+        Task<bool> ChangeUserPassword(int userId, string currentPassword, string newPassword);
+
+
 
     }   
 }

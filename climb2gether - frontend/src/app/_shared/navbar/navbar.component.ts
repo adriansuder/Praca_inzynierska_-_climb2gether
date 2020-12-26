@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import { RegisterDialogComponent } from '../register-dialog/register-dialog.component';
@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { BaseService } from 'src/app/services/base.service';
 import { Notification } from 'src/app/_models/Notification';
 import { ChatService } from 'src/app/services/chat.service';
+import { UsersService } from 'src/app/services/users.service';
 
 
 
@@ -18,7 +19,6 @@ import { ChatService } from 'src/app/services/chat.service';
 })
 
 export class NavbarComponent implements OnInit {
-
   notifications: Notification[] = [];
   newNotificationsNumber: number = 0;
  // notificationsMock: string[] = ['Użytkownik XYZ obserwuje Cie', 'Użytkownik XYZ zareagował na Twój wpis' , 'Użytkownik XYZ zareagował na Twój wpis',  'Użytkownik XYZ zareagował na Twój wpis',  'Użytkownik XYZ zareagował na Twój wpis'];
@@ -26,14 +26,15 @@ export class NavbarComponent implements OnInit {
   loggedUserSubscription: Subscription;
   notificationSubscription: Subscription;
   unreadedConversations: number = 0;
-
+  searchString: string = '';
 
   constructor(
     private dialog: MatDialog,
     private router: Router,
     private authService: AuthService,
     private baseService: BaseService,
-    private chatService: ChatService
+    private chatService: ChatService,
+    private usersService: UsersService
     ) {}
 
 
@@ -53,6 +54,16 @@ export class NavbarComponent implements OnInit {
     this.chatService.countOfUnreadedMessages.subscribe(res => {
       this.unreadedConversations = res;
     })
+  }
+
+  async usersSearch(){
+    const result = await this.usersService.usersSearch(this.searchString);
+    this.usersService.searchResultList = result;
+    if(result.length == 0){
+      this.baseService.openSnackBar("Brak dopasowań wyszukiwania.")
+      return;
+    }
+    this.router.navigate(['profiles']);
   }
 
   openLoginDialog() {

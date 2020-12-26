@@ -1,0 +1,13 @@
+.listItemTitle {
+    font-weight: bold;
+}
+
+::ng-deep .mat-list-item{
+    word-wrap: break-word !important;
+    white-space: pre-wrap !important;
+    line-height: 24px!important;
+  }
+
+  ::ng-deep  .mat-menu .mat-list-item{
+    height:initial!important;
+  }

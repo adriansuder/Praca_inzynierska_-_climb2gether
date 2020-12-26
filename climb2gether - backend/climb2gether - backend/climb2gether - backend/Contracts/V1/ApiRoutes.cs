@@ -90,6 +90,8 @@ namespace climb2gether___backend.Contracts
         public static class User
         {
             public const string GetPrivateUserInfo = Base + "/user/privateDetails";
+            public const string UpdateUserInfo = Base + "/user/update";
+            public const string UsersSearch = Base + "/user/search";
         }
     }
     
