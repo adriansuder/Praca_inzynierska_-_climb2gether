@@ -28,5 +28,6 @@ namespace climb2gether___backend.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Conversation> Conversations { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Review> Reviews { get; set; }
     }
 }

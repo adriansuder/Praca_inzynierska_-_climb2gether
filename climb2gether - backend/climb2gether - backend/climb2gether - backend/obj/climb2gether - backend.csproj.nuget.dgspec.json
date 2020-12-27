@@ -8,7 +8,7 @@
       "version": "1.0.0",
       "restore": {
         "projectUniqueName": "D:\\Repositories\\climb2gether_INZYNIERKA\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend.csproj",
-        "projectName": "climb2gether - backend",
+        "projectName": "climb2gether___backend",
         "projectPath": "D:\\Repositories\\climb2gether_INZYNIERKA\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend.csproj",
         "packagesPath": "C:\\Users\\adria\\.nuget\\packages\\",
         "outputPath": "D:\\Repositories\\climb2gether_INZYNIERKA\\climb2gether - backend\\climb2gether - backend\\climb2gether - backend\\obj\\",
@@ -49,10 +49,6 @@
             "FluentValidation.AspNetCore": {
               "target": "Package",
               "version": "[9.2.0, )"
-            },
-            "Microsoft.AspNet.WebHelpers": {
-              "target": "Package",
-              "version": "[3.2.7, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",

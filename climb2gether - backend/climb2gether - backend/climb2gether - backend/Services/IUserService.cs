@@ -12,6 +12,9 @@ namespace climb2gether___backend.Services
         Task<PrivateUserInfoResponse> GetPrivateUserInfo(int userId);
         Task<bool> UpdateUserInfo(UpdateUserInfoRequest request, int userId);
         Task<List<UsersSearchResponse>> UsersSearch(string queryString);
+        Task<int> CreateReview(int userId, CreateReviewRequest reviewRequest);
+        Task<bool> DeleteReview(int authorId, int reviewId);
+        Task<List<UserReviewsResponse>> GetUsersReviews(int userId);
     }
 
 }

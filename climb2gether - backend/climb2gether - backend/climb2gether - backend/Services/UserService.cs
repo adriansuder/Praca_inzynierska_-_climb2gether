@@ -2,6 +2,7 @@
 using climb2gether___backend.Contracts.V1.Requests;
 using climb2gether___backend.Contracts.V1.Responses;
 using climb2gether___backend.Data;
+using climb2gether___backend.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,32 @@ namespace climb2gether___backend.Services
             _fileService = fileService;
         }
 
+        public async Task<int> CreateReview(int userId, CreateReviewRequest reviewRequest)
+        {
+            var review = new Review
+            {
+                Grade = reviewRequest.Grade,
+                Comment = reviewRequest.Comment,
+                AuthorId = userId,
+                UserId = reviewRequest.UserId,
+                CreationDate = DateTime.UtcNow
+            };
+
+             _dataContext.Reviews.Add(review);
+            var result = await _dataContext.SaveChangesAsync();
+
+            return review.Id;
+        }
+
+        public async Task<bool> DeleteReview(int authorId, int reviewId)
+        {
+            var review = await _dataContext.Reviews.Where(r => r.Id == reviewId && r.AuthorId == authorId).FirstOrDefaultAsync();
+            _dataContext.Reviews.Remove(review);
+            var result = await _dataContext.SaveChangesAsync();
+
+            return result > 0;
+        }
+
         public async Task<PrivateUserInfoResponse> GetPrivateUserInfo(int userId)
         {
             var user = await _dataContext.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
@@ -35,6 +62,24 @@ namespace climb2gether___backend.Services
             response.RoleName = await _dataContext.ApplicationUserRoles.Where(r => r.RoleId == user.RoleId).Select(r => r.RoleName).SingleOrDefaultAsync();
 
             return response;
+        }
+
+        public async Task<List<UserReviewsResponse>> GetUsersReviews(int userId)
+        {
+            var reviews = await _dataContext.Reviews
+                                            .Where(r => r.UserId == userId)
+                                            .Include(r => r.Author)
+                                            .Select(r => new UserReviewsResponse
+                                            {   
+                                                Id = r.Id,
+                                                Grade = r.Grade,
+                                                Comment = r.Comment,
+                                                AuthorId = r.AuthorId,
+                                                AuthorNameSurname = r.Author.FirstName + " "+ r.Author.Surname,
+                                                UserId = r.UserId,
+                                                CreationDate = r.CreationDate
+                                            }).ToListAsync();
+            return reviews;
         }
 
         public async Task<bool> UpdateUserInfo(UpdateUserInfoRequest request, int userId)
@@ -111,5 +156,7 @@ namespace climb2gether___backend.Services
                                                     }).ToListAsync();
             return result;
         }
+
+        
     }
 }

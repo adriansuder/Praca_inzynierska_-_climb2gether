@@ -91,7 +91,10 @@ namespace climb2gether___backend.Contracts
         {
             public const string GetPrivateUserInfo = Base + "/user/privateDetails";
             public const string UpdateUserInfo = Base + "/user/update";
-            public const string UsersSearch = Base + "/user/search";
+            public const string UsersSearch = Base + "/user/search"; 
+            public const string CreateReview = Base + "/user/createReview";
+            public const string DeleteReview = Base + "/user/deleteReview";
+            public const string GetUsersReviews = Base + "/user/reviews";
         }
     }
     

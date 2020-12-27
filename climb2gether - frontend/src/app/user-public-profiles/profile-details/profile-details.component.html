@@ -5,8 +5,9 @@
                 <mat-card-title>{{user.firstName + ' ' + user.surname}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <form [formGroup]="userForm" >
-                    <div class="container">
+
+                <div class="container">
+                    <form [formGroup]="userForm">
                         <div class="row">
                             <div class="col-lg-3">
                                 <label class="hoverable d-flex justify-content-center" for="fileInput">
@@ -53,7 +54,7 @@
                                 </mat-form-field>
 
 
-                                <mat-form-field appearance="outline" class="col-lg-4 col-sm-12" >
+                                <mat-form-field appearance="outline" class="col-lg-4 col-sm-12">
                                     <mat-label>Rodzaj konta</mat-label>
                                     <input matInput type="text" class="" formControlName="RoleName" readonly>
                                 </mat-form-field>
@@ -63,14 +64,106 @@
                                     <input matInput type="text" class="" formControlName="City" readonly>
                                 </mat-form-field>
 
-                                
+
                             </div>
                         </div>
-                    </div>
-                    <mat-card-actions class="ml-2 mb-2">
 
-                    </mat-card-actions>
-                </form>
+                        <hr>
+                        <div class="row d-flex justify-content-center">
+
+                            <mat-form-field appearance="outline" class="col-lg-4 col-sm-12">
+                                <mat-label>Opinia</mat-label>
+                                <textarea rows="2" matInput type="text" class="" formControlName="Review"></textarea>
+                            </mat-form-field>
+
+                            <div class="rating">
+                                <input [checked]="flag == 1" (click)="starCounter = 1" type="radio" name="rating-star"
+                                    class="rating__control screen-reader" id="rc1">
+                                <input [checked]="flag == 2" (click)="starCounter = 2" type="radio" name="rating-star"
+                                    class="rating__control screen-reader" id="rc2">
+                                <input [checked]="flag == 3" (click)="starCounter = 3" type="radio" name="rating-star"
+                                    class="rating__control screen-reader" id="rc3">
+                                <input [checked]="flag == 4" (click)="starCounter = 4" type="radio" name="rating-star"
+                                    class="rating__control screen-reader" id="rc4">
+                                <input [checked]="flag == 5" (click)="starCounter = 5" type="radio" name="rating-star"
+                                    class="rating__control screen-reader" id="rc5">
+                                <label for="rc1" class="rating__item">
+                                    <svg class="rating__star">
+                                        <use xlink:href="#star"></use>
+                                    </svg>
+                                    <span class="screen-reader">1</span>
+                                </label>
+                                <label for="rc2" class="rating__item">
+                                    <svg class="rating__star">
+                                        <use xlink:href="#star"></use>
+                                    </svg>
+                                    <span class="screen-reader">2</span>
+                                </label>
+                                <label for="rc3" class="rating__item">
+                                    <svg class="rating__star">
+                                        <use xlink:href="#star"></use>
+                                    </svg>
+                                    <span class="screen-reader">3</span>
+                                </label>
+                                <label for="rc4" class="rating__item">
+                                    <svg class="rating__star">
+                                        <use xlink:href="#star"></use>
+                                    </svg>
+                                    <span class="screen-reader">4</span>
+                                </label>
+                                <label for="rc5" class="rating__item">
+                                    <svg class="rating__star">
+                                        <use xlink:href="#star"></use>
+                                    </svg>
+                                    <span class="screen-reader">5</span>
+                                </label>
+                                <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+                                    <symbol id="star" viewBox="0 0 26 28">
+                                        <path
+                                            d="M26 10.109c0 .281-.203.547-.406.75l-5.672 5.531 1.344 7.812c.016.109.016.203.016.313 0 .406-.187.781-.641.781a1.27 1.27 0 0 1-.625-.187L13 21.422l-7.016 3.687c-.203.109-.406.187-.625.187-.453 0-.656-.375-.656-.781 0-.109.016-.203.031-.313l1.344-7.812L.39 10.859c-.187-.203-.391-.469-.391-.75 0-.469.484-.656.875-.719l7.844-1.141 3.516-7.109c.141-.297.406-.641.766-.641s.625.344.766.641l3.516 7.109 7.844 1.141c.375.063.875.25.875.719z" />
+                                    </symbol>
+                                </svg>
+
+                            </div>
+                            <div class="rating">
+                                <button *ngIf="flag == 0 || !flag" mat-stroked-button color="primary"
+                                    [disabled]="!starCounter" (click)="addReview()">Dodaj opinię </button>
+                                <button *ngIf="flag > 0"mat-raised-button color="warn" (click)="deleteReview()">Usuń opinię </button>    
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="">
+                            <ul class="list-group list-group-flush row">
+                                <div class="list-group-item list-group-item-action  align-items-start col-12"
+                                    *ngFor="let review of reviews">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">
+                                            <mat-icon>{{ review.grade > 0.5 ? 'star' : 'star_border'}}</mat-icon>
+                                            <mat-icon>{{ review.grade > 1.5 ? 'star' : 'star_border'}}</mat-icon>
+                                            <mat-icon>{{ review.grade > 2.5 ? 'star' : 'star_border'}}</mat-icon>
+                                            <mat-icon>{{ review.grade > 3.5 ? 'star' : 'star_border'}}</mat-icon>
+                                            <mat-icon>{{ review.grade > 4.5 ? 'star' : 'star_border'}}</mat-icon>
+                                        </h5>
+                                        <small>{{'ocena: ' + review.grade + ' / 5 | '}}{{ review.creationDate | date:
+                                            'dd.MM.yyyy'}}</small>
+                                    </div>
+                                    <p class="mb-1">{{ review.comment }}</p>
+                                    <small>{{ review.authorNameSurname }}</small>
+                                </div>
+                            </ul>
+                        </div>
+                        <div class="row mt-2">
+                            <button class="float-right" (click)="startConversation()" mat-raised-button
+                                color="primary">Wyślij wiadomość</button>
+                        </div>
+                    </form>
+                </div>
+                <mat-card-actions class="ml-2 mb-2">
+
+                </mat-card-actions>
+
+
+
 
             </mat-card-content>
 

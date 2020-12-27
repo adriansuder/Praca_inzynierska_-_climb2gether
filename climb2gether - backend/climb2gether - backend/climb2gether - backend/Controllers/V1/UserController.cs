@@ -56,5 +56,28 @@ namespace climb2gether___backend.Controllers.V1
             var response = await _userService.UsersSearch(queryString);
             return Ok(response);
         }
+
+        [HttpPost(ApiRoutes.User.CreateReview)]
+        public async Task<IActionResult> CreateReview([FromBody] CreateReviewRequest reviewRequest)
+        {
+            var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
+            var result = await _userService.CreateReview(userId, reviewRequest);
+            return Ok(result);
+        }
+
+        [HttpDelete(ApiRoutes.User.DeleteReview)]
+        public async Task<IActionResult> DeleteReview([FromQuery] int reviewId)
+        {
+            var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
+            var result = await _userService.DeleteReview(userId, reviewId);
+            return Ok(result);
+        }
+
+        [HttpGet(ApiRoutes.User.GetUsersReviews)]
+        public async Task<IActionResult> GetUsersReviews([FromQuery] int userId)
+        {
+            var result = await _userService.GetUsersReviews(userId);
+            return Ok(result);
+        }
     }
 }

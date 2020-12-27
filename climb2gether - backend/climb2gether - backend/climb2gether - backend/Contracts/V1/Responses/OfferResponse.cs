@@ -11,6 +11,7 @@ namespace climb2gether___backend.Contracts.V1.Responses
         public string UserNameSurname { get; set; }
         public string userRole { get; set; }
         public int UserId { get; set; }
+        public double Grade { get; set; }
         public IEnumerable<OfferResponseItem> Offers { get; set; }
        // public string[] ImgPathArray { get; set; }
     }

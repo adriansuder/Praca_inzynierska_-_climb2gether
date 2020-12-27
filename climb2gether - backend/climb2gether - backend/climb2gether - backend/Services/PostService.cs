@@ -52,11 +52,13 @@ namespace climb2gether___backend.Services
         /// <returns>Funkcja zwraca wartość boolean - true, jeżeli post został usunięty</returns>
         public async Task<bool> DeletePostAsync(int postId)
         {
-            var post = await GetPostByIdAsync(postId);
+            var post = await _dataContext.Posts.Where(p => p.Id == postId).FirstOrDefaultAsync();
             if (post == null)
                 return false;
-
+            var like = await _dataContext.PostLikes.Where(l => l.PostId == postId).ToListAsync();
+            _dataContext.PostLikes.RemoveRange(like);
             _dataContext.Posts.Remove(post);
+
             var deleted = await _dataContext.SaveChangesAsync();
             return deleted > 0;
         }
@@ -107,19 +109,11 @@ namespace climb2gether___backend.Services
         /// <returns>Funkcja zwraca wartość boolean - true, jeżeli użytkownik jest twórcą posta.</returns>
         public async Task<bool> UserOwnsPost(int postId, int userId)
         {
-            var post = await _dataContext.Posts.AsNoTracking().SingleOrDefaultAsync(predicate: x => x.Id.ToString() == postId.ToString());
+            var post =  _dataContext.Posts.Where(x => x.Id == postId && x.UserId == userId ).Any();
 
-            if (post == null)
-            {
-                return false;
-            }
+   
 
-            if(post.UserId.ToString() != userId.ToString())
-            {
-                return false;
-            }
-
-            return true;
+            return post;
         }
 
         public async Task<bool> IsPostAlreadyLiked(int postId, int userId)

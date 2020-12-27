@@ -9,7 +9,7 @@
         </mat-panel-description>
 
         <mat-panel-description>
-            Ocena: 4,95 / 5,00
+            {{ offerItem.grade == 0 ? 'Brak ocen o użytkowniku' : 'Ocena: ' + offerItem.grade + ' / 5' }}
         </mat-panel-description>
     </mat-expansion-panel-header>
 

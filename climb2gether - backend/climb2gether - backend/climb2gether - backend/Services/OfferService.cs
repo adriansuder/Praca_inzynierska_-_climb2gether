@@ -46,6 +46,7 @@ namespace climb2gether___backend.Services
                                    UserNameSurname = user.FirstName + " " + user.Surname,
                                    userRole = role.RoleName,
                                    UserId = user.Id,
+                                   Grade = 0,
                                    Offers = (from userOffer in _dataContext.Offers
                                              where userOffer.OfferOwnerUserId == user.Id && userOffer.Date >= DateTime.UtcNow
                                              select new OfferResponseItem
@@ -68,6 +69,16 @@ namespace climb2gether___backend.Services
                                              ).ToList<OfferResponseItem>()
                                }
                           ).Distinct().ToListAsync();
+
+            foreach(var item in query)
+            {
+                var reviews = await _dataContext.Reviews.Where(r => r.UserId == item.UserId).ToListAsync();
+
+                foreach(var rev in reviews) {
+                    item.Grade += rev.Grade;
+                }
+                item.Grade /= reviews.Count;
+            }
 
             return query;
         }

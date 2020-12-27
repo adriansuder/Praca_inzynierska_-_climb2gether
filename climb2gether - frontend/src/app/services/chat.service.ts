@@ -20,6 +20,7 @@ export class ChatService {
   activeConversationId: number;
   activeConversationChanged = new BehaviorSubject<number>(null);
   messages: Message[];
+  emailFromRedirectedProfile: string;
 
   messagesSubscription: Subscription;
   conversationsSubscription: Subscription;
@@ -94,9 +95,11 @@ export class ChatService {
   }
 
   createOrFindConversation(userId: string){
-    return this.http.post<{id: number, isNewConversation: boolean}>(
+    return this.http.post<any>(
       `${environment.apiUrl}/conversations`,
       {User2Email: userId}
-    ).toPromise();
+    ).pipe(tap(res => {
+      //this.conversationsChanged.next(res);
+    })).toPromise();
   }
 }

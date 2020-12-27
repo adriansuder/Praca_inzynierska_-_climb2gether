@@ -29,6 +29,10 @@ export class ConversationsComponent implements OnInit, OnDestroy {
     this.conversationSubscription = this.chatService.conversationsChanged.subscribe(res => {
       this.conversations = res;
     });
+    if(this.chatService.emailFromRedirectedProfile){
+      this.onSubmit(this.chatService.emailFromRedirectedProfile);
+      this.chatService.emailFromRedirectedProfile = null;
+    }
   }
 
   private activeSelected(conversationId: number) {
@@ -36,8 +40,8 @@ export class ConversationsComponent implements OnInit, OnDestroy {
     this.chatService.activeConversationChanged.next(conversationId);
   }
 
-  async onSubmit() {
-    const userEmail = this.conversationForm.value.conversation;
+  async onSubmit(email?: string) {
+    const userEmail = email ? email : this.conversationForm.value.conversation;
     let result: { id: number, isNewConversation: boolean };
     if (userEmail) {
       await this.chatService.createOrFindConversation(userEmail)

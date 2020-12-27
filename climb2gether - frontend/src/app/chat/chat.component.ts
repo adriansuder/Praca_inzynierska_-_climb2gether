@@ -12,22 +12,13 @@ import { AuthService } from '../auth/auth.service';
 })
 
 export class ChatComponent implements OnInit {
-   date = new Date();
-   conversations: Conversation[];
-   activeConversationId: number;
-   messages: Message[] = [];
+
  
   constructor(
-    private chatService: ChatService,
-    private auth: AuthService
   ) { }
 
-  async ngOnInit() {
-    //this.conversations = await this.chatService.fetchConversations();
-    //this.chatService.conversationsChanged.next(this.conversations);
-  }
-
-  createConversation(){
+   ngOnInit() {
 
   }
+
 }

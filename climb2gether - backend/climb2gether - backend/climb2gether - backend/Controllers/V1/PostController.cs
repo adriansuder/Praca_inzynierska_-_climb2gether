@@ -110,9 +110,11 @@ namespace climb2gether___backend.Controllers.V1
             var deleted = await _postService.DeletePostAsync(postId);
 
             if (deleted)
-                return NoContent();
+            {
+                return Ok();
+            }
 
-            return NotFound();
+            return BadRequest();
         }
 
         [HttpPost(ApiRoutes.Posts.Create)]
