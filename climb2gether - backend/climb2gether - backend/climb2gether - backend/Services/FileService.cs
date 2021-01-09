@@ -35,7 +35,11 @@ namespace climb2gether___backend.Services
         }
 
         public async Task<bool> AddAttatchments(List<IFormFile> objectFile, string objectTypeName, int objectTypeNumber)
-        {
+        {   
+            if(objectFile.Count <= 0)
+            {
+                return false;
+            }
             var assetsPath = _configuration.GetValue<string>("Attatchments:FrontendAssetsPath");
             var created = 0;
             try

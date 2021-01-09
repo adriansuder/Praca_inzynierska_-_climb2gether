@@ -58,7 +58,14 @@ namespace climb2gether___backend.Services
         {
             var user = await _dataContext.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
             var response = _mapper.Map<PrivateUserInfoResponse>(user);
-            response.Img = await _dataContext.Attatchments.Where(a => a.ObjectTypeName == "profil" && a.ObjectTypeNumber == user.Id).Select(a => a.Id.ToString()).FirstOrDefaultAsync();
+            try
+            {
+                response.Img = await _dataContext.Attatchments.Where(a => a.ObjectTypeName == "profil" && a.ObjectTypeNumber == user.Id).Select(a => a.Id.ToString()).FirstOrDefaultAsync();
+            }catch(Exception ex)
+            {
+
+            }
+            
             response.RoleName = await _dataContext.ApplicationUserRoles.Where(r => r.RoleId == user.RoleId).Select(r => r.RoleName).SingleOrDefaultAsync();
 
             return response;

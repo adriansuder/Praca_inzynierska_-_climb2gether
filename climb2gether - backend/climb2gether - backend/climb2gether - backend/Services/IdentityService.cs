@@ -93,13 +93,13 @@ namespace climb2gether___backend.Services
             var newUser = new User
             {  
                 Email = userRequest.Email,
-                FirstName = userRequest.FirstName,
+                FirstName = userRequest.Name,
                 Surname = userRequest.Surname,
                 UserName = userRequest.UserName,
                 Sex = userRequest.Sex,
                 RoleId = userRequest.RoleId,
                 DateOfBirth = userRequest.DateOfBirth,
-                Phone = userRequest.Phone,
+                Phone = userRequest.PhoneNumber,
                 City = userRequest.City
         };
 

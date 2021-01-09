@@ -45,7 +45,6 @@ export class AuthService {
         }),
         tap(authRes => {
           this.setLoggedUser(authRes.token, authRes.refreshToken, authRes.userId, authRes.expiresIn);
-          this.loggedUser = new LoggedUser(authRes.token, authRes.refreshToken, authRes.userId, authRes.expiresIn);
         }, err => {
           this.baseService.openSnackBar("Podano błędne dane, spróbuj jeszcze raz.")
         })
@@ -106,6 +105,7 @@ export class AuthService {
 
   private setLoggedUser(token: string, refreshToken: string, userId: number, expiresIn: Date) {
     const user = new LoggedUser(token, refreshToken, userId, expiresIn);
+    this.loggedUser = user;
     this.user.next(user);
     //this.autoLogout(expiresIn)
     localStorage.setItem('userData', JSON.stringify(user));

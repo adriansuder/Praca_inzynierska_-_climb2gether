@@ -13,7 +13,7 @@
                 <button mat-button type="button" [class.liked]="postItem.postLikedByLoggedUser" matBadge="{{postItem.likeCounter}}" (click)="onLikeClick()">LIKE <span class="material-icons">thumb_up</span></button>
             </div>
             <div class="col-12 col-lg-4" >
-                <button mat-button>Autor: {{ postItem.userNameSurname }}</button>
+                <button [routerLink]="['/profiles/', postItem.userId, 'details']" mat-button>Autor: {{ postItem.userNameSurname }}</button>
             </div>
             <div class="col-12 col-lg-4" >
                 <button mat-button class="float-right" *ngIf="postItem.userId === loggedUserId" routerLink="{{postItem.id}}/edit">Edytuj post</button>

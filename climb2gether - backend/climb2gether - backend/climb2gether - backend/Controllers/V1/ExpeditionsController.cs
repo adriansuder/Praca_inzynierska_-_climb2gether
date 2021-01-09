@@ -10,6 +10,7 @@ using climb2gether___backend.Domain;
 using climb2gether___backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace climb2gether___backend.Controllers.V1
@@ -20,12 +21,14 @@ namespace climb2gether___backend.Controllers.V1
         private readonly IExpeditionsService _expeditionsService;
         private readonly IIdentityService _identityService;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ExpeditionsController(IExpeditionsService expeditionsService, IMapper mapper, IIdentityService identityService)
+        public ExpeditionsController(IExpeditionsService expeditionsService, IMapper mapper, IIdentityService identityService, IHttpContextAccessor httpContextAccessor)
         {
             _expeditionsService = expeditionsService;
             _mapper = mapper;
             _identityService = identityService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost(ApiRoutes.Expeditions.Create)]
@@ -98,6 +101,34 @@ namespace climb2gether___backend.Controllers.V1
 
 
             return Ok(result);
+        }
+
+        [HttpGet(ApiRoutes.Expeditions.GetUserExpeditions)]
+        public async Task<IActionResult> GetUserExpeditions()
+        {
+            var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
+            var result = await _expeditionsService.GetUserExpeditions(userId);
+
+
+            return Ok(result);
+        }
+
+        [HttpDelete(ApiRoutes.Expeditions.DeleteExpedition)]
+        public async Task<IActionResult> DeleteExpedition([FromQuery] int expId)
+        {
+            var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
+            var isExpeditionOwner = _expeditionsService.CheckIsExpeditionOwner(userId, expId);
+            if (!isExpeditionOwner)
+            {
+                return BadRequest("Nie masz praw do edycji tej wyprawy.");
+            }
+            var deleted = await _expeditionsService.DeleteExpedition(expId);
+            if (!deleted)
+            {
+                return BadRequest("Coś poszło nie tak");
+            }
+
+            return Ok(new { Message = "Oferta zostałą usunięta."});
         }
     }
 }

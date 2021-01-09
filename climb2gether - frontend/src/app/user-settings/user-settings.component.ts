@@ -39,8 +39,9 @@ export class UserSettingsComponent implements OnInit {
   }
 
   async ngOnInit() {
-
+    
     this.user = await this.usersService.getPrivateUserInfo();
+    console.log(this.user);
     this.userForm = new FormGroup({
       Username: new FormControl({ value: this.user.username, disabled: true }, [Validators.required]),
       Email: new FormControl({ value: this.user.email, disabled: true }, [Validators.required]),
@@ -48,7 +49,7 @@ export class UserSettingsComponent implements OnInit {
       Surname: new FormControl({ value: this.user.surname, disabled: true }, [Validators.required]),
       Sex: new FormControl({ value: this.user.sex, disabled: true }, [Validators.required]),
       RoleName: new FormControl({ value: this.user.roleName, disabled: true }, [Validators.required]),
-      DateOfBirth: new FormControl({ value: this.user.dateOfBirth, disabled: true }, [Validators.required]),
+      DateOfBirth: new FormControl({ value: this.user.dateOfBirth.toString().substr(0,10)  , disabled: true }, [Validators.required]),
       Phone: new FormControl(this.user.phone, [Validators.required]),
       City: new FormControl(this.user.city, [Validators.required]),
       File: new FormControl(''),

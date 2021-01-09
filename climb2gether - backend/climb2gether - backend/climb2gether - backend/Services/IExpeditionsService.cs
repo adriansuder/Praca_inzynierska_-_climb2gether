@@ -14,5 +14,11 @@ namespace climb2gether___backend.Services
         Task<bool> CheckIfUserIsAlreadyEnrolled(ExpeditionEnrollment expeditionEnrollment);
         Task<bool> CreateEnrollmentAsync(ExpeditionEnrollment expeditionEnrollment);
         Task<List<ExpeditionResponse>> SearchExpeditions(string query);
+        Task<List<ExpeditionResponse>> GetUserExpeditions(int userId);
+        bool CheckIsExpeditionOwner(int userId, int expeditionId);
+        Task<bool> DeleteExpedition(int expeditionId);
+
+
+
     }
 }

@@ -55,7 +55,7 @@ export class RegisterDialogComponent implements OnInit {
 
     const result = await this.auth.register(newUser);
     if(result){
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/dashboard/posts']);
           this.dialogRef.close();
     }
   }

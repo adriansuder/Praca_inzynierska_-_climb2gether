@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { BaseService } from '../services/base.service';
 import { ClimbingPartnersService } from '../services/climbing-partners.service';
 import { ExpeditionListItem } from '../_models/ExpeditionListItem';
@@ -8,18 +9,21 @@ import { ExpeditionListItem } from '../_models/ExpeditionListItem';
   templateUrl: './climbing-partners.component.html',
   styleUrls: ['./climbing-partners.component.scss']
 })
-export class ClimbingPartnersComponent implements OnInit {
+export class ClimbingPartnersComponent implements OnInit, OnDestroy {
   searchString: string;
   fetchedOffers: ExpeditionListItem[];
+  expSubscription: Subscription;
   constructor(
     private climbService: ClimbingPartnersService,
     private baseService: BaseService
     ) { }
 
+
   async ngOnInit() {
-    let temp = await this.climbService.getAllExpeditions();
-    this.fetchedOffers = temp.sort((a, b) => a.expeditionDate < b.expeditionDate ? -1 : 1);
-  
+    this.fetchedOffers = await this.climbService.getAllExpeditions();
+    this.expSubscription = this.climbService.allExpeditionsChanged.subscribe( x => {
+      this.fetchedOffers = x;
+    })
   }
 
   async search(){ 
@@ -29,6 +33,10 @@ export class ClimbingPartnersComponent implements OnInit {
       return;
     }
     this.fetchedOffers = result;
+  }
+
+  ngOnDestroy(): void {
+    this.expSubscription.unsubscribe();
   }
 
 }
