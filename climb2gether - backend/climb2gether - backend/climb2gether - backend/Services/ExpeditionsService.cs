@@ -74,13 +74,57 @@ namespace climb2gether___backend.Services
             return result > 0;
         }
 
-        public async Task<List<Expedition>> GetExpeditionsAsync()
+        public async Task<bool> DeleteExpeditionEnrollment(int expEnrollmentId, int userId)
+        {
+            var enrollment = await _dataContext.ExpeditionEnrollments.Where(x => x.Id == expEnrollmentId && x.ParticipantUserId == userId).FirstOrDefaultAsync();
+            if (enrollment == null)
+            {
+                return false;
+            }
+            _dataContext.ExpeditionEnrollments.Remove(enrollment);
+            var result = await _dataContext.SaveChangesAsync();
+
+            return result > 0;
+        }
+
+        public async Task<List<ExpeditionResponse>> GetExpeditionsAsync(int userId)
         {
             var expeditionItemList = await _dataContext.Expeditions.Include(exp => exp.User)
                                                             .ThenInclude(user => user.Role)
                                                             .Where(x => x.ExpeditionDate >= DateTime.UtcNow)
                                                             .ToListAsync();
-            return expeditionItemList;
+
+            var result = expeditionItemList.Select(x => new ExpeditionResponse
+            {
+                Id = x.Id,
+                User = new UserPublicDetailResponse
+                {
+                    Id = x.User.Id,
+                    FirstName = x.User.FirstName,
+                    Surname = x.User.Surname,
+                    Sex = x.User.Sex,
+                    RoleName = x.User.Role.RoleName,
+                    Phone = x.User.Phone,
+                    Email = x.User.Email,
+                    City = x.User.City
+                },
+                DestinationCity = x.DestinationCity,
+                Destination = x.Destination,
+                DestinationRegion = x.DestinationRegion,
+                DepartureCity = x.DepartureCity,
+                MaxParticipants = x.MaxParticipants,
+                CreationDate = x.CreationDate,
+                ExpeditionDate = x.ExpeditionDate,
+                DescriptionTitle = x.DescriptionTitle,
+                Description = x.Description,
+                UserEnrollmentId = 0
+        }).ToList();
+            foreach (var x in result)
+            {
+                var temp = _dataContext.ExpeditionEnrollments.Where(e => e.ExpeditionId == x.Id && e.ParticipantUserId == userId).Select(x => x.Id).FirstOrDefault();
+                x.UserEnrollmentId = temp != null ? temp : 0;
+            }
+            return result;
         }
 
         public async Task<List<ExpeditionResponse>> GetUserExpeditions(int userId)

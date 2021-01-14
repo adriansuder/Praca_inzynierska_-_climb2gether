@@ -68,6 +68,8 @@ import { MessagesComponent } from './chat/messages/messages.component';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { UserPublicProfilesComponent } from './user-public-profiles/user-public-profiles.component';
 import { ProfileDetailsComponent } from './user-public-profiles/profile-details/profile-details.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
+
 
 @NgModule({
   declarations: [
@@ -137,7 +139,8 @@ import { ProfileDetailsComponent } from './user-public-profiles/profile-details/
     MatCheckboxModule,
     ReactiveFormsModule,
     NgxPaginationModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    NgxSpinnerModule
   ],
   providers: [
     AuthGuard,

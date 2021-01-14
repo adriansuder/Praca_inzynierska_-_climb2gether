@@ -48,29 +48,8 @@ namespace climb2gether___backend.Controllers.V1
         [HttpGet(ApiRoutes.Expeditions.GetAll)]
         public async Task<IActionResult> GetAll()
         {
-            var query = await _expeditionsService.GetExpeditionsAsync();
-            var result = query.Select( x => new ExpeditionResponse{ 
-                Id = x.Id,
-                User = new UserPublicDetailResponse
-                {   Id = x.User.Id,
-                    FirstName = x.User.FirstName,
-                    Surname = x.User.Surname,
-                    Sex = x.User.Sex,
-                    RoleName = x.User.Role.RoleName,
-                    Phone = x.User.Phone,
-                    Email = x.User.Email,
-                    City = x.User.City
-                },
-                DestinationCity = x.DestinationCity,
-                Destination = x.Destination,
-                DestinationRegion = x.DestinationRegion,
-                DepartureCity = x.DepartureCity,
-                MaxParticipants = x.MaxParticipants,
-                CreationDate = x.CreationDate,
-                ExpeditionDate = x.ExpeditionDate,
-                DescriptionTitle = x.DescriptionTitle,
-                Description = x.Description
-            }).ToList();
+            var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
+            var result = await _expeditionsService.GetExpeditionsAsync(userId);
             return Ok(result);
         }
 
@@ -129,6 +108,19 @@ namespace climb2gether___backend.Controllers.V1
             }
 
             return Ok(new { Message = "Oferta zostałą usunięta."});
+        }
+
+        [HttpDelete(ApiRoutes.Expeditions.DeleteExpeditionEnrollment)]
+        public async Task<IActionResult> DeleteExpeditionEnrollment([FromQuery] int expEnrollmentId)
+        {
+            var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
+            var deleted = await _expeditionsService.DeleteExpeditionEnrollment(expEnrollmentId, userId);
+            if (!deleted)
+            {
+                return BadRequest("Coś poszło nie tak");
+            }
+
+            return Ok(new { Message = "Twoje zgłoszenie zostało usunięte." });
         }
     }
 }

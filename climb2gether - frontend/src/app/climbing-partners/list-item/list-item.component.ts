@@ -62,4 +62,15 @@ export class ListItemComponent implements OnInit {
     }
   }
 
+  async deleteEnrollmentDialog(){
+    const enrollmentToDelete = this.expItem.userEnrollmentId;
+    var result = await this.climbingPartnerService.deleteOfferEnrollment(enrollmentToDelete);
+    if(result == 'Twoje zgłoszenie zostało usunięte.'){
+      this.expItem.userEnrollmentId = 0;
+      this.baseService.openSnackBar(result);
+      return;
+    }
+    this.baseService.openSnackBar(result);
+  }
+
 }

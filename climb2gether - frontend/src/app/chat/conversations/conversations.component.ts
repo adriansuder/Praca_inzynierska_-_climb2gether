@@ -36,7 +36,9 @@ export class ConversationsComponent implements OnInit, OnDestroy {
   }
 
   private activeSelected(conversationId: number) {
-    this.conversations.find(c => c.id == conversationId).haveUnreadedMessages = false;
+    if(this.conversations.find(c => c.id == conversationId)){
+      this.conversations.find(c => c.id == conversationId).haveUnreadedMessages = false;
+    }
     this.chatService.activeConversationChanged.next(conversationId);
   }
 

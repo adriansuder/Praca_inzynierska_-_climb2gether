@@ -69,7 +69,8 @@
             <hr>
             <div class="row pb-2">
                 <div class="col-12">
-                    <button class="btn btn-primary" (click)="confrimEnrollmentDialog()" *ngIf="expItem.user.id != loggedUserId">Umów się!</button>&nbsp;
+                    <button class="btn btn-primary" (click)="confrimEnrollmentDialog()" *ngIf="expItem.user.id != loggedUserId && expItem.userEnrollmentId == 0">Umów się!</button>&nbsp;
+                    <button class="btn btn-danger" (click)="deleteEnrollmentDialog()" *ngIf="expItem.user.id != loggedUserId && expItem.userEnrollmentId > 0">Zrezygnuj!</button>&nbsp;
                     <button class="btn btn-danger" (click)="deleteOffer()" *ngIf="expItem.user.id == loggedUserId">Usuń ofertę</button>&nbsp;
                     <button class="btn btn-primary" (click)="participantList()" *ngIf="expItem.user.id == loggedUserId">Lista uczestników</button>
                 </div>

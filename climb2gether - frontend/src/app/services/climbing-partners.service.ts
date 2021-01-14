@@ -94,4 +94,13 @@ export class ClimbingPartnersService {
     })).toPromise();
   }
 
+  deleteOfferEnrollment(expEnrollmentId: number){
+    return this.http.delete<any>(
+      `${environment.apiUrl}/expeditions/deleteEnrollment?expEnrollmentId=${expEnrollmentId}`
+    ).pipe(map(res=> {
+      var result = JSON.parse(JSON.stringify(res.message));
+      return result;
+    })).toPromise();
+  }
+
 }

@@ -21,4 +21,5 @@ export class ExpeditionListItem {
     expeditionDate: Date;
     descriptionTitle: string;
     description: string;
+    userEnrollmentId: number;
 }

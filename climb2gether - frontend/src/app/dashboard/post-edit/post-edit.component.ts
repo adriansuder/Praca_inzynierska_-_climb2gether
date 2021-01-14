@@ -47,7 +47,8 @@ export class PostEditComponent implements OnInit {
     });
   }
   clearImg(){
-    this.postForm.reset({img:''});
+    //this.postForm.reset({img:''});
+    this.postForm.value.img= '';
     this.url = null;
   }
 

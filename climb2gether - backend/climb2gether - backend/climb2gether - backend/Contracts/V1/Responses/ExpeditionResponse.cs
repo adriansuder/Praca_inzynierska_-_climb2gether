@@ -19,5 +19,6 @@ namespace climb2gether___backend.Contracts.V1.Responses
         public DateTime ExpeditionDate { get; set; }
         public string DescriptionTitle { get; set; }
         public string Description { get; set; }
+        public int UserEnrollmentId { get; set; }
     }
 }

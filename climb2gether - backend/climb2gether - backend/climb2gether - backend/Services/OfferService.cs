@@ -73,11 +73,19 @@ namespace climb2gether___backend.Services
             foreach(var item in query)
             {
                 var reviews = await _dataContext.Reviews.Where(r => r.UserId == item.UserId).ToListAsync();
-
-                foreach(var rev in reviews) {
-                    item.Grade += rev.Grade;
+                if(reviews.Count > 0)
+                {
+                    foreach (var rev in reviews)
+                    {
+                        item.Grade += rev.Grade;
+                    }
+                    item.Grade /= reviews.Count;
                 }
-                item.Grade /= reviews.Count;
+                else
+                {
+                    item.Grade = 0;
+                }
+
             }
 
             return query;
