@@ -12,6 +12,7 @@ import {
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 import { BehaviorSubject } from 'rxjs';
+import { Participant } from '../_models/Participant';
 
 @Injectable({
   providedIn: 'root'
@@ -100,6 +101,14 @@ export class ClimbingPartnersService {
     ).pipe(map(res=> {
       var result = JSON.parse(JSON.stringify(res.message));
       return result;
+    })).toPromise();
+  }
+
+  getExpeditionParticipants(expeditionId: number) {
+    return this.http.get<Participant[]>(
+      `${environment.apiUrl}/expeditions/participants?expeditionId=${expeditionId}`
+    ).pipe(tap(res=>{
+      console.log(res)
     })).toPromise();
   }
 

@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, OnInit, Sanitizer } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { BaseService } from 'src/app/services/base.service';
@@ -26,7 +27,9 @@ export class PostItemComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private postsService: PostsService,
-    private baseService: BaseService
+    private baseService: BaseService,
+    private spinner: NgxSpinnerService,
+    private sanitizer: DomSanitizer
   ) { }
 
   async ngOnInit() {
@@ -59,8 +62,8 @@ export class PostItemComponent implements OnInit, OnDestroy {
 
   }
 
-  async getAttatchment(id: string) {
-    let img: any = await this.baseService.getAttatchment(id);
+   getAttatchment(id: string) {
+    let img: any =  this.sanitizer.bypassSecurityTrustUrl(this.postItem.imgBlob)
     return img;
   }
 

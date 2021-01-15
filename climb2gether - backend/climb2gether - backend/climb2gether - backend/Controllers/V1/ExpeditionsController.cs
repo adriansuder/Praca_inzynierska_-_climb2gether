@@ -120,7 +120,17 @@ namespace climb2gether___backend.Controllers.V1
                 return BadRequest("Coś poszło nie tak");
             }
 
-            return Ok(new { Message = "Twoje zgłoszenie zostało usunięte." });
+            return Ok(new { Message = "Zgłoszenie zostało usunięte." });
+        }
+
+        [HttpGet(ApiRoutes.Expeditions.GetParticipants)]
+        public async Task<IActionResult> GetParticipants([FromQuery] int expeditionId)
+        {
+            var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
+            var result = await _expeditionsService.GetParticipants(userId, expeditionId);
+
+
+            return Ok(result);
         }
     }
 }

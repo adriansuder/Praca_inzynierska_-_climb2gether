@@ -18,6 +18,7 @@ namespace climb2gether___backend.Services
         bool CheckIsExpeditionOwner(int userId, int expeditionId);
         Task<bool> DeleteExpedition(int expeditionId);
         Task<bool> DeleteExpeditionEnrollment(int expEnrollmentId, int userId);
+        Task<List<ParticipantResponse>> GetParticipants(int userId, int expeditionId);
 
 
 

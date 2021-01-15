@@ -69,6 +69,7 @@ import { NgxImageCompressService } from 'ngx-image-compress';
 import { UserPublicProfilesComponent } from './user-public-profiles/user-public-profiles.component';
 import { ProfileDetailsComponent } from './user-public-profiles/profile-details/profile-details.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { ParticipantListModalComponent } from './climbing-partners/participant-list-modal/participant-list-modal.component';
 
 
 @NgModule({
@@ -106,7 +107,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     ConversationsComponent,
     MessagesComponent,
     UserPublicProfilesComponent,
-    ProfileDetailsComponent
+    ProfileDetailsComponent,
+    ParticipantListModalComponent
   ],
   imports: [
     BrowserModule,

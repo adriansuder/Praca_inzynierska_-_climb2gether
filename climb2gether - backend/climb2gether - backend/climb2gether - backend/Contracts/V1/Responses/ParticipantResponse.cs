@@ -12,5 +12,6 @@ namespace climb2gether___backend.Contracts.V1.Responses
         public string Surname { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public string? EnrollmentId { get; set; }
     }
 }

@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Lista uczestników</h2>
+<div mat-dialog-content>
+    <ul class="list-group" >
+        <li class="list-group-item d-flex justify-content-between align-items-center"
+            *ngFor="let user of participants">
+            <div class="row">
+                <div class="col-12">
+                    <h3><button [routerLink]="['/profiles/', user.id, 'details']" mat-button>{{ user.firstName + ' ' + user.surname}}</button></h3>
+                    <p><span class="material-icons">local_phone</span>{{user.phone}} &nbsp;|&nbsp; <span
+                            class="material-icons">mail_outline</span>{{user.email}}</p>
+                </div>
+            </div>
+            <button mat-mini-fab color="warn" class="ml-3" (click)="deleteParticipant(user.enrollmentId)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center" *ngIf="!participants">
+            <div>
+                <h3>Brak zapisanych użytkowników.</h3>
+            </div>
+        </li>
+    </ul>
+</div>
+<div mat-dialog-actions class="float-right">
+    <button mat-raised-button mat-dialog-close>Zamknij</button>
+</div>

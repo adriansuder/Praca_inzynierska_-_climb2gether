@@ -12,10 +12,12 @@ namespace climb2gether___backend.Services
     public class PostService : IPostService
     {
         private readonly DataContext _dataContext;
+        private readonly IFileService _fileService;
 
-        public PostService(DataContext dataContext)
+        public PostService(DataContext dataContext, IFileService fileService)
         {
             _dataContext = dataContext;
+            _fileService = fileService;
         }
         /// <summary>
         ///  Funkcja jako parametr przyjmuje Id użytkownika i
@@ -39,9 +41,19 @@ namespace climb2gether___backend.Services
                                    CreationDate = post.CreationDate,
                                    LikeCounter = (from like in _dataContext.PostLikes where like.PostId == post.Id select like).Count(),
                                    PostLikedByLoggedUser = (from like in _dataContext.PostLikes where like.UserId == userId && like.PostId == post.Id select like).Any(),
-                                   LoggedUserPostLikeId = (from like in _dataContext.PostLikes where like.UserId == userId && like.PostId == post.Id select like.Id).SingleOrDefault()
+                                   LoggedUserPostLikeId = (from like in _dataContext.PostLikes where like.UserId == userId && like.PostId == post.Id select like.Id).SingleOrDefault(),
+                                   ImgBlob = ""
                                }
                           ).ToListAsync();
+
+            foreach(var post in query)
+            {
+                if (post.ImgURL != null)
+                {
+                    post.ImgBlob = await _fileService.GetAttatchment(Int32.Parse(post.ImgURL));
+                }
+
+            }
             return query;
         }
         /// <summary>

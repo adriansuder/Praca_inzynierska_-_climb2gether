@@ -104,7 +104,24 @@ namespace climb2gether___backend.Services
             var assetsPath = _configuration.GetValue<string>("Attatchments:FrontendAssetsPath");
             var file = await _dataContext.Attatchments.Where(x => x.Id == attatchmentId).Select(x => x.FilePath).SingleOrDefaultAsync();
             var path = Path.Combine(assetsPath + file);
-            return path;
+
+            string type = "";
+            byte[] b = new byte[] { };
+            try
+            {
+                type = Path.GetExtension(path);
+                b = File.ReadAllBytes(path);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            if (b.Length <= 0)
+            {
+                return null;
+            }
+
+            return $"data:image/{type};base64," + Convert.ToBase64String(b);
         }
 
         public async Task<bool> CheckIfAnyExists(string objectTypeName, int objectTypeNumber)

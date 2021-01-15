@@ -14,4 +14,5 @@ export class Post {
     likeCounter?: number;
     postLikedByLoggedUser?: any;
     loggedUserPostLikeId?: number;
+    imgBlob: string;
 }

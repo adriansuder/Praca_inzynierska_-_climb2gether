@@ -76,7 +76,7 @@ namespace climb2gether___backend.Services
 
         public async Task<bool> DeleteExpeditionEnrollment(int expEnrollmentId, int userId)
         {
-            var enrollment = await _dataContext.ExpeditionEnrollments.Where(x => x.Id == expEnrollmentId && x.ParticipantUserId == userId).FirstOrDefaultAsync();
+            var enrollment = await _dataContext.ExpeditionEnrollments.Where(x => x.Id == expEnrollmentId).FirstOrDefaultAsync();
             if (enrollment == null)
             {
                 return false;
@@ -125,6 +125,25 @@ namespace climb2gether___backend.Services
                 x.UserEnrollmentId = temp != null ? temp : 0;
             }
             return result;
+        }
+
+        public async Task<List<ParticipantResponse>> GetParticipants(int userId, int expeditionId)
+        {
+            var query = await(from offEnr in _dataContext.ExpeditionEnrollments
+                              join user in _dataContext.Users on offEnr.ParticipantUserId equals user.Id
+                              where offEnr.ExpeditionId == expeditionId 
+                              select new ParticipantResponse
+                              {
+                                  Id = user.Id,
+                                  EnrollmentId = offEnr.Id.ToString(),
+                                  FirstName = user.FirstName,
+                                  Surname = user.Surname,
+                                  Phone = user.Phone,
+                                  Email = user.Email
+                              }
+                        ).ToListAsync();
+
+            return query;
         }
 
         public async Task<List<ExpeditionResponse>> GetUserExpeditions(int userId)

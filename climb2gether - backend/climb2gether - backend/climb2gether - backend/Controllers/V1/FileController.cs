@@ -27,30 +27,13 @@ namespace climb2gether___backend.Controllers.V1
         [HttpGet(ApiRoutes.File.GetAttatchment)]
         public async Task<IActionResult> GetAttatchment([FromRoute] int id)
         {
-            var path = await _fileService.GetAttatchment(id);
-            string type = "";
-            byte[] b = new byte[] { };
-            try
-            {
-                type = Path.GetExtension(path);
-                b = System.IO.File.ReadAllBytes(path);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-            if(b.Length <= 0)
+            var blob = await _fileService.GetAttatchment(id);
+            if (String.IsNullOrEmpty(blob))
             {
                 return NoContent();
             }
 
-            return Ok($"data:image/{type};base64," + Convert.ToBase64String(b));
-            //Stream stream = System.IO.File.OpenRead(path);
-
-            //if (stream == null)
-            //    return NotFound(); 
-
-            //return File(stream, "application/octet-stream"); 
+            return Ok(blob);
         }
 
 

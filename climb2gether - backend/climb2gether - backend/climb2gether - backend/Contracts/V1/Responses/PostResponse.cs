@@ -20,5 +20,6 @@ namespace climb2gether___backend.Contracts.V1.Responses
         public int LikeCounter { get; set; }
         public bool PostLikedByLoggedUser { get; set; }
         public int LoggedUserPostLikeId { get; set; }
+        public string? ImgBlob { get; set; }
     }
 }

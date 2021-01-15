@@ -8,6 +8,7 @@ import { BaseService } from 'src/app/services/base.service';
 import { ClimbingPartnersService } from 'src/app/services/climbing-partners.service';
 import { ExpeditionListItem } from 'src/app/_models/ExpeditionListItem';
 import { ExpeditionEnrollmentModalComponent } from '../expedition-enrollment-modal/expedition-enrollment-modal.component';
+import { ParticipantListModalComponent } from '../participant-list-modal/participant-list-modal.component';
 
 @Component({
   selector: 'app-list-item',
@@ -71,6 +72,14 @@ export class ListItemComponent implements OnInit {
       return;
     }
     this.baseService.openSnackBar(result);
+  }
+
+  participantList(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.maxHeight = '70vh';
+    dialogConfig.data = this.expItem.id;
+    this.dialog.open(ParticipantListModalComponent, dialogConfig);
   }
 
 }
