@@ -28,7 +28,7 @@ export class AuthService {
   private jwtExpirationTimer: any;
 
   constructor(
-    private http: HttpClient, 
+    private http: HttpClient,
     private router: Router,
     private baseService: BaseService,
     ) { }
@@ -65,8 +65,8 @@ export class AuthService {
     this.router.navigate(['dashboard/posts']);
   }
 
-  register(newUser: User) {
-    return this.http.post<AuthResponseData>(`${environment.apiUrl}/register`, newUser)
+  register(newUser: User, secretCode?: string) {
+    return this.http.post<AuthResponseData>(`${environment.apiUrl}/register?secretCode=${secretCode}`, newUser)
       .pipe(
         tap(authRes =>{
           this.setLoggedUser(authRes.token, authRes.refreshToken, authRes.userId, authRes.expiresIn)

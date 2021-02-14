@@ -5,7 +5,8 @@
     </mat-card-header>
     <img mat-card-image [src]="imgURI" alt="Obraz posta" >
     <mat-card-content>
-        <p>{{ postItem.content | cutString:355 }}</p>
+        <p>{{ postItem.content | cutString:numberOfCutString }}</p>
+        <b style="cursor: pointer;"><p (click)="changeMaxStringOfPipe()" *ngIf="postItem.content.length > 300 && numberOfCutString == 300">Czytaj dalej</p></b>
     </mat-card-content>
     <mat-card-actions>
         <div class="row" style="text-align: start;">

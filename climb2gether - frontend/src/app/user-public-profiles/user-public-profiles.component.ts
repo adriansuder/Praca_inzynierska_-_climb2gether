@@ -19,6 +19,10 @@ export class UserPublicProfilesComponent implements OnInit, OnDestroy {
     private router: Router
   ) { }
 
+  openUserDetails(userId: number): void{
+    this.router.navigate([`profiles/${userId}/details`]);
+  }
+
   ngOnInit(): void {
     this.users = this.usersService.searchResultList;
     this.usersChangedSubscription = this.usersService.usersSearchResultChanged.subscribe( res => {
@@ -26,9 +30,9 @@ export class UserPublicProfilesComponent implements OnInit, OnDestroy {
     });
   }
 
-  openUserDetails(userId: number){
-    this.router.navigate([`profiles/${userId}/details`]);
-  }
+  // openUserDetails(userId: number){
+  //   this.router.navigate([`profiles/${userId}/details`]);
+  // }
 
   ngOnDestroy(){
     this.usersChangedSubscription.unsubscribe();

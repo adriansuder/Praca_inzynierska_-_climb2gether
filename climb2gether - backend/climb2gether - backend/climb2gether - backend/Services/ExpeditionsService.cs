@@ -76,7 +76,9 @@ namespace climb2gether___backend.Services
 
         public async Task<bool> DeleteExpeditionEnrollment(int expEnrollmentId, int userId)
         {
-            var enrollment = await _dataContext.ExpeditionEnrollments.Where(x => x.Id == expEnrollmentId).FirstOrDefaultAsync();
+            var enrollment = await _dataContext.ExpeditionEnrollments
+                                                .Where(x => x.Id == expEnrollmentId)
+                                                .FirstOrDefaultAsync();
             if (enrollment == null)
             {
                 return false;
@@ -177,21 +179,28 @@ namespace climb2gether___backend.Services
             return result;
         }
 
-        public async Task<List<ExpeditionResponse>> SearchExpeditions(string querySearch)
+        public async Task<List<ExpeditionResponse>> SearchExpeditions(string querySearch, int userId, string? dateFrom, string? dateTo)
         {
             var query = querySearch.Trim();
-            var expeditionItemList = await _dataContext.Expeditions.Include(exp => exp.User)
-                                                            .ThenInclude(user => user.Role)
-                                                            .Where(x =>
-                                                                    x.ExpeditionDate >= DateTime.UtcNow &&
+            var expeditionItemList = await _dataContext.Expeditions
+                                                        .Include(exp => exp.User)
+                                                        .ThenInclude(user => user.Role)
+                                                        .Where(x =>
+                                                                  x.ExpeditionDate >= DateTime.UtcNow &&
                                                                         (
                                                                             x.DestinationRegion.Contains(query) ||
                                                                             x.DepartureCity.Contains(query) ||
                                                                             x.DescriptionTitle.Contains(query) ||
                                                                             x.Destination.Contains(query)
                                                                         )
+                                                                        &&
+                                                                        (
+                                                                            (dateFrom != null) ? x.ExpeditionDate >= DateTime.Parse(dateFrom) : x.ExpeditionDate >= DateTime.UtcNow &&
+                                                                            (dateTo != null) ? x.ExpeditionDate <= DateTime.Parse(dateTo) : x.ExpeditionDate <= DateTime.Parse("31.12.2100")
+                                                                        )
 
                                                                     ).ToListAsync();
+
             var result = expeditionItemList.Select(x => new ExpeditionResponse
             {
                 Id = x.Id,

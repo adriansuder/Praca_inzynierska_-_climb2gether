@@ -1,28 +1,20 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor, HttpResponse
-} from '@angular/common/http';
+import {HttpRequest, HttpHandler, HttpEvent, HttpInterceptor} from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { AuthResponseData, AuthService } from './auth.service';
 import { catchError, filter, switchMap, take } from 'rxjs/operators';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(public authService: AuthService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
     if (this.authService.getJwtToken()) {
       request = this.addToken(request, this.authService.getJwtToken());
     }
-
     return next.handle(request).pipe(catchError(error => {
       if (error.status === 401) {
         return this.handle401Error(request, next);
@@ -31,8 +23,6 @@ export class TokenInterceptor implements HttpInterceptor {
         return throwError(error);
       }
     }));
-
-
   }
 
   private addToken(request: HttpRequest<any>, token: string) {
@@ -43,7 +33,7 @@ export class TokenInterceptor implements HttpInterceptor {
     });
   }
 
-  private  handle401Error(request: HttpRequest<any>, next: HttpHandler) {
+  private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
     if (!this.isRefreshing) {
       this.isRefreshing = true;
       this.refreshTokenSubject.next(null);

@@ -10,7 +10,6 @@ import { UserSettingsComponent } from '../app/user-settings/user-settings.compon
 import { ChatComponent } from '../app/chat/chat.component';
 import { AuthGuard } from './guards/auth.guard';
 import { PostsListComponent } from './dashboard/posts-list/posts-list.component';
-import { PostsDetailsComponent } from './dashboard/posts-details/posts-details.component';
 import { PostEditComponent } from './dashboard/post-edit/post-edit.component';
 import { OffersComponent } from './instructors/offers/offers.component';
 import { AddOfferComponent } from './instructors/add-offer/add-offer.component';
@@ -59,6 +58,6 @@ const routes: Routes = [
     RouterModule.forRoot(routes)
   ],
   exports: [RouterModule],
-  providers: [InstructorsService]
+  providers: []
 })
 export class AppRoutingModule { }

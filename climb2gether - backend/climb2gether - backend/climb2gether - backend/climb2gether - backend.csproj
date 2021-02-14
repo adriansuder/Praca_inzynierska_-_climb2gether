@@ -13,6 +13,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Upload\**" />
+    <Content Remove="Upload\**" />
+    <EmbeddedResource Remove="Upload\**" />
+    <None Remove="Upload\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Migrations\20201119190000_add_postLike_table.cs" />
     <Compile Remove="Migrations\20201119190000_add_postLike_table.Designer.cs" />
     <Compile Remove="Migrations\20201202191703_add_attatchemnt_table.cs" />

@@ -24,34 +24,42 @@ namespace climb2gether___backend.Controllers.V1
         }
 
         [HttpPost(ApiRoutes.Identity.Register)]
-        public async Task <IActionResult> Register([FromBody] UserRegistrationRequest request)
+        public async Task <IActionResult> Register([FromBody] UserRegistrationRequest request, [FromQuery] string secretCode)
         {
-            if (!ModelState.IsValid)
+            if (request.RoleId!= 2 || secretCode == "SecretCode")
             {
-                return BadRequest(new AuthFailedResponse
+                if (!ModelState.IsValid)
                 {
-                    Errors = ModelState.Values.SelectMany(x => x.Errors.Select(xx => xx.ErrorMessage))
-                });
-            }
+                    return BadRequest(new AuthFailedResponse
+                    {
+                        Errors = ModelState.Values.SelectMany(x => x.Errors.Select(xx => xx.ErrorMessage))
+                    });
+                }
             
-            var authResponse = await _identitySerivce.RegisterAsync(request);
+                var authResponse = await _identitySerivce.RegisterAsync(request);
 
-            if (!authResponse.Success)
-            {
-                return BadRequest(new AuthFailedResponse
+                if (!authResponse.Success)
                 {
-                    Errors = authResponse.Errors
+                    return BadRequest(new AuthFailedResponse
+                    {
+                        Errors = authResponse.Errors
+                    });
+                }
+
+                return Ok(new AuthSuccessResponse
+                {
+                    Token = authResponse.Token,
+                    RefreshToken = authResponse.RefreshToken,
+                    UserId = authResponse.UserId,
+                    ExpiresIn = TimeZoneInfo.ConvertTimeFromUtc(authResponse.ExpiresIn, TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id))
+
                 });
             }
-
-            return Ok(new AuthSuccessResponse
+            else
             {
-                Token = authResponse.Token,
-                RefreshToken = authResponse.RefreshToken,
-                UserId = authResponse.UserId,
-                ExpiresIn = TimeZoneInfo.ConvertTimeFromUtc(authResponse.ExpiresIn, TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id))
 
-            });
+                return BadRequest("Błędny kod aktywacyjny");
+            }
         }
 
         [HttpPost(ApiRoutes.Identity.Login)]

@@ -132,9 +132,9 @@ export class InstructorsService implements OnDestroy{
     ).pipe(tap(res => console.log(res))).toPromise();
   }
 
-  search(queryRequest: string){
+  search(queryRequest: string, dateFrom: string, dateTo: string){
     return this.http.get<any>(
-      `${environment.apiUrl}/offer/search?query=${queryRequest}`
+      `${environment.apiUrl}/offer/search?query=${queryRequest}&dateFrom=${dateFrom}&dateTo=${dateTo}`
     ).pipe(
       //tap(res => console.log(res))
     ).toPromise();

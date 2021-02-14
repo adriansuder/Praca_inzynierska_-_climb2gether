@@ -14,6 +14,8 @@ import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 export class RegisterDialogComponent implements OnInit {
   registerForm: FormGroup;
   hide = true;
+  selectedRoleName: string = '';
+  secretCode: string;
 
   UserRoles: { roleId: number, RoleName: string, isAdmin: boolean }[] = [];
 
@@ -33,7 +35,8 @@ export class RegisterDialogComponent implements OnInit {
       roleId: new FormControl('', [Validators.required]),
       dateOfBirth: new FormControl('', [Validators.required]),
       phoneNumber: new FormControl('', [Validators.required]),
-      city: new FormControl('', [Validators.required])
+      city: new FormControl('', [Validators.required]),
+      secretCode: new FormControl('')
     });
     await this.getRoles();
     
@@ -52,8 +55,9 @@ export class RegisterDialogComponent implements OnInit {
       phoneNumber: this.registerForm.value.phoneNumber,
       city: this.registerForm.value.city
     }
-
-    const result = await this.auth.register(newUser);
+    const secretCode = this.registerForm.value.secretCode
+    const result = await this.auth.register(newUser, (!secretCode ? null : secretCode ));
+    console.log(result);
     if(result){
       this.router.navigate(['/dashboard/posts']);
           this.dialogRef.close();
@@ -68,5 +72,26 @@ export class RegisterDialogComponent implements OnInit {
     this.auth.logout().subscribe(res => {
       console.log(res);
     });
+  }
+
+  changeRole(value){
+    switch(value) { 
+      case 1: { 
+         this.selectedRoleName = 'Administrator' 
+         break; 
+      } 
+      case 2: { 
+        this.selectedRoleName = 'Instruktor' 
+         break; 
+      } 
+      case 3: { 
+        this.selectedRoleName = 'Wspinacz'
+        break; 
+     } 
+     case 4: { 
+      this.selectedRoleName = 'Turysta' 
+      break; 
+   } 
+   }
   }
 }

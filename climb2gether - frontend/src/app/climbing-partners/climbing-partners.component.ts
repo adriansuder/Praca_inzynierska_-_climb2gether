@@ -11,6 +11,10 @@ import { ExpeditionListItem } from '../_models/ExpeditionListItem';
 })
 export class ClimbingPartnersComponent implements OnInit, OnDestroy {
   searchString: string;
+  dateFrom: string;
+  dateTo: string;
+  minDate:Date = new Date();
+
   fetchedOffers: ExpeditionListItem[];
   expSubscription: Subscription;
   constructor(
@@ -27,7 +31,7 @@ export class ClimbingPartnersComponent implements OnInit, OnDestroy {
   }
 
   async search(){ 
-    const result = await this.climbService.search(this.searchString);
+    const result = await this.climbService.search(this.searchString,this.dateFrom?.toLocaleString().substring(0,10) , this.dateTo?.toLocaleString().substring(0,10));
     if(result.length == 0){
       this.baseService.openSnackBar('Brak dopasowań wyszukiwania.');
       return;

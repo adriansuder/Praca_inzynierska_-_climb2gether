@@ -66,9 +66,9 @@ export class ClimbingPartnersService {
     this.snackBar.open(message, 'X', config);
   }
 
-  search(queryRequest: string) {
+  search(queryRequest: string, dateFrom: string, dateTo: string) {
     return this.http.get<any>(
-      `${environment.apiUrl}/expeditions/search?queryRequest=${queryRequest}`
+      `${environment.apiUrl}/expeditions/search?queryRequest=${queryRequest}&dateFrom=${dateFrom}&dateTo=${dateTo}`
     ).pipe(
       //tap(res => console.log(res))
     ).toPromise();

@@ -55,7 +55,7 @@
 
       <mat-form-field appearance="outline" class="col-lg-12">
         <mat-label>Rodzaj konta</mat-label>
-        <mat-select formControlName="roleId" >
+        <mat-select (selectionChange)="changeRole($event.value)"  formControlName="roleId" >
           <mat-option *ngFor="let role of UserRoles" [value]="role.roleId">{{role.roleName}}</mat-option>
         </mat-select>
       </mat-form-field>
@@ -77,6 +77,10 @@
           [attr.aria-pressed]="hide">
           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-lg-12" *ngIf="selectedRoleName == 'Instruktor'">
+        <mat-label>Podaj otrzymany kod aktywacji</mat-label>
+        <input matInput type="text" formControlName="secretCode">
       </mat-form-field>
  
   <button type="submit" mat-raised-button color="primary">Zaloguj</button>

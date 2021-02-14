@@ -23,7 +23,8 @@ namespace climb2gether___backend.Controllers.V1
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ExpeditionsController(IExpeditionsService expeditionsService, IMapper mapper, IIdentityService identityService, IHttpContextAccessor httpContextAccessor)
+        public ExpeditionsController(IExpeditionsService expeditionsService, IMapper mapper, 
+                                        IIdentityService identityService, IHttpContextAccessor httpContextAccessor)
         {
             _expeditionsService = expeditionsService;
             _mapper = mapper;
@@ -74,9 +75,10 @@ namespace climb2gether___backend.Controllers.V1
         }
 
         [HttpGet(ApiRoutes.Expeditions.ExpeditionSearch)]
-        public async Task<IActionResult> ExpeditionSearch([FromQuery] string queryRequest)
-        {   
-            var result = await _expeditionsService.SearchExpeditions(queryRequest);
+        public async Task<IActionResult> ExpeditionSearch([FromQuery] string queryRequest, string dateFrom, string dateTo)
+        {
+            var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
+            var result = await _expeditionsService.SearchExpeditions(queryRequest, userId, dateFrom, dateTo);
 
 
             return Ok(result);

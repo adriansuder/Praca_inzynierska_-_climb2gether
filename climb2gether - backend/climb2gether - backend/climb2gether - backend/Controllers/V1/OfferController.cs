@@ -184,11 +184,11 @@ namespace climb2gether___backend.Controllers.V1
         }
 
         [HttpGet(ApiRoutes.Offers.SearchOffers)]
-        public async Task<IActionResult> SearchOffers([FromQuery] string query)
+        public async Task<IActionResult> SearchOffers([FromQuery] string query, string dateFrom, string dateTo)
         {
             var userId = _identityService.GetUserIdFromRequest(_httpContextAccessor.HttpContext);
 
-            var result = await _offerService.SearchOffers(query, userId);
+            var result = await _offerService.SearchOffers(query, userId, dateFrom != null && dateFrom != "undefined" ? dateFrom : null, dateTo != null && dateTo != "undefined" ? dateTo : null) ;
 
             return Ok(result);
         }

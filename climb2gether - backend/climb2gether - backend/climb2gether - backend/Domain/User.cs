@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace climb2gether___backend.Domain
 {
@@ -19,6 +17,5 @@ namespace climb2gether___backend.Domain
         public string Phone { get; set; }
         public string City { get; set; }
         public ICollection<Notification> Notifications { get; set; }
-
     }
 }

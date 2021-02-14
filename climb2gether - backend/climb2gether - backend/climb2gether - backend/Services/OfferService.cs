@@ -26,11 +26,8 @@ namespace climb2gether___backend.Services
         public async Task<int> CreateOfferAsync(Offer offer)
         {
             await _dataContext.Offers.AddAsync(offer);
-            var created = await _dataContext.SaveChangesAsync();
-            if (offer.Id == null)
-            {
-                return 0;
-            }
+            await _dataContext.SaveChangesAsync();
+
             return offer.Id;
         }
 
@@ -41,6 +38,7 @@ namespace climb2gether___backend.Services
                                join role in _dataContext.ApplicationUserRoles on user.RoleId equals role.RoleId
                                join offer in _dataContext.Offers on user.Id equals offer.OfferOwnerUserId
                                where offer.Date >= DateTime.UtcNow
+                               orderby offer.CreationDate descending
                                select new OfferResponse
                                {
                                    UserNameSurname = user.FirstName + " " + user.Surname,
@@ -141,7 +139,8 @@ namespace climb2gether___backend.Services
 
         public async Task<bool> UserOwnsOfferAsync(int offerId, int userId)
         {
-            var result = _dataContext.Offers.Where(x => x.Id == offerId && x.OfferOwnerUserId == userId).Count();
+            var result = _dataContext.Offers
+                                        .Where(x => x.Id == offerId && x.OfferOwnerUserId == userId).Count();
             return result > 0;
         }
 
@@ -222,7 +221,7 @@ namespace climb2gether___backend.Services
             return query;
         }
 
-        public async Task<List<OfferResponse>> SearchOffers(string query, int userId)
+        public async Task<List<OfferResponse>> SearchOffers(string query, int userId, string? dateFrom, string? dateTo)
         {
             var queryString = query.Trim();
             var result = await (
@@ -231,7 +230,11 @@ namespace climb2gether___backend.Services
                                join offer in _dataContext.Offers on user.Id equals offer.OfferOwnerUserId
                                where (offer.Location.Contains(queryString) || offer.OfferType.Contains(queryString) ||
                                         offer.Describe.Contains(queryString) || offer.User.Email.Contains(queryString) ||
-                                        offer.User.Surname.Contains(queryString)) && offer.Date >= DateTime.UtcNow
+                                        offer.User.Surname.Contains(queryString)) && offer.Date >= DateTime.UtcNow &&
+                                        (
+                                            (dateFrom != null) ? offer.Date >= DateTime.Parse(dateFrom) : offer.Date >= DateTime.UtcNow  &&
+                                            (dateTo != null) ? offer.Date <= DateTime.Parse(dateTo) : offer.Date <= DateTime.Parse("31.12.2100")
+                                       )
                                select new OfferResponse
                                {
                                    UserNameSurname = user.FirstName + " " + user.Surname,
@@ -241,7 +244,11 @@ namespace climb2gether___backend.Services
                                              where userOffer.OfferOwnerUserId == user.Id && userOffer.Date >= DateTime.UtcNow &&
                                              (offer.Location.Contains(queryString) || offer.OfferType.Contains(queryString) ||
                                                 offer.Describe.Contains(queryString) || offer.User.Email.Contains(queryString) ||
-                                                 offer.User.Surname.Contains(queryString))
+                                                 offer.User.Surname.Contains(queryString)) &&
+                                                 (
+                                                    (dateFrom != null) ? offer.Date >= DateTime.Parse(dateFrom) : offer.Date >= DateTime.UtcNow &&
+                                                    (dateTo != null) ? offer.Date <= DateTime.Parse(dateTo) : offer.Date <= DateTime.Parse("31.12.2100")
+                                                )
                                              select new OfferResponseItem
                                              {
                                                  Id = userOffer.Id,

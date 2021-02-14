@@ -120,14 +120,11 @@ namespace climb2gether___backend.Controllers.V1
         [HttpPost(ApiRoutes.Posts.Create)]
         public async Task<IActionResult> Create([FromForm] CreatePostRequest postRequest)
         {
-            //var httpRequestForm = HttpContext.Request.Form;
-            //var postedFile = httpRequestForm.Files["Img"];
             List<IFormFile> files =  postRequest.Img ;
 
             var post = new Post(){
             Title = postRequest.Title,
                 Subtitle = postRequest.Subtitle,
-                //ImgU = postRequest.ImgUrl,
                 Content = postRequest.Content,
                 UserId = postRequest.UserId,
                 CreationDate = DateTime.UtcNow
@@ -138,6 +135,7 @@ namespace climb2gether___backend.Controllers.V1
 
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
             var locationUri = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.Id.ToString());
+
             var response = _mapper.Map<PostResponse>(post);
 
             return Created(locationUri, response);

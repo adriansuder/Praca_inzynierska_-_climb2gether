@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {MatTableDataSource} from '@angular/material/table';
 import { BaseService } from '../services/base.service';
 import { InstructorsService } from '../services/instructors.service';
 
@@ -11,6 +10,10 @@ import { InstructorsService } from '../services/instructors.service';
 
 export class InstructorsComponent implements OnInit {
   searchString: string;
+  dateFrom: Date;
+  dateTo: Date;
+  minDate:Date = new Date();
+
   constructor(
     private instructorsService: InstructorsService,
     private baseService: BaseService
@@ -23,11 +26,12 @@ export class InstructorsComponent implements OnInit {
     if(!this.searchString || this.searchString == ' '){
       return;
     }
-    const result = await this.instructorsService.search(this.searchString);
+    const result = await this.instructorsService.search(this.searchString, this.dateFrom?.toLocaleString().substring(0,10) , this.dateTo?.toLocaleString().substring(0,10));
     if(result.length == 0){
       this.baseService.openSnackBar('Brak dopasowań wyszukiwania.');
       return;
     }
     this.instructorsService.offersChanged.next(result);
   }
+
 }

@@ -1,13 +1,25 @@
 <div class="container collapse" id="collapse">
   <div class="row d-flex justify-content-center">
       <div class="col-12" style="background: white; border-radius:0px 0px 4px 4px;">
-          <div class="row d-flex justify-content-center">
+          <div class="row d-flex justify-content-center mt-1">
               <mat-form-field class="col-lg-6 col-12">
                   <mat-label>Wyszukaj po nazwie lub rejonie</mat-label>
                   <input matInput type="text" [(ngModel)]="searchString">
                   <button mat-button *ngIf="searchString" (click)="searchString = '' " matSuffix mat-icon-button aria-label="Clear">
                       <mat-icon>close</mat-icon>
                   </button>
+              </mat-form-field>
+              <mat-form-field class="col-lg-2">
+                <mat-label>Data od</mat-label>
+                <input [min]="minDate" [(ngModel)]="dateFrom" matInput [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field class="col-lg-2">
+                <mat-label>Data od</mat-label>
+                <input [min]="minDate" [(ngModel)]="dateTo" matInput [matDatepicker]="picker2">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
               </mat-form-field>
               <div class="col-lg-2 col-12 mt-2 mb-2 d-flex justify-content-center" >
                   <button mat-raised-button color="primary" type="button" [disabled]="!searchString" (click)="search()">Wyszukaj</button>

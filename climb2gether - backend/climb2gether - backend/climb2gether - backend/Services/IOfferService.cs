@@ -21,6 +21,6 @@ namespace climb2gether___backend.Services
         Task<bool> DeleteEnrollmentAsync(int offerId, int userId);
         Task<List<ParticipantResponse>> GetParticipantsListAsync(int offerId);
         Task<UserOffersResponse> GetUserOfferById(int userId, int offerId);
-        Task<List<OfferResponse>> SearchOffers(string query, int userId);
+        Task<List<OfferResponse>> SearchOffers(string query, int userId, string? dateFrom, string? dateTo);
     }
 }
