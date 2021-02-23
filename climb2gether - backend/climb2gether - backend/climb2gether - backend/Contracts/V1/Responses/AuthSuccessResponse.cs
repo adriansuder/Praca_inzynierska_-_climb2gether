@@ -12,5 +12,6 @@ namespace climb2gether___backend.Contracts.V1.Responses
         //public bool Success { get; set; }
         public int UserId { get; set; }
         public DateTime ExpiresIn { get; set; }
+        public string RoleName { get; set; }
     }
 }

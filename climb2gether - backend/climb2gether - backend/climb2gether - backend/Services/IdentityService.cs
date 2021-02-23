@@ -227,13 +227,15 @@ namespace climb2gether___backend.Services
             await _dataContext.RefreshTokens.AddAsync(refreshToken);
             await _dataContext.SaveChangesAsync();
             //var userId = await _dataContext.Users.Select
+            var roleName = await _dataContext.ApplicationUserRoles.Where(x => x.RoleId == userId.RoleId).Select(x => x.RoleName).FirstOrDefaultAsync();
             return new AuthenticationResult
             {
                 Success = true,
                 Token = tokenHandler.WriteToken(token),
                 RefreshToken = refreshToken.Token,
                 ExpiresIn = DateTime.UtcNow.Add(_jwtSettings.TokenLifeTime),
-                UserId = userId.Id
+                UserId = userId.Id,
+                RoleName = roleName
             };
         }
 

@@ -19,6 +19,7 @@ export class ListItemComponent implements OnInit {
   displayedColumns: string[] = ['data', 'trasa', 'iloscMiejsc', 'typ', 'akcje'];
   dataSource = new MatTableDataSource();
   loggedUserId: number;
+  userRoleName: string;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() expItem: ExpeditionListItem;
   
@@ -33,6 +34,7 @@ export class ListItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedUserId = this.authService.loggedUser.userId;
+    this.userRoleName = this.authService.loggedUser.roleName;
   }
   
   applyFilter(event: Event) {

@@ -78,10 +78,10 @@ namespace climb2gether___backend.Controllers.V1
             return Ok(new AuthSuccessResponse
             {
                 Token = authResponse.Token,
-                RefreshToken  = authResponse.RefreshToken,
+                RefreshToken = authResponse.RefreshToken,
                 UserId = authResponse.UserId,
-                ExpiresIn = TimeZoneInfo.ConvertTimeFromUtc(authResponse.ExpiresIn, TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id))
-
+                ExpiresIn = TimeZoneInfo.ConvertTimeFromUtc(authResponse.ExpiresIn, TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id)),
+                RoleName = authResponse.RoleName
             });
         }
 
@@ -128,5 +128,6 @@ namespace climb2gether___backend.Controllers.V1
             var userRoles = await _identitySerivce.GetAllRolesAsync();
             return Ok(userRoles);
         }
+
     }
 }

@@ -14,6 +14,7 @@ export interface AuthResponseData {
   refreshToken: string;
   userId: number;
   expiresIn: Date;
+  roleName: string;
 }
 
 @Injectable({
@@ -44,7 +45,7 @@ export class AuthService {
           return err;
         }),
         tap(authRes => {
-          this.setLoggedUser(authRes.token, authRes.refreshToken, authRes.userId, authRes.expiresIn);
+          this.setLoggedUser(authRes.token, authRes.refreshToken, authRes.userId, authRes.expiresIn, authRes.roleName);
         }, err => {
           this.baseService.openSnackBar("Podano błędne dane, spróbuj jeszcze raz.")
         })
@@ -59,7 +60,7 @@ export class AuthService {
     if (!userData) {
       return;
     }
-    const loggedUser = new LoggedUser(userData._token, userData.refreshToken, userData.userId, userData.expiresIn);
+    const loggedUser = new LoggedUser(userData._token, userData.refreshToken, userData.userId, userData.expiresIn, userData.roleName);
     this.loggedUser = loggedUser;
     this.user.next(loggedUser);
     this.router.navigate(['dashboard/posts']);
@@ -69,7 +70,7 @@ export class AuthService {
     return this.http.post<AuthResponseData>(`${environment.apiUrl}/register?secretCode=${secretCode}`, newUser)
       .pipe(
         tap(authRes =>{
-          this.setLoggedUser(authRes.token, authRes.refreshToken, authRes.userId, authRes.expiresIn)
+          this.setLoggedUser(authRes.token, authRes.refreshToken, authRes.userId, authRes.expiresIn, authRes.roleName)
         }, err => {
           this.baseService.openSnackBar("Coś poszło nie tak, spróbuj jeszcze raz.")
         }),
@@ -94,7 +95,7 @@ export class AuthService {
     return this.http.post<AuthResponseData>(`${environment.apiUrl}/refreshToken`, {
       'Token': this.getJwtToken(),
       'RefreshToken': this.getRefreshToken()
-    }).pipe(tap(authRes => this.setLoggedUser(authRes.token, authRes.refreshToken, authRes.userId, authRes.expiresIn)));
+    }).pipe(tap(authRes => this.setLoggedUser(authRes.token, authRes.refreshToken, authRes.userId, authRes.expiresIn, authRes.roleName)));
   }
 
   getUserRoles() {
@@ -103,8 +104,8 @@ export class AuthService {
     ).toPromise();
   }
 
-  private setLoggedUser(token: string, refreshToken: string, userId: number, expiresIn: Date) {
-    const user = new LoggedUser(token, refreshToken, userId, expiresIn);
+  private setLoggedUser(token: string, refreshToken: string, userId: number, expiresIn: Date, roleName: string) {
+    const user = new LoggedUser(token, refreshToken, userId, expiresIn, roleName);
     this.loggedUser = user;
     this.user.next(user);
     //this.autoLogout(expiresIn)

@@ -13,5 +13,6 @@ namespace climb2gether___backend.Domain
         public int UserId { get; set; }
         public DateTime ExpiresIn { get; set; }
         public IEnumerable<string> Errors { get; set; }
+        public string RoleName { get; set; }
     }
 }

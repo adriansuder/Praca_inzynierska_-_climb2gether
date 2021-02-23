@@ -26,6 +26,7 @@ export class OffersComponent implements OnInit, OnDestroy {
   loggedUserId: number;
   userExpeditions: ExpeditionListItem[];
   expSubscription: Subscription;
+  userRoleName: string;
 
   constructor(
     public dialog: MatDialog,
@@ -56,7 +57,7 @@ export class OffersComponent implements OnInit, OnDestroy {
     .subscribe( x => {
       this.inAddingOfferMode = x;
     });
-
+    this.userRoleName = this.authService.loggedUser.roleName;
     
   }
   

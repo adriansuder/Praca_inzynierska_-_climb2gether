@@ -22,6 +22,7 @@ export class PostItemComponent implements OnInit, OnDestroy {
   likeSub: Subscription;
   unlikeSub: Subscription;
   imgURI: any;
+  userRoleName: string;
 
   constructor(
     private authService: AuthService,
@@ -41,7 +42,7 @@ export class PostItemComponent implements OnInit, OnDestroy {
     if (this.postItem.imgURL) {
       this.imgURI = await this.getAttatchment(this.postItem.imgURL);
     }
-
+    this.userRoleName = this.authService.loggedUser.roleName;
   }
   changeMaxStringOfPipe(){
     this.numberOfCutString == 300 ? this.numberOfCutString = 9999999 : this.numberOfCutString = 300

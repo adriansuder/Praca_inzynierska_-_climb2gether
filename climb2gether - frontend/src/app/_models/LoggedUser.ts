@@ -3,7 +3,8 @@ export class LoggedUser {
         public _token: string,
         public refreshToken: string,
         public userId: number,
-        public expiresIn: Date
+        public expiresIn: Date,
+        public roleName: string
     ){}
     
 //    get token(){
