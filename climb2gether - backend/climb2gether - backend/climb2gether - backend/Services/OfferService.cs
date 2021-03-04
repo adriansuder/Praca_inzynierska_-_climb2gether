@@ -59,7 +59,7 @@ namespace climb2gether___backend.Services
                                                  OfferOwnerUserId = userOffer.OfferOwnerUserId,
                                                  UserEnrollmentId = (from offEnr in _dataContext.OfferEnrollments
                                                                      where offEnr.OfferId == userOffer.Id && offEnr.ParticipantUserId == userId
-                                                                     select offEnr.Id).SingleOrDefault(),
+                                                                     select offEnr.Id).First(),
                                                  Attatchments = (from att in _dataContext.Attatchments
                                                                  where att.ObjectTypeName == "oferta" && att.ObjectTypeNumber == userOffer.Id
                                                                  select att).ToList()
@@ -170,7 +170,7 @@ namespace climb2gether___backend.Services
 
         public async Task<bool> CreateEnrollmentAsync(OfferEnrollment offerEnrollment)
         {
-            _dataContext.OfferEnrollments.Add(offerEnrollment);
+
             var InstructorOffer = await _dataContext.Offers.Where(x => x.Id == offerEnrollment.OfferId).FirstOrDefaultAsync();
             var notification = new Notification
             {
@@ -180,6 +180,7 @@ namespace climb2gether___backend.Services
                 CreationDate = DateTime.UtcNow
             };
             await _notificationsService.AddNotification(notification);
+            await _dataContext.OfferEnrollments.AddAsync(offerEnrollment);
             var result = await _dataContext.SaveChangesAsync();
 
             return result > 0;

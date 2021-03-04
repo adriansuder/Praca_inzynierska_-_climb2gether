@@ -142,7 +142,7 @@ namespace climb2gether___backend
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext _dataContext)
         {
-           // _dataContext.Database.EnsureCreated();
+            //_dataContext.Database.EnsureCreated();
             _dataContext.Database.Migrate();
 
             if (env.IsDevelopment())

@@ -29,7 +29,8 @@ export class InstructorItemComponent implements OnInit {
   panelOpenState = false;
   displayedColumns: string[] = ['data', 'trasa', 'iloscMiejsc', 'cena', 'typ', 'info', 'book'];
   dataSource = new MatTableDataSource();
-  loggedUserId: number; 
+  loggedUserId: number;
+
   constructor(
     public dialog: MatDialog,
     private instructorsService: InstructorsService,
@@ -70,17 +71,21 @@ export class InstructorItemComponent implements OnInit {
     dialogConfig.data = this.offerItem.offers.find(x => x.id === offerId);
 
     let result = await this.dialog.open(ModalConfirmEnrollmentComponent, dialogConfig).afterClosed().toPromise();
+    
     if (result === 'OK') {
       let isAddedOrDeleted;
       if (!dialogConfig.data.isUserAlreadyEnrolled) {
         isAddedOrDeleted = await this.instructorsService.addCourseEnrollment(offerId);
+        //this.offerItem.offers.find(x => x.id == offerId).isUserAlreadyEnrolled = true;
+        this.offerItem.offers.filter(x => x.id == offerId)[0].isUserAlreadyEnrolled = true;
         this.baseSerive.openSnackBar('Super! Twoje zgłoszenie zostało przesłane prawidłowo. :)');
-        this.offerItem.offers.find(x => x.id = offerId).isUserAlreadyEnrolled = true;
       } else {
         isAddedOrDeleted = await this.instructorsService.deleteCourseEnrollment(offerId);
         if (!isAddedOrDeleted) { this.baseSerive.openSnackBar('Coś poszło nie tak!'); }
+        //this.offerItem.offers.find(x => x.id == offerId).isUserAlreadyEnrolled = false;
+        this.offerItem.offers.filter(x => x.id == offerId)[0].isUserAlreadyEnrolled = false;
         this.baseSerive.openSnackBar('Twoje zgłoszenie zostało usunięte.');
-        this.offerItem.offers.find(x => x.id = offerId).isUserAlreadyEnrolled  =false;
+
       }
 
       if (isAddedOrDeleted) {

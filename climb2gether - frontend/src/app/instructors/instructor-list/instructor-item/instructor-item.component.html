@@ -62,7 +62,7 @@
             <mat-cell *matCellDef="let element" class="iconWrapper d-flex flex-center">
                 <!-- <div class="iconWrapper"> -->
                       <button *ngIf="element.OfferOwnerUserId != loggedUserId" mat-button (click)="courseEnrollment(element.id)" [class.enrolled]="element.isUserAlreadyEnrolled">
-                        <mat-icon class="icon">{{ element.isUserAlreadyEnrolled ? 'close': 'how_to_reg'}}</mat-icon>
+                        <mat-icon class="icon">{{ element.isUserAlreadyEnrolled  ? 'close' : 'how_to_reg'}}</mat-icon>
                       </button>  
                 <!-- </div>  -->
             </mat-cell>

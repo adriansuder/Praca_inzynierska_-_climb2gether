@@ -26,7 +26,7 @@ namespace climb2gether___backend.Services
 
         public async Task<bool> AddNotification(Notification notification)
         {
-            _dataContext.Notifications.Add(notification);
+            await _dataContext.Notifications.AddAsync(notification);
             var result = await _dataContext.SaveChangesAsync();
 
             return result > 0;

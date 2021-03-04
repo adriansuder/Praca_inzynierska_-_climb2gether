@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { OfferListItem } from 'src/app/_models/OfferListItem';
 import { InstructorsService } from '../../services/instructors.service';
 
@@ -7,15 +8,16 @@ import { InstructorsService } from '../../services/instructors.service';
   templateUrl: './instructor-list.component.html',
   styleUrls: ['./instructor-list.component.scss']
 })
-export class InstructorListComponent implements OnInit {
+export class InstructorListComponent implements OnInit, OnDestroy {
   
   loadedOffers: OfferListItem[] = [];
-
+  sub: Subscription;
   constructor(private instructorsService: InstructorsService) { }
+
 
   async ngOnInit() {
    this.instructorsService.getOffers();
-   this.instructorsService.offersChanged.subscribe( offers => {
+   this.sub = this.instructorsService.offersChanged.subscribe( offers => {
      console.log(offers)
      this.loadedOffers = offers;
    });
@@ -23,6 +25,10 @@ export class InstructorListComponent implements OnInit {
 
   trackByIndex(item, index) {
     return `${item.id}-${index}`;
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
 }

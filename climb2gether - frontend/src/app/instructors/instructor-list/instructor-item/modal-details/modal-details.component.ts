@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { BaseService } from 'src/app/services/base.service';
 import { InstructorsService } from 'src/app/services/instructors.service';
@@ -14,14 +14,15 @@ import { OfferListItem } from 'src/app/_models/OfferListItem';
 })
 export class ModalDetailsComponent implements OnInit {
   attatchments: any = this.data.attatchments;
-  imgURL:any;
+  imgURL: any;
   constructor(
     private instructorsService: InstructorsService,
     private baseService: BaseService,
-    @Inject(MAT_DIALOG_DATA) public data: Offer 
-    ) { }
+    @Inject(MAT_DIALOG_DATA) public data: Offer
+  ) { }
 
-    async ngOnInit() {
-      this.imgURL = await this.baseService.getAttatchment(this.attatchments[0].id);
-    }   
+  async ngOnInit() {
+    this.imgURL = await this.baseService.getAttatchment(this.attatchments[0].id);
+  }
+
 }

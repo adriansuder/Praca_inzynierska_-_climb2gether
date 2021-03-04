@@ -14,7 +14,7 @@ import { Participant } from '../_models/Participant';
 @Injectable({
   providedIn: 'root'
 })
-export class InstructorsService implements OnDestroy{
+export class InstructorsService implements OnDestroy {
 
   subscription: Subscription;
   inAddingOfferMode = new Subject<boolean>();
@@ -38,16 +38,21 @@ export class InstructorsService implements OnDestroy{
       ).pipe(map(resData => {
         let offerArray: OfferListItem[] = [];
         offerArray = JSON.parse(JSON.stringify(resData));
-        return resData;
+        offerArray.forEach(userOffer => {
+          userOffer.offers.forEach(offer => {
+            offer.isUserAlreadyEnrolled = offer.userEnrollmentId > 0
+          });
+        });
+        return offerArray;
       })
         , repeatWhen(() => interval(90000))
-        ).subscribe( offers => {
-          this.fetchedOffers = offers;
-          this.offersChanged.next(offers);
-        })
+      ).subscribe(offers => {
+        this.fetchedOffers = offers;
+        this.offersChanged.next(offers);
+      })
   }
 
-  getUserOfferById(offerId: number){
+  getUserOfferById(offerId: number) {
     return this.http.get<Offer>(
       `${environment.apiUrl}/offer/${offerId}`
     ).toPromise();
@@ -86,7 +91,7 @@ export class InstructorsService implements OnDestroy{
     return this.http.post(
       `${environment.apiUrl}/offers`,
       formData,
-      {headers: headers}
+      { headers: headers }
     ).toPromise();
   }
 
@@ -132,7 +137,7 @@ export class InstructorsService implements OnDestroy{
     ).pipe(tap(res => console.log(res))).toPromise();
   }
 
-  search(queryRequest: string, dateFrom: string, dateTo: string){
+  search(queryRequest: string, dateFrom: string, dateTo: string) {
     return this.http.get<any>(
       `${environment.apiUrl}/offer/search?query=${queryRequest}&dateFrom=${dateFrom}&dateTo=${dateTo}`
     ).pipe(
