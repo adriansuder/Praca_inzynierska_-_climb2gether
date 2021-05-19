@@ -89,6 +89,9 @@ namespace climb2gether___backend
                 builder.WithOrigins("https://climb2gether.azurewebsites.net/").AllowAnyMethod().AllowAnyHeader();
                 builder.WithOrigins("http://127.0.0.1:8080").AllowAnyMethod().AllowAnyHeader();
                 builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+                builder.WithOrigins("https://localhost").AllowAnyMethod().AllowAnyHeader();
+                builder.WithOrigins("https://localhost:1").AllowAnyMethod().AllowAnyHeader();
+                builder.WithOrigins("https://localhost:44300").AllowAnyMethod().AllowAnyHeader();
             }));
 
             services.AddHttpContextAccessor();
